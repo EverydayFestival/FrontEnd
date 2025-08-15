@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../components/Navbar';
 import labor_data from '../../assets/labor/labor_data';
@@ -9,6 +9,8 @@ const MPFestivalAppliedLabor = () => {
     const {festivalId} = useParams();
     const location = useLocation();
     const festivalName = location.state?.festivalName || '';
+
+    const [selected, setSelected] = useState(null);
 
   return (
     <PageWrapper>
@@ -36,8 +38,8 @@ const MPFestivalAppliedLabor = () => {
 
 
             <LaborChoice>
-              <ChoiceBtn>수락하기</ChoiceBtn>
-              <ChoiceBtn>거절하기</ChoiceBtn>
+              <ChoiceBtn onClick={()=>setSelected(true)} disabled={selected !== null}> {selected === true ? "수락됨" : "수락하기"}</ChoiceBtn>
+              <ChoiceBtn onClick={()=>setSelected(false)} disabled={selected !== null}> {selected === false ? "거절됨" : "거절하기"}</ChoiceBtn>
             </LaborChoice>
           </LaborCard>
         ))}
