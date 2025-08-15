@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Navbar from '../../components/Navbar';
 import co_data from '../../assets/company/co_data';
 import more_button from '../../assets/more_button.png'
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const MPFestivalAppliedCompany = () => {
   const [activeFilter, setActiveFilter] = useState('선착순');
@@ -14,6 +14,9 @@ const MPFestivalAppliedCompany = () => {
   const {festivalId} = useParams();
   const location = useLocation();
   const festivalName = location.state?.festivalName || '';
+  const [selected, setSelected] = useState(null);
+  const navigate = useNavigate();
+  
   // const [companyList, setCompanyList] = useState([]);
 
   // useEffect(() => {
@@ -76,8 +79,23 @@ const MPFestivalAppliedCompany = () => {
 
 
             <CoChoice>
-              <ChoiceBtn>수락하기</ChoiceBtn>
-              <ChoiceBtn>거절하기</ChoiceBtn>
+              {selected === null && (
+                <>
+                  <ChoiceBtn onClick={() => setSelected(true)}>수락하기</ChoiceBtn>
+                  <ChoiceBtn onClick={() => setSelected(false)}>거절하기</ChoiceBtn>
+                </>
+              )}
+
+              {selected === true && (
+                <>
+                  <ChoiceBtn disabled>수락됨</ChoiceBtn>
+                  <ChoiceBtn onClick={()=>navigate(`/mypage/festival/appliedcompany/${festivalId}/${co.companyId}/review`)}>리뷰쓰기</ChoiceBtn>
+                </>
+              )}
+
+              {selected === false && (
+                <ChoiceBtn disabled>거절됨</ChoiceBtn>
+              )}
             </CoChoice>
           </CoCard>
         ))}

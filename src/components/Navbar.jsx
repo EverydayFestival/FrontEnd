@@ -11,7 +11,7 @@ const Navbar = () => {
   return (
     <NavbarWrapper>
       <NavbarLeft>
-        <Logo onClick={()=>navigate('/mypage')}src={logo} alt="logo" />
+        <Logo onClick={()=>navigate('/')}src={logo} alt="logo" />
       </NavbarLeft>
       <NavbarRight>
         <Icon src={bell} alt="notification" />
