@@ -2,8 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import fest_data from '../../assets/fest/fest_data';
 import Navbar from '../../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const MPFestivalClosed = () => {
+
+  const navigate = useNavigate();
+  
   return (
     <FestivalClosed>
       <Fixed>
@@ -25,8 +29,12 @@ const MPFestivalClosed = () => {
             </FestInfo>
 
             <RecruitStatus>
-              <button>업체 지원현황</button>
-              <button>단기근로자 지원현황</button>
+              <button onClick={() => navigate(`/mypage/festival/appliedcompany/${fest.festivalId}`)}>
+                업체 지원현황
+              </button>
+              <button onClick={() => navigate(`/mypage/festival/appliedlabor/${fest.festivalId}`)}>
+                단기근로자 지원현황
+              </button>
             </RecruitStatus>
           </FestCard>
         ))}

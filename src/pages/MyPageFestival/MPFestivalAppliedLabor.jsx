@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../components/Navbar';
 import labor_data from '../../assets/labor/labor_data';
-import { useLocation, useParams } from 'react-router-dom';
+import fest_data from '../../assets/fest/fest_data';
+import { useParams } from 'react-router-dom';
 
 const MPFestivalAppliedLabor = () => {
 
     const {festivalId} = useParams();
-    const location = useLocation();
-    const festivalName = location.state?.festivalName || '';
+    const festival = fest_data.find(f => f.festivalId === Number(festivalId));
 
-    const [selected, setSelected] = useState(null);
-
+    const [laborList, setLaborList] = useState(labor_data);
+    const handleChoice = (laborId, choice) => {
+    setLaborList(prev =>
+      prev.map(la =>
+        la.laborId === laborId ? { ...la, laborSelected: choice } : la
+      )
+    );
+  };
   return (
     <PageWrapper>
       <Fixed>
@@ -21,16 +27,15 @@ const MPFestivalAppliedLabor = () => {
         </Title>
       </Fixed>
 
-      <p>festivalName: {festivalName}</p>
-      <p>festivalId: {festivalId}</p>
+      <p>{festival?.festivalName}</p>
 
       <ApplyLaborList>
-        {labor_data.map((labor, index) => (
+        {laborList.map((la, index) => (
           <LaborCard key={index}>
-            <LaborImage src={labor.image} alt="단기근로자이미지" />
+            <LaborImage src={la.image} alt="단기근로자이미지" />
             <Laborleft>
               <LaborInfo>
-                <LaborName>{labor.laborName}</LaborName>
+                <LaborName>{la.laborName}</LaborName>
                 <ApplicationBtn>지원서 보기</ApplicationBtn>
               </LaborInfo>
             </Laborleft>
@@ -38,9 +43,23 @@ const MPFestivalAppliedLabor = () => {
 
 
             <LaborChoice>
-              <ChoiceBtn onClick={()=>setSelected(true)} disabled={selected !== null}> {selected === true ? "수락됨" : "수락하기"}</ChoiceBtn>
-              <ChoiceBtn onClick={()=>setSelected(false)} disabled={selected !== null}> {selected === false ? "거절됨" : "거절하기"}</ChoiceBtn>
-            </LaborChoice>
+              {la.laborSelected === null && (
+                <>
+                  <ChoiceBtn onClick={() => handleChoice(la.laborId, true)}>수락하기</ChoiceBtn>
+                  <ChoiceBtn onClick={() => handleChoice(la.laborId, false)}>거절하기</ChoiceBtn>
+                </>
+              )}
+
+              {la.laborSelected === true && (
+                <>
+                  <ChoiceBtn disabled>수락됨</ChoiceBtn>
+                </>
+              )}
+
+              {la.laborSelected === false && (
+                <ChoiceBtn disabled>거절됨</ChoiceBtn>
+              )}
+          </LaborChoice>
           </LaborCard>
         ))}
       </ApplyLaborList>
