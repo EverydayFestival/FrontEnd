@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../components/Navbar';
+import fest_data from '../../assets/fest/fest_data';
 import co_data from '../../assets/company/co_data';
 import more_button from '../../assets/more_button.png'
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const MPFestivalAppliedCompany = () => {
   const [activeFilter, setActiveFilter] = useState('선착순');
@@ -12,9 +13,15 @@ const MPFestivalAppliedCompany = () => {
   const filters = ['선착순', '리뷰 많은 순', '선정 많이 된 순'];
 
   const {festivalId} = useParams();
-  const location = useLocation();
-  const festivalName = location.state?.festivalName || '';
-  const [selected, setSelected] = useState(null);
+  const festival = fest_data.find(f => f.festivalId === Number(festivalId));
+  const [companyList, setCompanyList] = useState(co_data);
+  const handleChoice = (companyId, choice) => {
+    setCompanyList(prev =>
+      prev.map(co =>
+        co.companyId === companyId ? { ...co, companySelected: choice } : co
+      )
+    );
+  };
   const navigate = useNavigate();
   
   // const [companyList, setCompanyList] = useState([]);
@@ -59,11 +66,10 @@ const MPFestivalAppliedCompany = () => {
         </Dropdown>
       </FilterSection>
       
-      <p>festivalName: {festivalName}</p>
-      <p>festivalId: {festivalId}</p>
+      <p>{festival?.festivalName}</p>
 
       <ApplyCompanyList>
-        {co_data.map((co, index) => (
+        {companyList.map((co, index) => (
           <CoCard key={index}>
             <CoImage src={co.image} alt="업체이미지" />
             <Coleft>
@@ -79,21 +85,21 @@ const MPFestivalAppliedCompany = () => {
 
 
             <CoChoice>
-              {selected === null && (
+              {co.companySelected === null && (
                 <>
-                  <ChoiceBtn onClick={() => setSelected(true)}>수락하기</ChoiceBtn>
-                  <ChoiceBtn onClick={() => setSelected(false)}>거절하기</ChoiceBtn>
+                  <ChoiceBtn onClick={() => handleChoice(co.companyId, true)}>수락하기</ChoiceBtn>
+                  <ChoiceBtn onClick={() => handleChoice(co.companyId, false)}>거절하기</ChoiceBtn>
                 </>
               )}
 
-              {selected === true && (
+              {co.companySelected === true && (
                 <>
                   <ChoiceBtn disabled>수락됨</ChoiceBtn>
                   <ChoiceBtn onClick={()=>navigate(`/mypage/festival/appliedcompany/${festivalId}/${co.companyId}/review`)}>리뷰쓰기</ChoiceBtn>
                 </>
               )}
 
-              {selected === false && (
+              {co.companySelected === false && (
                 <ChoiceBtn disabled>거절됨</ChoiceBtn>
               )}
             </CoChoice>

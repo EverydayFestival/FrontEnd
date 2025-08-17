@@ -1,15 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Navbar from '../../components/Navbar'
 import { useParams } from 'react-router-dom'
 import fest_data from '../../assets/fest/fest_data'
 import co_data from '../../assets/company/co_data'
+import Modal from '../../components/Modal'
 
 const MPFestivalReview2Company = () => {
 
     const {festivalId, companyId} = useParams();
     const festival = fest_data.find(f => f.festivalId === Number(festivalId));
     const company = co_data.find(c => c.companyId === Number(companyId));
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleSubmit = () => {
+        setShowModal(true); // 등록 버튼 누르면 모달 열림
+    };
 
 
 
@@ -32,7 +39,11 @@ const MPFestivalReview2Company = () => {
             <Review>
                 <p>리뷰를 작성해주세요(200자이내)</p>
                 <input type="text" />
-                <button>등록하기</button>
+                <button onClick={handleSubmit}>등록하기</button>
+
+                <Modal show={showModal} onClose={() => setShowModal(false)}>
+                    <p>등록이 완료되었습니다!</p>
+                </Modal>
             </Review>
 
 
@@ -64,7 +75,10 @@ const Title = styled.div`
 `;
 
 const CompanyInfo = styled.div`
-    
+    img{
+        width: 300px;
+        height: 300px;
+    }
 `;
 
 const Review = styled.div`
