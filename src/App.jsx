@@ -7,6 +7,7 @@ import MPFestivalClosed from './pages/MyPageFestival/MPFestivalClosed'
 import MPFestivalAppliedCompany from './pages/MyPageFestival/MPFestivalAppliedCompany'
 import MPFestivalAppliedLabor from './pages/MyPageFestival/MPFestivalAppliedLabor'
 import MPFestivalReview2Company from './pages/MyPageFestival/MPFestivalReview2Company'
+import MPFestivalNotification from './pages/MyPageFestival/MPFestivalNotification'
 
 const App = ()=>{
   return (
@@ -19,6 +20,7 @@ const App = ()=>{
         <Route path='/mypage/festival/appliedcompany/:festivalId' element={<MPFestivalAppliedCompany/>}/>
         <Route path='/mypage/festival/appliedlabor/:festivalId' element={<MPFestivalAppliedLabor/>}/>
         <Route path='/mypage/festival/appliedcompany/:festivalId/:companyId/review' element={<MPFestivalReview2Company/>}/>
+        <Route path='/mypage/festival/notification' element={<MPFestivalNotification/>}/>
       </Routes>
     </div>
 
