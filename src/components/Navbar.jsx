@@ -14,7 +14,7 @@ const Navbar = () => {
         <Logo onClick={()=>navigate('/')}src={logo} alt="logo" />
       </NavbarLeft>
       <NavbarRight>
-        <Icon src={bell} alt="notification" />
+        <Icon onClick={()=>navigate('/mypage/festival/notification')}src={bell} alt="notification" />
         <Icon src={mypageicon} alt="mypage" />
         <Icon src={logout} alt="logout" />
       </NavbarRight>
