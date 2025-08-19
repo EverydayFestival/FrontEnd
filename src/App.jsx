@@ -9,6 +9,9 @@ import MPFestivalAppliedLabor from './pages/MyPageFestival/MPFestivalAppliedLabo
 import MPFestivalReview2Company from './pages/MyPageFestival/MPFestivalReview2Company'
 import MPFestivalNotification from './pages/MyPageFestival/MPFestivalNotification'
 import MPFestivalInterest2Company from './pages/MyPageFestival/MPFestivalInterest2Company'
+import MPFestivalFavored from './pages/MyPageFestival/MPFestivalFavored'
+import MPFestivalFavoredOngoingFest from './pages/MyPageFestival/MPFestivalFavoredOngoingFest'
+import MPFestivalFavoredClosedFest from './pages/MyPageFestival/MPFestivalFavoredClosedFest'
 
 const App = ()=>{
   return (
@@ -23,6 +26,9 @@ const App = ()=>{
         <Route path='/mypage/festival/appliedcompany/:festivalId/:companyId/review' element={<MPFestivalReview2Company/>}/>
         <Route path='/mypage/festival/notification' element={<MPFestivalNotification/>}/>
         <Route path='/mypage/festival/interest' element={<MPFestivalInterest2Company/>}/>
+        <Route path='/mypage/festival/favored' element={<MPFestivalFavored/>}/>
+        <Route path='/mypage/festival/favored/ongoingfest' element={<MPFestivalFavoredOngoingFest/>}/>
+        <Route path='/mypage/festival/favored/closedfest' element={<MPFestivalFavoredClosedFest/>}/>
       </Routes>
     </div>
 

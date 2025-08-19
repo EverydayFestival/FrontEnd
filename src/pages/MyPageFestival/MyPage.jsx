@@ -13,7 +13,7 @@ const MyPage = () => {
       { label: "진행 및 예정 행사", path: '/mypage/festival/ongoing' },
       { label: "종료된 행사", path: '/mypage/festival/closed' },
       { label: "내가 관심을 표한 업체", path: '/mypage/festival/interest'},
-      { label: "찜" }
+      { label: "찜", path: '/mypage/festival/favored' }
     ],
     Company: ["지원현황", "찜"],
     Labor: ["지원현황", "찜"]
