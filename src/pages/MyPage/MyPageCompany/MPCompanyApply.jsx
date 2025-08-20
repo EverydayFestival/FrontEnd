@@ -4,12 +4,15 @@ import Navbar from '../../../components/Navbar'
 import fest_data from '../../../assets/fest/fest_data'
 import Modal from '../../../components/Modal'
 import more_button from '../../../assets/more_button.png'
+import { useNavigate } from 'react-router-dom'
 
 const MPFestivalFavored = () => {
 
   const [viewAllOngoingFest, setViewAllOngoingFest] = useState(false);
   const [viewAllClosedFest, setViewAllClosedFest] = useState(false);
 
+
+  const navigate = useNavigate();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -80,9 +83,10 @@ const MPFestivalFavored = () => {
                         </FestInfo>
                       <MoreIcon src={more_button} alt="더보기" />
                      </FestLeft>
-                     <Status>
-                        <p>심사 중</p>
-                    </Status>
+                     <StatusClosed>
+                        <p>수락</p>
+                        <ReviewBtn onClick={()=>navigate(`/mypage/company/${fest.festivalId}/review`)}>리뷰쓰기</ReviewBtn>
+                    </StatusClosed>
                      
                     </FestCard>
                   ))}
@@ -138,9 +142,10 @@ const MPFestivalFavored = () => {
                         </FestInfo>
                       <MoreIcon src={more_button} alt="업체더보기" />
                      </FestLeft>
-                     <Status>
-                        <p>심사 중</p>
-                    </Status>
+                     <StatusClosed>
+                        <p>수락</p>
+                        <ReviewBtn onClick={()=>navigate(`/mypage/company/${fest.festivalId}/review`)}>리뷰쓰기</ReviewBtn>
+                    </StatusClosed>
                     </FestCard>
                   ))}
                 </FestCardList>
@@ -243,6 +248,15 @@ const FestLeft = styled.div`
 `
 const Status = styled.div`
     
+`
+const StatusClosed = styled.div`
+    
+`
+
+const ReviewBtn = styled.button`
+    width: 200px;
+    padding: 20px 0;
+    cursor: pointer;
 `
 
 const FestInfo = styled.div`

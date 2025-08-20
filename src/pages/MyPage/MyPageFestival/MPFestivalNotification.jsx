@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Navbar from "../../components/Navbar";
-import { formatKoreanDate } from "../../utils/dateFormat";
+import Navbar from "../../../components/Navbar";
+import { formatKoreanDate } from "../../../utils/dateFormat";
 
 const MPFestivalNotification = () => {
   const [notifications, setNotifications] = useState([]);

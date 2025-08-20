@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Navbar from '../../components/Navbar';
-import labor_data from '../../assets/labor/labor_data';
-import fest_data from '../../assets/fest/fest_data';
+import Navbar from '../../../components/Navbar';
+import labor_data from '../../../assets/labor/labor_data';
+import fest_data from '../../../assets/fest/fest_data';
 import { useParams } from 'react-router-dom';
 
 const MPFestivalAppliedLabor = () => {

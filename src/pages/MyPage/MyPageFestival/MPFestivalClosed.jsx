@@ -1,19 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import fest_data from '../../assets/fest/fest_data';
-import Navbar from '../../components/Navbar';
+import fest_data from '../../../assets/fest/fest_data';
+import Navbar from '../../../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 
-const MPFestivalOngoing = () => {
-  const navigate = useNavigate();
+const MPFestivalClosed = () => {
 
+  const navigate = useNavigate();
+  
   return (
-    <FestivalOngoing>
+    <FestivalClosed>
       <Fixed>
-      <Navbar />
-      <Title>
-        <p>진행 및 예정 행사</p>
-      </Title>
+        <Navbar />
+        <Title>
+          <p>종료된 행사</p>
+        </Title>
       </Fixed>
 
 
@@ -38,25 +39,26 @@ const MPFestivalOngoing = () => {
           </FestCard>
         ))}
       </FestCardList>
-    </FestivalOngoing>
+    </FestivalClosed>
   );
 };
 
-export default MPFestivalOngoing;
+export default MPFestivalClosed;
 
-
-const FestivalOngoing = styled.div`
-padding: 150px;
+/* styled-components 스타일 정의 */
+const FestivalClosed = styled.div`
+  padding: 150px; 
 `;
 
 const Fixed = styled.div`
-  position: fixed;
+  position: fixed;  
   top: 0;
   left: 0;
   width: 100%;
-  background-color: white; 
-  z-index: 1000; 
+  background-color: white; /* 투명 배경 방지 */
+  z-index: 1000; /* 다른 요소보다 위 */
 `;
+
 
 const Title = styled.div`
   background-color: rgb(199, 199, 199);
@@ -82,8 +84,7 @@ const FestCard = styled.div`
 `;
 
 const FestImage = styled.img`
-    width: 270px;
-  height: 360px;
+  width: 300px;
   border-radius: 20px;
   cursor: pointer;
 `;
