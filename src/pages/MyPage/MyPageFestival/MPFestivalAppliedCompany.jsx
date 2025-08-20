@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Navbar from '../../components/Navbar';
-import fest_data from '../../assets/fest/fest_data';
-import co_data from '../../assets/company/co_data';
-import more_button from '../../assets/more_button.png'
+import Navbar from '../../../components/Navbar';
+import fest_data from '../../../assets/fest/fest_data';
+import co_data from '../../../assets/company/co_data';
+import more_button from '../../../assets/more_button.png'
 import { useNavigate, useParams } from 'react-router-dom';
 
 const MPFestivalAppliedCompany = () => {

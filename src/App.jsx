@@ -2,15 +2,16 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import MyPage from './pages/MyPage/MyPage'
-import MPFestivalOngoing from './pages/MyPageFestival/MPFestivalOngoing'
-import MPFestivalClosed from './pages/MyPageFestival/MPFestivalClosed'
-import MPFestivalAppliedCompany from './pages/MyPageFestival/MPFestivalAppliedCompany'
-import MPFestivalAppliedLabor from './pages/MyPageFestival/MPFestivalAppliedLabor'
-import MPFestivalReview2Company from './pages/MyPageFestival/MPFestivalReview2Company'
-import MPFestivalNotification from './pages/MyPageFestival/MPFestivalNotification'
-import MPFestivalInterest2Company from './pages/MyPageFestival/MPFestivalInterest2Company'
+import MPFestivalOngoing from './pages/MyPage/MyPageFestival/MPFestivalOngoing'
+import MPFestivalClosed from './pages/MyPage/MyPageFestival/MPFestivalClosed'
+import MPFestivalAppliedCompany from './pages/MyPage/MyPageFestival/MPFestivalAppliedCompany'
+import MPFestivalAppliedLabor from './pages/MyPage/MyPageFestival/MPFestivalAppliedLabor'
+import MPFestivalReview2Company from './pages/MyPage/MyPageFestival/MPFestivalReview2Company'
+import MPFestivalNotification from './pages/MyPage/MyPageFestival/MPFestivalNotification'
+import MPFestivalInterest2Company from './pages/MyPage/MyPageFestival/MPFestivalInterest2Company'
 import MPFestivalFavored from './pages/MyPage/MPFavored'
 import MPCompanyApply from './pages/MyPage/MyPageCompany/MPCompanyApply'
+import MPCompanyReview2Festival from './pages/MyPage/MyPageCompany/MPCompanyReview2Festival'
 
 
 const App = ()=>{
@@ -29,6 +30,7 @@ const App = ()=>{
         <Route path='/mypage/favored' element={<MPFestivalFavored/>}/>
 
         <Route path='/mypage/company/apply' element={<MPCompanyApply/>}/>
+        <Route path='/mypage/company/:festivalId/review' element={<MPCompanyReview2Festival/>}/>
       </Routes>
     </div>
 
