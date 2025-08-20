@@ -23,7 +23,7 @@ const MPFestivalClosed = () => {
           <FestCard key={index}>
             <FestImage src={fest.image} alt="" />
             <FestInfo>
-              <FestName>{fest.name}</FestName>
+              <FestName>{fest.festivalName}</FestName>
               <p>{fest.location}</p>
               <p>{fest.period}</p>
             </FestInfo>
@@ -90,6 +90,13 @@ const FestImage = styled.img`
 `;
 
 const FestInfo = styled.div`
+  p{
+    font-size: 18px;
+  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
   flex: 1;
 `;
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
-import MyPage from './pages/MyPageFestival/MyPage'
+import MyPage from './pages/MyPage/MyPage'
 import MPFestivalOngoing from './pages/MyPageFestival/MPFestivalOngoing'
 import MPFestivalClosed from './pages/MyPageFestival/MPFestivalClosed'
 import MPFestivalAppliedCompany from './pages/MyPageFestival/MPFestivalAppliedCompany'
@@ -9,9 +9,9 @@ import MPFestivalAppliedLabor from './pages/MyPageFestival/MPFestivalAppliedLabo
 import MPFestivalReview2Company from './pages/MyPageFestival/MPFestivalReview2Company'
 import MPFestivalNotification from './pages/MyPageFestival/MPFestivalNotification'
 import MPFestivalInterest2Company from './pages/MyPageFestival/MPFestivalInterest2Company'
-import MPFestivalFavored from './pages/MyPageFestival/MPFestivalFavored'
-import MPFestivalFavoredOngoingFest from './pages/MyPageFestival/MPFestivalFavoredOngoingFest'
-import MPFestivalFavoredClosedFest from './pages/MyPageFestival/MPFestivalFavoredClosedFest'
+import MPFestivalFavored from './pages/MyPage/MPFavored'
+import MPCompanyApply from './pages/MyPage/MyPageCompany/MPCompanyApply'
+
 
 const App = ()=>{
   return (
@@ -26,9 +26,9 @@ const App = ()=>{
         <Route path='/mypage/festival/appliedcompany/:festivalId/:companyId/review' element={<MPFestivalReview2Company/>}/>
         <Route path='/mypage/festival/notification' element={<MPFestivalNotification/>}/>
         <Route path='/mypage/festival/interest' element={<MPFestivalInterest2Company/>}/>
-        <Route path='/mypage/festival/favored' element={<MPFestivalFavored/>}/>
-        <Route path='/mypage/festival/favored/ongoingfest' element={<MPFestivalFavoredOngoingFest/>}/>
-        <Route path='/mypage/festival/favored/closedfest' element={<MPFestivalFavoredClosedFest/>}/>
+        <Route path='/mypage/favored' element={<MPFestivalFavored/>}/>
+
+        <Route path='/mypage/company/apply' element={<MPCompanyApply/>}/>
       </Routes>
     </div>
 

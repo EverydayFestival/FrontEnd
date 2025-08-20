@@ -5,7 +5,7 @@ import profile from '../../assets/profile.png';
 import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
-  const [profileType, setProfileType] = useState('Festival');
+  const [profileType, setProfileType] = useState('Company'); //Festival, Company, Labor
   const navigate = useNavigate();
 
   const buttonConfig = {
@@ -13,10 +13,16 @@ const MyPage = () => {
       { label: "진행 및 예정 행사", path: '/mypage/festival/ongoing' },
       { label: "종료된 행사", path: '/mypage/festival/closed' },
       { label: "내가 관심을 표한 업체", path: '/mypage/festival/interest'},
-      { label: "찜", path: '/mypage/festival/favored' }
+      { label: "찜", path: '/mypage/favored?type=festival' }
     ],
-    Company: ["지원현황", "찜"],
-    Labor: ["지원현황", "찜"]
+    Company: [
+      { label: "지원현황", path: '/mypage/company/apply' },
+      { label: "찜", path: '/mypage/favored?type=company' }
+    ],
+    Labor: [
+      { label: "지원현황" },
+      { label: "찜" }
+    ]
   };
 
   const buttons = buttonConfig[profileType] || [];
