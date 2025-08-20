@@ -121,7 +121,7 @@ const MPFestivalFavored = () => {
                         <p>{fest.period}</p>
                       </FestInfo>
                       <FestFavored>
-                        <FavoredBtn onClick={handleUndo}>관심</FavoredBtn>
+                        <FavoredBtn onClick={handleUndo}>찜</FavoredBtn>
                       </FestFavored>
                     </FestCard>
                   ))}
@@ -264,12 +264,20 @@ const FestCard = styled.div`
 `;
 
 const FestImage = styled.img`
-  width: 300px;
+  width: 270px;
+  height: 360px;
   border-radius: 20px;
   cursor: pointer;
 `;
 
 const FestInfo = styled.div`
+  p{
+    font-size: 18px;
+  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
   flex: 1;
 `;
 

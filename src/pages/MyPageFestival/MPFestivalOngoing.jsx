@@ -82,12 +82,20 @@ const FestCard = styled.div`
 `;
 
 const FestImage = styled.img`
-  width: 300px;
+    width: 270px;
+  height: 360px;
   border-radius: 20px;
   cursor: pointer;
 `;
 
 const FestInfo = styled.div`
+  p{
+    font-size: 18px;
+  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
   flex: 1;
 `;
 
