@@ -12,6 +12,8 @@ import MPFestivalInterest2Company from './pages/MyPage/MyPageFestival/MPFestival
 import MPFestivalFavored from './pages/MyPage/MPFavored'
 import MPCompanyApply from './pages/MyPage/MyPageCompany/MPCompanyApply'
 import MPCompanyReview2Festival from './pages/MyPage/MyPageCompany/MPCompanyReview2Festival'
+import MPLaborApply from './pages/MyPage/MyPageLabor/MPLaborApply'
+import MPLaborReview2Festival from './pages/MyPage/MyPageLabor/MPLaborReview2Festival'
 
 
 const App = ()=>{
@@ -31,6 +33,9 @@ const App = ()=>{
 
         <Route path='/mypage/company/apply' element={<MPCompanyApply/>}/>
         <Route path='/mypage/company/:festivalId/review' element={<MPCompanyReview2Festival/>}/>
+
+        <Route path='/mypage/labor/apply' element={<MPLaborApply/>}/>
+        <Route path='/mypage/labor/:festivalId/review' element={<MPLaborReview2Festival/>}/>
       </Routes>
     </div>
 

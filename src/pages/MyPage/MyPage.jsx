@@ -5,7 +5,7 @@ import profile from '../../assets/profile.png';
 import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
-  const [profileType, setProfileType] = useState('Company'); //Festival, Company, Labor
+  const [profileType, setProfileType] = useState('Labor'); //Festival, Company, Labor
   const navigate = useNavigate();
 
   const buttonConfig = {
@@ -20,8 +20,8 @@ const MyPage = () => {
       { label: "찜", path: '/mypage/favored?type=company' }
     ],
     Labor: [
-      { label: "지원현황" },
-      { label: "찜" }
+      { label: "지원현황" , path: '/mypage/labor/apply'},
+      { label: "찜", path: '/mypage/favored?type=labor'}
     ]
   };
 
