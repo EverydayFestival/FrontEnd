@@ -5,14 +5,13 @@ import profile from '../../assets/profile.png';
 import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
-  const [profileType, setProfileType] = useState('Labor'); //Festival, Company, Labor
+  const [profileType, setProfileType] = useState('Festival'); //Festival, Company, Labor
   const navigate = useNavigate();
 
   const buttonConfig = {
     Festival: [
       { label: "진행 및 예정 행사", path: '/mypage/festival/ongoing' },
       { label: "종료된 행사", path: '/mypage/festival/closed' },
-      { label: "내가 관심을 표한 업체", path: '/mypage/festival/interest'},
       { label: "찜", path: '/mypage/favored?type=festival' }
     ],
     Company: [
