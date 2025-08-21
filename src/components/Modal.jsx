@@ -1,17 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Modal = ({ show, onClose, children }) => {
+
+
+const Modal = ({ show, onClose, onCancel, children, type = 'ok' }) => {
   if (!show) return null;
 
 //  사용법: <Modal show={show} onClose={...}>원하는 내용</Modal>
+// <Modal show={show} onClose={...} onCancel={...} type="cancel">내용</Modal>
 
 
   return (
     <ModalOverlay>
       <ModalContent>
         {children}
-        <button onClick={onClose}>확인</button>
+        <ButtonWrapper>
+          <ModalButton onClick={onClose}>확인</ModalButton>
+            {type === 'cancel' && (
+            <ModalButton onClick={onCancel}>취소</ModalButton>
+          )}
+        </ButtonWrapper>
+
       </ModalContent>
     </ModalOverlay>
   );
@@ -35,4 +44,17 @@ const ModalContent = styled.div`
   padding: 20px 40px;
   border-radius: 10px;
   text-align: center;
+`;
+
+const ButtonWrapper = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+`;
+
+const ModalButton = styled.button`
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 `;
