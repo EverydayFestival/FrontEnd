@@ -178,7 +178,7 @@ const FestImage = styled.img`
   width: 210px;
   height: 280px;
   object-fit: cover;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   cursor: pointer;
 `;
 
