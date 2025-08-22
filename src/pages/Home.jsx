@@ -9,6 +9,7 @@ import Pagination from '../components/Pagination';
 import { getMainPageData } from '../data/mainPageData.js';
 import { FestivalContext } from '../context/FestivalContext.jsx';
 import '../styles/Home.css';
+import Navbar from '../components/Navbar.jsx';
 
 function Home() {
   // Context에서 실시간으로 업데이트되는 전체 축제 목록을 가져옵니다. (이름은 allFestivals로)
@@ -48,6 +49,7 @@ function Home() {
 
   return (
     <div>
+      <Navbar/>
       <Header />
       <Banner />
       <Tabs 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 
 
-const Modal = ({ show, onClose, onCancel, children, type = 'ok' }) => {
+const Modal = ({ show, onClose, onConfirm, children, type = 'ok' }) => {
   if (!show) return null;
 
 //  사용법: <Modal show={show} onClose={...}>원하는 내용</Modal>
@@ -16,9 +16,9 @@ const Modal = ({ show, onClose, onCancel, children, type = 'ok' }) => {
         {children}
         <ButtonWrapper>
           {type === 'cancel' && (
-            <ModalButton onClick={onCancel}>취소</ModalButton>
+            <ModalButton onClick={onClose}>취소</ModalButton>
           )}
-          <ModalButton onClick={onClose}>확인</ModalButton>
+          <ModalButton onClick={onConfirm || onClose}>확인</ModalButton>
         </ButtonWrapper>
 
       </ModalContent>
