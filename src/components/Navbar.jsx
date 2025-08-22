@@ -19,6 +19,7 @@ const Navbar = () => {
       <NavbarLeft>
         <Logo onClick={()=>navigate('/')}src={logo} alt="logo" />
       </NavbarLeft>
+      <Center></Center>
       <NavbarRight>
         <Icon onClick={()=>navigate('/mypage/festival/notification')}src={bell} alt="notification" />
         <Icon onClick={()=>navigate('/mypage/')}src={mypageicon} alt="mypage" />
@@ -39,9 +40,18 @@ const NavbarWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 20px 3%;
+  padding: 0px 2%;
   box-sizing: border-box;
 `;
+
+const Center = styled.div`
+  width: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+`
+
 
 const NavbarLeft = styled.div`
   display: flex;
@@ -49,7 +59,8 @@ const NavbarLeft = styled.div`
 `;
 
 const Logo = styled.img`
-  height: 40px;
+  width: 80px;
+  margin: 0 40px;
   cursor: pointer;
 `;
 
@@ -59,7 +70,8 @@ const NavbarRight = styled.div`
 `;
 
 const Icon = styled.img`
-  width: 40px;
-  height: 40px;
+  margin-top: 10px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 `;

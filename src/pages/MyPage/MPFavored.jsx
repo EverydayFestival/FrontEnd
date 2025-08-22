@@ -5,23 +5,29 @@ import fest_data from '../../assets/fest/fest_data'
 import co_data from '../../assets/company/co_data'
 import Modal from '../../components/Modal'
 import more_button from '../../assets/more_button.png'
+import Box from '../../components/Box'
+import empty_star from '../../assets/empty_star.png'
+import full_star from '../../assets/full_star.png'
 
 const MPFestivalFavored = () => {
 
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [viewAllOngoingFest, setViewAllOngoingFest] = useState(false);
   const [viewAllClosedFest, setViewAllClosedFest] = useState(false);
   const [activeTab, setActiveTab] = useState('festival'); // 'festival' or 'company'
+  const [favorStatus, setFavorStatus] = useState('FAVORED');
 
-  const handleUndo = () => {
-    setShowModal(true);
-  };
+  // const handleUndo = () => {
+  //   setShowModal(true);
+  // };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+
   return (
+    <Box>
     <PageWrapper>
       <Fixed>
         <Navbar />
@@ -58,12 +64,12 @@ const MPFestivalFavored = () => {
           viewAllOngoingFest ? (
             <>
               <OngoingFest>
-                <Back onClick={()=>{
+                {/* <Back onClick={()=>{
                 setViewAllClosedFest(false);
                 setViewAllOngoingFest(false);
                 scrollToTop();
-                }}>이전 페이지로</Back>
-                <p>진행 및 예정인 행사</p>
+                }}>이전 페이지로</Back> */}
+                <Type>진행 및 예정인 행사</Type>
                 <FestCardList>
                   {fest_data.map((fest, index) => (
                     <FestCard key={index}>
@@ -74,7 +80,15 @@ const MPFestivalFavored = () => {
                         <p>{fest.period}</p>
                       </FestInfo>
                       <FestFavored>
-                        <FavoredBtn onClick={handleUndo}>관심</FavoredBtn>
+                        
+                        {favorStatus===false? (
+                          <>
+                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
+                          </>
+                        ):(
+                          <>
+                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
+                        </>)}
                       </FestFavored>
                     </FestCard>
                   ))}
@@ -84,12 +98,12 @@ const MPFestivalFavored = () => {
           ) : viewAllClosedFest ? (
             <>
               <ClosedFest>
-                <Back onClick={()=>{
+                {/* <Back onClick={()=>{
                 setViewAllClosedFest(false);
                 setViewAllOngoingFest(false);
                 scrollToTop();
-                }}>이전 페이지로</Back>
-                <p>종료된 행사</p>
+                }}>이전 페이지로</Back> */}
+                <Type>종료된 행사</Type>
                 <FestCardList>
                   {fest_data.map((fest, index) => (
                     <FestCard key={index}>
@@ -100,7 +114,15 @@ const MPFestivalFavored = () => {
                         <p>{fest.period}</p>
                       </FestInfo>
                       <FestFavored>
-                        <FavoredBtn onClick={handleUndo}>찜</FavoredBtn>
+                        
+                        {favorStatus===false? (
+                          <>
+                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
+                          </>
+                        ):(
+                          <>
+                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
+                        </>)}
                       </FestFavored>
                     </FestCard>
                   ))}
@@ -110,7 +132,7 @@ const MPFestivalFavored = () => {
           ) : (
             <>
               <OngoingFest>
-                <p>진행 및 예정인 행사</p>
+                <Type>진행 및 예정인 행사</Type>
                 <FestCardList>
                   {fest_data.slice(0, 2).map((fest, index) => (
                     <FestCard key={index}>
@@ -121,7 +143,15 @@ const MPFestivalFavored = () => {
                         <p>{fest.period}</p>
                       </FestInfo>
                       <FestFavored>
-                        <FavoredBtn onClick={handleUndo}>찜</FavoredBtn>
+                        
+                        {favorStatus===false? (
+                          <>
+                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
+                          </>
+                        ):(
+                          <>
+                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
+                        </>)}
                       </FestFavored>
                     </FestCard>
                   ))}
@@ -138,7 +168,7 @@ const MPFestivalFavored = () => {
               </OngoingFest>
 
               <ClosedFest>
-                <p>종료된 행사</p>
+                <Type>종료된 행사</Type>
                 <FestCardList>
                   {fest_data.slice(2, 4).map((fest, index) => (
                     <FestCard key={index}>
@@ -149,7 +179,15 @@ const MPFestivalFavored = () => {
                         <p>{fest.period}</p>
                       </FestInfo>
                       <FestFavored>
-                        <FavoredBtn onClick={handleUndo}>찜</FavoredBtn>
+                        
+                        {favorStatus===false? (
+                          <>
+                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
+                          </>
+                        ):(
+                          <>
+                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
+                        </>)}
                       </FestFavored>
                     </FestCard>
                   ))}
@@ -181,19 +219,28 @@ const MPFestivalFavored = () => {
                     <MoreIcon src={more_button} alt="업체더보기" />
                   </Coleft>
                   <FestFavored>
-                    <FavoredBtn onClick={handleUndo}>찜</FavoredBtn>
-                  </FestFavored>
+                        
+                        {favorStatus===false? (
+                          <>
+                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
+                          </>
+                        ):(
+                          <>
+                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
+                        </>)}
+                      </FestFavored>
                 </CoCard>
               ))}
             </Company>
           </>
         )}
-
+{/* 
         <Modal show={showModal} onClose={() => setShowModal(false)}>
           <p>찜 철회?</p>
-        </Modal>
+        </Modal> */}
       </Content>
     </PageWrapper>
+    </Box>
   );
 };
 
@@ -201,7 +248,11 @@ export default MPFestivalFavored;
 
 
 const PageWrapper = styled.div`
-  padding: 170px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 130px auto;
+  padding: 100px 0 0 0;
+  box-sizing: border-box;
 `
 
 const Fixed = styled.div`
@@ -209,31 +260,55 @@ const Fixed = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  background-color: white; /* 투명 배경 방지 */
+  /* background-color: white; */
   z-index: 1000; /* 다른 요소보다 위 */
 `;
 
 
 const Title = styled.div`
-  background-color: rgb(199, 199, 199);
-  font-size: 22px;
-  padding: 30px 0 30px 270px;
+  background: #FEA898;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 10px 0 10px 270px;
 `;
 
-const Back = styled.span`
-  cursor: pointer;
-  font-weight: bold;
-  color: #555;
-  text-decoration: underline;
-
-  &:hover {
-    color: #f97e6c;
-  }
+const Type = styled.div`
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0 8%;
 `
+
+// const Back = styled.span`
+//   cursor: pointer;
+//   font-weight: bold;
+//   color: #555;
+//   text-decoration: underline;
+
+//   &:hover {
+//     color: #f97e6c;
+//   }
+// `
 const FestOrCo = styled.div`
+  position: fixed;
+  top: 124px;
+  left: 300px;
+  right: 200px;
+  background-color: white;
+
   display: flex;
   gap: 10px;
+  padding-top: 30px;
   margin-bottom: 20px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -300px;   /* 왼쪽 Sidebox 쪽으로 확장 */
+    right: -200px;  /* 오른쪽 Sidebox 쪽으로 확장 */
+    border-bottom: 2px solid #ccc;
+    z-index: -1;    /* 탭 버튼 뒤로 */
+  }
 `
 const OngoingFest = styled.div`
   display: flex;
@@ -250,7 +325,7 @@ const FestCardList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 80px;
+  margin-top: 20px;
   gap: 60px;
 `;
 
@@ -264,15 +339,16 @@ const FestCard = styled.div`
 `;
 
 const FestImage = styled.img`
-  width: 270px;
-  height: 360px;
-  border-radius: 20px;
+  width: 210px;
+  height: 280px;
+  object-fit: cover;
+  /* border-radius: 20px; */
   cursor: pointer;
 `;
 
 const FestInfo = styled.div`
   p{
-    font-size: 18px;
+    font-size: 14px;
   }
   display: flex;
   flex-direction: column;
@@ -282,7 +358,7 @@ const FestInfo = styled.div`
 `;
 
 const FestName = styled.span`
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 700;
   cursor: pointer;
 `;
@@ -295,20 +371,18 @@ const FestFavored = styled.div`
 
 `;
 
-const FavoredBtn = styled.button`
-    width: 200px;
-    padding: 20px 0;
+const FavoredBtn = styled.img`
+    width: 30px;
     cursor: pointer;
 `;
 
 
 const TabButton = styled.button`
-  padding: 20px 50px;
+  padding: 10px 35px;
   border: none;
   border-radius: 12px 12px 0 0;
   background-color: ${({ active }) => (active ? '#f97e6c' : '#ffb3a7')};
   color: black;
-  font-weight: bold;
   cursor: pointer;
   outline: none;
   transition: background-color 0.2s;
@@ -321,8 +395,7 @@ const TabButton = styled.button`
 
 
 const Content = styled.div`
-  border-top: 2px solid #ccc;
-  padding: 50px;
+  padding: 1px;
   margin: -20px;
 `;
 
@@ -341,14 +414,14 @@ const CoCard = styled.div`
   max-width: 1000px;
   gap: 20px;
   padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  /* border: 1px solid #ddd; */
+  /* border-radius: 10px; */
 `;
 
 const CoImage = styled.img`
-  width: 300px;
-  height: 300px;
-  border-radius: 10px;
+  width: 210px;
+  height: 210px;
+  /* border-radius: 10px; */
   object-fit: cover;
 `;
 
@@ -359,7 +432,7 @@ const Coleft = styled.div`
 `;
 const CoInfo = styled.div`
   p{
-    font-size: 18px;
+    font-size: 14px;
   }
   display: flex;
   flex-direction: column;
@@ -372,7 +445,7 @@ const CoInfo = styled.div`
 
 const CoName = styled.span`
   font-weight: 700;
-  font-size: 22px;
+  font-size: 20px;
   cursor: pointer;
 `;
 
@@ -384,8 +457,12 @@ const MoreIcon = styled.img`
 `;
 
 const More = styled.span`
+  margin-bottom: 80px;
+  margin-right: 100px;
+  margin-top: 20px;
   align-self: flex-end;
   cursor: pointer;
+  font-size: 14px;
   font-weight: bold;
   color: #555;
   text-decoration: underline;

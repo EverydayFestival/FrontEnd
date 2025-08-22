@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import fest_data from '../../../assets/fest/fest_data';
 import Navbar from '../../../components/Navbar';
 import { useNavigate } from 'react-router-dom';
+import Box from '../../../components/Box';
 
 const MPFestivalClosed = () => {
 
   const navigate = useNavigate();
   
   return (
+    <Box>
     <FestivalClosed>
       <Fixed>
         <Navbar />
@@ -40,37 +42,41 @@ const MPFestivalClosed = () => {
         ))}
       </FestCardList>
     </FestivalClosed>
+    </Box>
   );
 };
 
 export default MPFestivalClosed;
 
-/* styled-components 스타일 정의 */
 const FestivalClosed = styled.div`
-  padding: 150px; 
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 0;
+  box-sizing: border-box;
 `;
 
 const Fixed = styled.div`
-  position: fixed;  
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: white; /* 투명 배경 방지 */
-  z-index: 1000; /* 다른 요소보다 위 */
+  /* background-color: white;  */
+  z-index: 1000; 
 `;
 
-
 const Title = styled.div`
-  background-color: rgb(199, 199, 199);
-  font-size: 22px;
-  padding: 30px 0 30px 270px;
+  background: #FEA898;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 10px 0 10px 270px;
 `;
 
 const FestCardList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 80px;
+  margin-top: 20px;
   gap: 60px;
 `;
 
@@ -84,14 +90,16 @@ const FestCard = styled.div`
 `;
 
 const FestImage = styled.img`
-  width: 300px;
+  width: 210px;
+  height: 280px;
+  object-fit: cover;
   border-radius: 20px;
   cursor: pointer;
 `;
 
 const FestInfo = styled.div`
   p{
-    font-size: 18px;
+    font-size: 14px;
   }
   display: flex;
   flex-direction: column;
@@ -101,7 +109,7 @@ const FestInfo = styled.div`
 `;
 
 const FestName = styled.span`
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 700;
   cursor: pointer;
 `;
@@ -114,6 +122,11 @@ const RecruitStatus = styled.div`
   button {
     width: 200px;
     padding: 20px 0;
-    cursor: pointer;
-  }
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.25);
+    background: #F4EDED;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+      }
 `;

@@ -15,10 +15,10 @@ const Modal = ({ show, onClose, onCancel, children, type = 'ok' }) => {
       <ModalContent>
         {children}
         <ButtonWrapper>
-          <ModalButton onClick={onClose}>확인</ModalButton>
-            {type === 'cancel' && (
+          {type === 'cancel' && (
             <ModalButton onClick={onCancel}>취소</ModalButton>
           )}
+          <ModalButton onClick={onClose}>확인</ModalButton>
         </ButtonWrapper>
 
       </ModalContent>
