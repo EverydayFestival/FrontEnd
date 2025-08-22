@@ -22,12 +22,12 @@ function Login() {
     const handleRoleChange = (rolekey) => {
         setRole(rolekey);
         setAccount(mockUsers[rolekey].id);
-        setPassword("");
+        setPassword(mockUsers[rolekey].password);
 
         // 권한 부여 (목업 기준)
     const userInfo = mockUsers[rolekey];
     login({ account: userInfo.id, role: userInfo.role });  // ✅ 바로 AuthContext 업데이트
-    navigate("/"); // 누르면 홈이나 해당 역할 전용 페이지로 이동
+    // navigate("/"); // 누르면 홈이나 해당 역할 전용 페이지로 이동
         setError(null); //역할 변경 시 에러 메시지 초기화
     };
 
