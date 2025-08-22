@@ -4,7 +4,6 @@ import { FestivalContext } from "../context/FestivalContext.jsx";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 
-
 export default function FestivalRegister() {
   const { addFestival } = useContext(FestivalContext);
   const navigate = useNavigate();

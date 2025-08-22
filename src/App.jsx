@@ -1,7 +1,9 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
-import MyPage from './pages/MyPage/MyPage'
+import MyPageFestival from './pages/MyPage/MyPageFestival.jsx'
+import MyPageCompany from './pages/MyPage/MyPageCompany.jsx'
+import MyPageLabor from './pages/MyPage/MyPageLabor.jsx'
 import MPFestivalOngoing from './pages/MyPage/MyPageFestival/MPFestivalOngoing'
 import MPFestivalClosed from './pages/MyPage/MyPageFestival/MPFestivalClosed'
 import MPFestivalAppliedCompany from './pages/MyPage/MyPageFestival/MPFestivalAppliedCompany'
@@ -34,7 +36,6 @@ import { FestivalProvider } from "./context/FestivalContext.jsx";
 import { AuthProvider } from './context/AuthContext.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import MyPageRouter from './components/MyPageRouter.jsx'
-
 import './styles/App.css';
 
 
@@ -62,6 +63,9 @@ const App = ()=>{
         <Routes>
           
           <Route path='/mypage' element={<PrivateRoute allowedRoles={allRoles}><MyPageRouter/></PrivateRoute>}/>
+          <Route path='/mypage/festival' element={<MyPageFestival/>}/>
+          <Route path='/mypage/company' element={<MyPageCompany/>}/>
+          <Route path='/mypage/labor' element={<MyPageLabor/>}/>
           <Route path='/mypage/festival/ongoing' element={<MPFestivalOngoing/>}/>
           <Route path='/mypage/festival/closed' element={<MPFestivalClosed/>}/>
           <Route path='/mypage/festival/appliedcompany/:festivalId' element={<MPFestivalAppliedCompany/>}/>
