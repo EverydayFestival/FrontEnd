@@ -7,7 +7,7 @@ import more_button from '../../../assets/more_button.png'
 import { useNavigate } from 'react-router-dom'
 import Box from '../../../components/Box'
 
-const MPFestivalFavored = () => {
+const MPCompanyApply = () => {
 
   const [viewAllOngoingFest, setViewAllOngoingFest] = useState(false);
   const [viewAllClosedFest, setViewAllClosedFest] = useState(false);
@@ -179,7 +179,7 @@ const MPFestivalFavored = () => {
   );
 };
 
-export default MPFestivalFavored;
+export default MPCompanyApply;
 
 
 const PageWrapper = styled.div`
