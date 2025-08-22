@@ -5,6 +5,7 @@ import { companies } from "../data/recommendedCompanies.js";
 import CompanyCard from "../components/CompanyCard";
 import FestivalReview from "../components/FestivalReview";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import Navbar from "../components/Navbar.jsx";
 
 function RecruitCard({ type, recruitInfo, festivalId }) {
   const navigate = useNavigate();
@@ -104,6 +105,7 @@ export default function FestivalDetail() {
 
     return (
         <div className="p-4 max-w-4xl mx-auto space-y-8">
+            <Navbar />
             <section className="flex items-center gap-4">
                 <img 
                     src={festivalInfo.imageUrl || '/images/festival_default.jpg'} 

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import '../styles/Header.css';
@@ -15,7 +15,7 @@ function Header() {
         }
     };
 
-    // const { logout } = useContext(AuthContext);
+    const { logout } = useContext(AuthContext);
 
     return (
         <header className="header">

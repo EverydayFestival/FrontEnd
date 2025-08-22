@@ -1,9 +1,11 @@
 import React from "react";
 import Header from "../components/Header";
+import Navbar from "../components/Navbar";
 
 function ServiceIntro() {
     return (
         <div>
+            <Navbar />
             <Header />
             <h1>서비스 소개 페이지</h1>
             <div className="logo">

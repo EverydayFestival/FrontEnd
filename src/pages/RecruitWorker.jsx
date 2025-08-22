@@ -50,8 +50,11 @@ export default function RecruitWorker() {
     navigate(`/festivals/${id}`);
   };
 
+<<<<<<< HEAD
+=======
   const ages = ["10대", "20대", "30대", "40대", "50대 이상"];
 
+>>>>>>> origin/main
   return (
     <div>
       <Header />
@@ -97,17 +100,13 @@ export default function RecruitWorker() {
 
           <div>
             <label className="block font-semibold">나이 *</label>
-            <select
-              name="age"
+            <input
+              type="age"
+              name="workerAge"
               onChange={handleChange}
               className="border p-2 w-full rounded"
               required
-            >
-              <option value="">선택</option>
-              {ages.map((a) => (
-                <option key={a} value={a}>{a}</option>
-              ))}
-            </select>
+            />
           </div>
 
           <div>
