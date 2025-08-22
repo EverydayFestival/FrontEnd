@@ -50,11 +50,6 @@ export default function RecruitWorker() {
     navigate(`/festivals/${id}`);
   };
 
-<<<<<<< HEAD
-=======
-  const ages = ["10대", "20대", "30대", "40대", "50대 이상"];
-
->>>>>>> origin/main
   return (
     <div>
       <Header />

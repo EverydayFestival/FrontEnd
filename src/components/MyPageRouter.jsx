@@ -19,13 +19,13 @@ const MyPageRouter = () => {
     switch (user.role) {
         case '축제 기획자':
             // 사용자가 축제 기획자인 경우 해당 페이지로 리디렉션합니다.
-            return <Navigate to="/mypage/festival/ongoing" replace />;
+            return <Navigate to="/mypage/festival" replace />;
         case '업체':
             // 사용자가 업체인 경우 해당 페이지로 리디렉션합니다.
-            return <Navigate to="/mypage/company/apply" replace />;
+            return <Navigate to="/mypage/company" replace />;
         case '단기 근로자':
             // 사용자가 단기 근로자인 경우 해당 페이지로 리디렉션합니다.
-            return <Navigate to="/mypage/labor/apply" replace />;
+            return <Navigate to="/mypage/labor" replace />;
         default:
             // 역할이 알려지지 않았거나 일치하지 않는 경우 홈페이지로 리디렉션합니다.
             return <Navigate to="/" replace />;
