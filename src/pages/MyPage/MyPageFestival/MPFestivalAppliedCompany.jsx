@@ -45,8 +45,8 @@ const MPFestivalAppliedCompany = () => {
       </Fixed>
 
       <Name>
-             <p>{festival?.festivalName}</p>
-             <FilterSection>
+        <p>{festival?.festivalName}</p>
+      <FilterSection>
         <Dropdown>
           <DropdownBtn onClick={() => setDropdownOpen(!dropdownOpen)}>
             {activeFilter} ▾
