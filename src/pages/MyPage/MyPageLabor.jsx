@@ -24,8 +24,8 @@ const MyPage = () => {
       <Profile>
         <ProfileImg src={profile} alt="profile image" />
         <ProfileInfo>
-          <h2>멋사센터</h2>
-          <p>축제 및 행사 주최자</p>
+          <h2>홍길동</h2>
+          <p>단기 근로자</p>
         </ProfileInfo>
       </Profile>
 
