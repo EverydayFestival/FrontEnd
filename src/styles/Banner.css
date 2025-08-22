@@ -6,7 +6,8 @@
 }
 
 img.slider-img{
-  width: 100%;
-  height: auto;
+  width: 1510px;
+  height: 175px;
+  object-fit: cover;
   flex-shrink: 0;       /* 이미지 줄어들지 않게 */
 }

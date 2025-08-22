@@ -4,9 +4,9 @@ import '../styles/Banner.css'; // 제공해주신 CSS 파일을 임포트합니�
 // 배너에 표시할 이미지들의 주소를 배열로 관리합니다.
 // 가지고 계신 이미지 경로로 수정해서 사용하세요.
 const BANNER_IMAGES = [
-  '/images/slide1.png',
-  '/images/slide2.jpg',
-  '/images/slide3.jpg'
+  '/images/banner_1.png',
+  '/images/banner_3.png',
+  '/images/banner_2.png'
 ];
 
 const Banner = () => {
