@@ -10,56 +10,49 @@ const MPFestivalOngoing = () => {
 
   
 
-  // const [festivals, setFestivals] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState("");
+//   const [festivals, setFestivals] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState("");
 
-  // const viewMyFest = async() => {
-  //   try{
-  //     setLoading(true);
-  //     setError("");
+//   const viewMyFest = async() => {
+//     try{
+//       setLoading(true);
+//       setError("");
 
-  //     const response = await fetch(
-  //       `${import.meta.env.VITE_API_URL}/users/me/festivals`,
-  //       {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-  //           Accept: "application/json",
-  //         },
-  //       }
-  //     );
+//       const response = await fetch(
+//   `${import.meta.env.VITE_API_URL}/users/me/festivals?holdStatus=ONGOING&page=0&size=10`,
+//   {
+//     method: "GET",
+//     headers: {
+//       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+//       Accept: "application/json",
+//     },
+//   }
+// );
 
-  //     const result = await response.json();
 
-  //     if(!response.ok || result.success !== true) {
-  //       throw new Error(result.message || "내 축제 조회에 실패했습니다.");
-  //     }
+
+//       const result = await response.json();
+
+//       if(!response.ok || result.success !== true) {
+//         throw new Error(result.message || "내 축제 조회에 실패했습니다.");
+//       }
       
-  //     const allFestivals = result.data.festivalList ?? [];
-  //     const today = new Date();
+//       setFestivals(result.data.festivalList ?? []);
+//     }catch(error){
+//       console.error("Error fetching festivals:", error);
+//       setError(error.message);
+//     }finally{
+//       setLoading(false);
+//     }
+//   };
 
-  //     const ongoingFestivals = allFestivals.filter(fest => {
-  //       if(!fest.end) return false;
-  //       const endDate = new Date(fest.end);
-  //       return endDate >= today;
-  //     });
+//   useEffect(()=>{
+//     viewMyFest();
+//   },[]);
 
-  //     setFestivals(result.data.festivalList ?? []);
-  //   }catch(error){
-  //     console.error("Error fetching festivals:", error);
-  //     setError(error.message);
-  //   }finally{
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(()=>{
-  //   viewMyFest();
-  // },[]);
-
-  // if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
-  // if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
+//   if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+//   if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
 
   return (
     <Box>
