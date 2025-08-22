@@ -5,7 +5,7 @@ import profile from '../../assets/profile.png';
 import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
-  const [profileType, setProfileType] = useState('Company'); //Festival, Company, Labor
+  const [profileType, setProfileType] = useState('Labor'); //Festival, Company, Labor
   const navigate = useNavigate();
 
   const buttonConfig = {
