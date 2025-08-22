@@ -19,6 +19,7 @@ const MPCompanyReview2Festival = () => {
 
 
     return (
+      <Box>
         <PageWrapper>
             <Fixed>
                 <Navbar />
@@ -48,6 +49,7 @@ const MPCompanyReview2Festival = () => {
 
 
         </PageWrapper>
+        </Box>
   )
 }
 
@@ -62,14 +64,15 @@ const Fixed = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  background-color: white; 
+  /* background-color: white;  */
   z-index: 1000; 
 `;
 
 const Title = styled.div`
-  background-color: rgb(199, 199, 199);
-  font-size: 22px;
-  padding: 30px 0 30px 270px;
+  background: #FEA898;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 10px 0 10px 270px;
 `;
 
 const FestivalInfo = styled.div`

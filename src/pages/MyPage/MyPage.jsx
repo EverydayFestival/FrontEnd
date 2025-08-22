@@ -64,14 +64,19 @@ const Profile = styled.div`
 `;
 
 const ProfileImg = styled.img`
-  width: 150px;
+  width: 100px;
 `;
 
 const ProfileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   h2 {
+    font-size: 20px;
     margin: 0;
   }
   p {
+    font-size: 14px;
     margin: 0;
     color: gray;
   }
@@ -82,14 +87,19 @@ const MyPageMenu = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const MenuButton = styled.button`
-  width: 1022px;
-  height: 101px;
-  padding: 20px 0;
-  font-size: 15px;
-  font-weight: 400;
+  width: 700px;
+  height: 70px;
+  padding: 20px 20px;
+  font-size: 16px;
+  text-align: left;
+  font-weight: 300;
+  border: none;
+  border-radius: 20px;
+  background: #F4EDED;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   cursor: pointer;
 `;

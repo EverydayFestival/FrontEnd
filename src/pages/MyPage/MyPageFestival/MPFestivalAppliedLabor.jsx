@@ -4,6 +4,7 @@ import Navbar from '../../../components/Navbar';
 import labor_data from '../../../assets/labor/labor_data';
 import fest_data from '../../../assets/fest/fest_data';
 import { useParams } from 'react-router-dom';
+import Box from '../../../components/Box';
 
 const MPFestivalAppliedLabor = () => {
 
@@ -19,6 +20,7 @@ const MPFestivalAppliedLabor = () => {
     );
   };
   return (
+    <Box>
     <PageWrapper>
       <Fixed>
         <Navbar />
@@ -27,7 +29,10 @@ const MPFestivalAppliedLabor = () => {
         </Title>
       </Fixed>
 
-      <p>{festival?.festivalName}</p>
+      <Name>
+             <p>{festival?.festivalName}</p>
+      </Name>
+
 
       <ApplyLaborList>
         {laborList.map((la, index) => (
@@ -45,25 +50,26 @@ const MPFestivalAppliedLabor = () => {
             <LaborChoice>
               {la.laborSelected === null && (
                 <>
-                  <ChoiceBtn onClick={() => handleChoice(la.laborId, true)}>수락하기</ChoiceBtn>
-                  <ChoiceBtn onClick={() => handleChoice(la.laborId, false)}>거절하기</ChoiceBtn>
+                  <ChoiceBtnYes onClick={() => handleChoice(la.laborId, true)}>수락하기</ChoiceBtnYes>
+                  <ChoiceBtnNo onClick={() => handleChoice(la.laborId, false)}>거절하기</ChoiceBtnNo>
                 </>
               )}
 
               {la.laborSelected === true && (
                 <>
-                  <ChoiceBtn disabled>수락됨</ChoiceBtn>
+                  <ChoiceBtnY disabled>수락됨</ChoiceBtnY>
                 </>
               )}
 
               {la.laborSelected === false && (
-                <ChoiceBtn disabled>거절됨</ChoiceBtn>
+                <ChoiceBtnN disabled>거절됨</ChoiceBtnN>
               )}
           </LaborChoice>
           </LaborCard>
         ))}
       </ApplyLaborList>
     </PageWrapper>
+    </Box>
   );
 };
 
@@ -71,7 +77,7 @@ export default MPFestivalAppliedLabor;
 
 /* styled-components */
 const PageWrapper = styled.div`
-  padding-top: 200px;  
+  padding-top: 180px;  
 `;
 
 const Fixed = styled.div`
@@ -79,16 +85,32 @@ const Fixed = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  background-color: white; /* 투명 배경 방지 */
+  /* background-color: white; */
   z-index: 1000; /* 다른 요소보다 위 */
 `;
 
 const Title = styled.div`
-  background-color: rgb(199, 199, 199);
-  font-size: 22px;
-  padding: 30px 0 30px 270px;
+  background: #FEA898;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 10px 0 10px 270px;
 `;
 
+const Name = styled.div`
+  position: fixed;
+  top: 124px; /* Title 밑에 위치하도록 (Title 높이에 맞춰 조정) */
+  left: 200px; /* Box의 left Sidebox 폭만큼 오른쪽으로 밀기 */
+  right: 200px; /* Box의 right Sidebox 폭만큼 여백 */
+  
+  display: flex;
+  justify-content: space-between; /* 좌우로 나눔 */
+  align-items: center;
+  font-size: 18px;
+  background-color: white;
+  padding: 16px 20px;
+  z-index: 1000; 
+  border-bottom: 2px solid #eee; /* 깔끔한 구분선 optional */
+`;
 
 const ApplyLaborList = styled.div`
   display: flex;
@@ -143,13 +165,21 @@ const LaborName = styled.span`
 
 const ApplicationBtn = styled.button`
   /* display: inline-block; */
-  margin-top: 30px;
-  padding: 8px 12px;
-  width: 150px;
-  height: 50px;
-  cursor: pointer;
-`;
+    width: 120px;
+    height: 40px;
+    padding: 20px 0;
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.25);
+    background: #F4EDED;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+`;
 
 const LaborChoice = styled.div`
   display: flex;
@@ -159,9 +189,57 @@ const LaborChoice = styled.div`
 
 `;
 
-const ChoiceBtn = styled.button`
+const ChoiceBtnYes = styled.button`
     width: 200px;
     padding: 20px 0;
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.25);
+    background: #F4EDED;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+
+    &:hover{
+      background-color: #91b37e;
+    }
+`;
+
+
+const ChoiceBtnNo = styled.button`
+    width: 200px;
+    padding: 20px 0;
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.25);
+    background: #F4EDED;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+
+    &:hover{
+      background-color: #B2AEAE;
+    }
+`;
+
+const ChoiceBtnY = styled.button`
+    width: 200px;
+    padding: 20px 0;
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.25);
+    background: #BAE4A4;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+`;
+
+const ChoiceBtnN = styled.button`
+    width: 200px;
+    padding: 20px 0;
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.25);
+    background: #B2AEAE;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+
 `;
 

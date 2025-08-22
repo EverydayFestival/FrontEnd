@@ -5,6 +5,7 @@ import fest_data from '../../../assets/fest/fest_data'
 import Modal from '../../../components/Modal'
 import more_button from '../../../assets/more_button.png'
 import { useNavigate } from 'react-router-dom'
+import Box from '../../../components/Box'
 
 const MPFestivalFavored = () => {
 
@@ -19,6 +20,7 @@ const MPFestivalFavored = () => {
   };
 
   return (
+    <Box>
     <PageWrapper>
       <Fixed>
         <Navbar />
@@ -165,6 +167,7 @@ const MPFestivalFavored = () => {
     }
       </Content>
     </PageWrapper>
+    </Box>
   );
 };
 
@@ -180,15 +183,16 @@ const Fixed = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  background-color: white; /* 투명 배경 방지 */
+  /* background-color: white;  */
   z-index: 1000; /* 다른 요소보다 위 */
 `;
 
 
 const Title = styled.div`
-  background-color: rgb(199, 199, 199);
-  font-size: 22px;
-  padding: 30px 0 30px 270px;
+  background: #FEA898;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 10px 0 10px 270px;
 `;
 
 const Back = styled.span`
