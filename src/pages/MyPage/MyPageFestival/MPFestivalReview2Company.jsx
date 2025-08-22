@@ -1,0 +1,90 @@
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import Navbar from '../../../components/Navbar'
+import { useParams } from 'react-router-dom'
+import fest_data from '../../../assets/fest/fest_data'
+import co_data from '../../../assets/company/co_data'
+import Modal from '../../../components/Modal'
+import Box from '../../../components/Box'
+
+const MPFestivalReview2Company = () => {
+
+    const {festivalId, companyId} = useParams();
+    const festival = fest_data.find(f => f.festivalId === Number(festivalId));
+    const company = co_data.find(c => c.companyId === Number(companyId));
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleSubmit = () => {
+        setShowModal(true); // 등록 버튼 누르면 모달 열림
+    };
+
+
+
+    return (
+        <Box>
+        <PageWrapper>
+            <Fixed>
+                <Navbar />
+                <Title>
+                    <p>리뷰 쓰기</p>
+                </Title>
+            </Fixed>
+            <p>{festival?.festivalName}</p>
+
+            <CompanyInfo>
+                <img src={company?.image} alt="" />
+                <p>{company?.companyName}</p>
+                <p>{company?.address}</p>
+                <p>{company?.companyCategory}</p>
+            </CompanyInfo>
+            <Review>
+                <p>리뷰를 작성해주세요(200자이내)</p>
+                <input type="text" />
+                <button onClick={handleSubmit}>등록하기</button>
+
+                <Modal show={showModal} onClose={() => setShowModal(false)}>
+                    <p>등록이 완료되었습니다!</p>
+                </Modal>
+            </Review>
+
+
+
+
+        </PageWrapper>
+        </Box>
+  )
+}
+
+export default MPFestivalReview2Company
+
+const PageWrapper = styled.div`
+padding: 180px;
+`;
+
+const Fixed = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* background-color: white;  */
+  z-index: 1000; 
+`;
+
+const Title = styled.div`
+  background: #FEA898;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 10px 0 10px 270px;
+`;
+
+const CompanyInfo = styled.div`
+    img{
+        width: 300px;
+        height: 300px;
+    }
+`;
+
+const Review = styled.div`
+    
+`;
