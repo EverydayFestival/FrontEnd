@@ -33,6 +33,7 @@ import CompanyReview from './components/CompanyReview.jsx';
 import { FestivalProvider } from "./context/FestivalContext.jsx";
 import { AuthProvider } from './context/AuthContext.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
+import MyPageRouter from './components/MyPageRouter.jsx'
 
 import './styles/App.css';
 
@@ -60,7 +61,7 @@ const App = ()=>{
       <div>
         <Routes>
           
-          <Route path='/mypage' element={<MyPage/>}/>
+          <Route path='/mypage' element={<PrivateRoute allowedRoles={allRoles}><MyPageRouter/></PrivateRoute>}/>
           <Route path='/mypage/festival/ongoing' element={<MPFestivalOngoing/>}/>
           <Route path='/mypage/festival/closed' element={<MPFestivalClosed/>}/>
           <Route path='/mypage/festival/appliedcompany/:festivalId' element={<MPFestivalAppliedCompany/>}/>

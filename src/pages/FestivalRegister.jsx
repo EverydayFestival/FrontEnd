@@ -2,8 +2,8 @@ import Header from "../components/Header";
 import React, { useState, useContext } from "react";
 import { FestivalContext } from "../context/FestivalContext.jsx";
 import { useNavigate } from "react-router-dom";
-//import { addFestival } from "../data/festivals.js";
-// import { createFestival } from "../services/festivalApi";
+import Navbar from "../components/Navbar.jsx";
+
 
 export default function FestivalRegister() {
   const { addFestival } = useContext(FestivalContext);
@@ -104,6 +104,7 @@ export default function FestivalRegister() {
 
   return (
     <div>
+      <Navbar />
       {/* 상단 헤더 */}
       <Header />
 

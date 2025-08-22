@@ -7,6 +7,7 @@ import { festivals } from "../data/recommendedFestivals";
 import CompanyReview from "../components/CompanyReview";
 import FestivalCard from "../components/FestivalCard";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import Navbar from "../components/Navbar";
 
 export default function CompanyDetail() {
   const { id } = useParams();
@@ -36,6 +37,7 @@ export default function CompanyDetail() {
 
   return (
     <div className="p-4 max-w-4xl mx-auto space-y-8">
+        <Navbar />
         <section className="flex items-center gap-4">
             <img 
                 src={data.imageUrl || '/images/manager_default.jpg'} 

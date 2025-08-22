@@ -1,10 +1,12 @@
 import React from "react";
 import Header from "../components/Header";
 import "../styles/Inquiry.css";
+import Navbar from "../components/Navbar";
 
 function Inquiry() {
     return (
         <div>
+            <Navbar />
             <Header/>
             <h1>문의하기 페이지</h1>
             <h2>문의 사항이 있으신가요?</h2>
