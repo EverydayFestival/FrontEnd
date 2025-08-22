@@ -15,6 +15,7 @@ import MPCompanyApply from './pages/MyPage/MyPageCompany/MPCompanyApply'
 import MPCompanyReview2Festival from './pages/MyPage/MyPageCompany/MPCompanyReview2Festival'
 import MPLaborApply from './pages/MyPage/MyPageLabor/MPLaborApply'
 import MPLaborReview2Festival from './pages/MyPage/MyPageLabor/MPLaborReview2Festival'
+import SelectFestivalPage from './pages/SelectFestivalPage.jsx'
 
 //서정
 import { BrowserRouter as Router,Navigate, Link } from 'react-router-dom';
@@ -35,7 +36,7 @@ import CompanyReview from './components/CompanyReview.jsx';
 import { FestivalProvider } from "./context/FestivalContext.jsx";
 import { AuthProvider } from './context/AuthContext.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
-import MyPageRouter from './components/MyPageRouter.jsx'
+import MyPageRouter from './components/MyPageRouter.jsx';
 import './styles/App.css';
 
 
@@ -92,6 +93,7 @@ const App = ()=>{
 
         {/* '축제 기획자'만 접근 가능한 라우트 */}
         <Route path="/festival-register" element={<PrivateRoute allowedRoles={["축제 기획자"]}><FestivalRegister/></PrivateRoute>} />
+        <Route path="/select-festival" element={<PrivateRoute allowedRoles={["축제 기획자"]}><SelectFestivalPage /></PrivateRoute>} />
         
         <Route path="/inquiry" element={<PrivateRoute allowedRoles={allRoles}><Inquiry/></PrivateRoute>} />
         <Route path="/festivals/:id" element={<PrivateRoute allowedRoles={allRoles}><FestivalDetail /></PrivateRoute>} />

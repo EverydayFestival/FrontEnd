@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { companies } from "../assets/company/companies";
 // 이제 'festivals'는 추천 축제 목록 배열을 직접 가져옵니다.
@@ -34,6 +34,8 @@ export default function CompanyDetail() {
   const toggleFavorite = () => {
     setFavored((prev) => !prev);
   };
+
+  if (!company) return <p>업체를 찾을 수 없습니다.</p>;
 
   return (
     <div className="p-4 max-w-4xl mx-auto space-y-8">
@@ -92,6 +94,19 @@ export default function CompanyDetail() {
                         }}
                     />
                 ))}
+        <section className="text-center">
+            <p>이 업체가 마음에 드셨나요?</p>
+            <Link
+                to="/select-festival" // 축제 선택 페이지 경로
+                state={{ // 페이지 이동 시 전달할 데이터
+                    companyId: id, 
+                    companyName: data.name 
+             }}
+            className="inline-block bg-blue-600 text-white font-bold py-3 px-10 rounded-lg text-lg hover:bg-blue-700 transition-transform hover:scale-105"
+            >
+            관심 보내기
+            </Link>
+      </section>
             </div>
         </section>
     </div>
