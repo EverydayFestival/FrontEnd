@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import fest_data from '../../../assets/fest/fest_data';
 import Navbar from '../../../components/Navbar';
@@ -8,6 +8,51 @@ import Box from '../../../components/Box';
 const MPFestivalClosed = () => {
 
   const navigate = useNavigate();
+
+  const [festivals, setFestivals] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+  
+    const viewMyFest = async() => {
+      try{
+        setLoading(true);
+        setError("");
+  
+        const response = await fetch(
+     "http://43.201.6.192:8080/users/me/festivals?holdStatus=ENDED&page=0&size=10",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Accept: "application/json",
+      },
+    }
+  );
+  
+  
+  
+        const result = await response.json();
+  
+        if(!response.ok || result.success !== true) {
+          throw new Error(result.message || "내 축제 조회에 실패했습니다.");
+        }
+        
+        setFestivals(result.data.content ?? []);
+        console.log(result.data.content);
+      }catch(error){
+        console.error("Error fetching festivals:", error);
+        setError(error.message);
+      }finally{
+        setLoading(false);
+      }
+    };
+  
+    useEffect(()=>{
+      viewMyFest();
+    },[]);
+  
+    if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+    if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
   
   return (
     <Box>
@@ -20,7 +65,7 @@ const MPFestivalClosed = () => {
       </Fixed>
 
 
-      <FestCardList>
+      {/* <FestCardList>
         {fest_data.map((fest, index) => (
           <FestCard key={index}>
             <FestImage src={fest.image} alt="" />
@@ -40,6 +85,36 @@ const MPFestivalClosed = () => {
             </RecruitStatus>
           </FestCard>
         ))}
+      </FestCardList> */}
+      <FestCardList>
+        {festivals.length === 0 ? (
+          <p>현재 진행 중이거나 예정된 행사가 없습니다.</p>
+        ) : (
+          festivals.map((fest) => (
+            <FestCard key={fest.id}>
+              <FestImage src={fest.imageUrl ?? "/default.png"} alt={fest.name} />
+              <FestInfo>
+                <FestName>{fest.name}</FestName>
+                <p>
+                  {fest.address?.city} {fest.address?.district} {fest.address?.detail}
+                </p>
+                <p>
+                  {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
+                  {new Date(fest.period.end).toLocaleDateString("ko-KR")}
+                </p>
+              </FestInfo>
+
+              <RecruitStatus>
+                <button onClick={() => navigate(`/mypage/festival/appliedcompany/${fest.id}`)}>
+                  업체 지원현황
+                </button>
+                <button onClick={() => navigate(`/mypage/festival/appliedlabor/${fest.id}`)}>
+                  단기근로자 지원현황
+                </button>
+              </RecruitStatus>
+            </FestCard>
+          ))
+        )}
       </FestCardList>
     </FestivalClosed>
     </Box>
