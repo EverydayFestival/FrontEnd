@@ -20,7 +20,7 @@ const MPFestivalOngoing = () => {
       setError("");
 
       const response = await fetch(
-   "http://43.201.6.192:8080/users/me/festivals?holdStatus=ONGOING&page=0&size=5",
+   "https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ENDED&page=0&size=5",
   {
     method: "GET",
     headers: {

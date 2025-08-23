@@ -243,8 +243,8 @@ const MPFestivalAppliedCompany = () => {
             <RealInfo>
               <CoName>{co.simpleCompany.name}</CoName>
               <AddressWrapper>
-              <p>{co.simpleCompany.address.city}</p>
-              <p>{co.simpleCompany.address.district}</p>
+              <p>{co.simpleCompany?.address?.city}</p>
+              <p>{co.simpleCompany?.address?.district}</p>
               </AddressWrapper>
               <p>{co.simpleCompany.category}</p>
             </RealInfo>
@@ -266,7 +266,7 @@ const MPFestivalAppliedCompany = () => {
               <ChoiceBtnY disabled>수락됨</ChoiceBtnY>
               <ReviewBtn
                 onClick={() =>
-                  navigate(`/mypage/festival/appliedcompany/${festivalId}/${co.companyId}/review`)
+                  navigate(`/mypage/festival/appliedcompany/${festivalId}/${co.id}/review`)
                 }
               >
                 리뷰쓰기
