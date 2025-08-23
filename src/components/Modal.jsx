@@ -16,9 +16,9 @@ const Modal = ({ show, onClose, onConfirm, children, type = 'ok' }) => {
         {children}
         <ButtonWrapper>
           {type === 'cancel' && (
-            <ModalButton onClick={onClose}>취소</ModalButton>
+            <ModalButtonNo onClick={onClose}>취소</ModalButtonNo>
           )}
-          <ModalButton onClick={onConfirm || onClose}>확인</ModalButton>
+          <ModalButtonYes onClick={onConfirm || onClose}>확인</ModalButtonYes>
         </ButtonWrapper>
 
       </ModalContent>
@@ -41,20 +41,62 @@ const ModalOverlay = styled.div`
 
 const ModalContent = styled.div`
   background: white;
-  padding: 20px 40px;
+  width: 250px;
+  height: 100px;
+  margin: 30px 40px;
+  padding-top: 40px;
+  padding-bottom: 5px;
   border-radius: 10px;
   text-align: center;
 `;
 
 const ButtonWrapper = styled.div`
-  margin-top: 20px;
+  padding-top: 30px;
+  height: 90px;
+  margin-bottom: 0;
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  width: 100%;
+  /* border-top: 1px solid #ccc; */
 `;
 
-const ModalButton = styled.button`
-  padding: 10px 20px;
+const ModalButtonNo = styled.button`
+  flex:1;
+  padding: 15px 0px;
+  width: 50px;
+  text-align: center;
   font-size: 16px;
+  border: none;
+  border-radius: 0 0 0 10px;
+  background-color: white;
   cursor: pointer;
+
+  &:hover{
+    background-color: #e4e0e0;
+  }
+  
+  &:first-child{
+    /* border-right: 1px solid #ccc; */
+  }
+  
+`;
+
+const ModalButtonYes = styled.button`
+  flex:1;
+  padding: 15px 0px;
+  width: 50px;
+  text-align: center;
+  font-size: 16px;
+  border: none;
+  border-radius: 0 0 10px 0;
+  background-color: white;
+  cursor: pointer;
+
+  &:hover{
+    background-color: #e4e0e0;
+  }
+  
+  &:first-child{
+    /* border-right: 1px solid #ccc; */
+  }
+  
 `;
