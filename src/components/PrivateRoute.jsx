@@ -10,10 +10,14 @@ import { AuthContext } from "../context/AuthContext";
  * @param {string[]} props.allowedRoles - 접근을 허용할 역할(role)들의 배열
  */
 function PrivateRoute({ children, allowedRoles }) {
-    const { user } = useContext(AuthContext);
+    const { user, isInitializing } = useContext(AuthContext);
     const location = useLocation();
 
     // 1. 로그인 상태 확인
+    if (isInitializing) {
+        return <div>로딩 중...</div>;
+    }
+    
     if (!user) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
