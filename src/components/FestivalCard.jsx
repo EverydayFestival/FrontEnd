@@ -12,8 +12,10 @@ function FestivalCard({ festival }) {
 
   const handleClick = () => {
     // mainPageData의 festivalId를 사용해 상세 페이지로 이동합니다.
-    navigate(`/festivals/${festival.festivalId}`);
+    navigate(`/festivals/${festival.id}`);
   };
+
+  const isFavored = festival.favorStatus === "FAVORED";
 
   return (
     <div
@@ -23,24 +25,24 @@ function FestivalCard({ festival }) {
       {/* 이미지가 없으므로 기본 이미지를 표시합니다. */}
       <img
         className="w-full h-48 object-cover"
-        src={"/images/festival_default.jpg"} 
-        alt={festival.festivalName}
+        src={festival.imageUrl || "/images/festival_default.jpg"} 
+        alt={festival.name}
         onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/600x400/e2e8f0/4a5568?text=Festival'; }}
       />
       <div className="p-4">
         <div className="flex justify-between items-start">
-            <h3 className="text-lg font-bold mb-1">{festival.festivalName}</h3>
+            <h3 className="text-lg font-bold mb-1">{festival.name}</h3>
             {/* favored 상태에 따라 별 아이콘을 표시합니다. */}
-            {festival.favored ? (
+            {isFavored ? (
                 <FaStar className="text-yellow-400 flex-shrink-0" />
             ) : (
                 <FaRegStar className="text-gray-400 flex-shrink-0" />
             )}
         </div>
         {/* festivalOrganization을 표시합니다. */}
-        <p className="text-gray-600 text-sm">{festival.festivalOrganization}</p>
+        <p className="text-gray-600 text-sm">{festival.holderName}</p>
         <p className="text-sm text-gray-500 mt-2">
-          시작일: {new Date(festival.festivalHoldBegin).toLocaleDateString()}
+          시작일: {new Date(festival.period.begin).toLocaleDateString()}
         </p>
       </div>
     </div>
