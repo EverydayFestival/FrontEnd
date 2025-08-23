@@ -7,92 +7,73 @@ function Login() {
     const navigate = useNavigate();
     const { login } = useContext(AuthContext);
 
-    const [role, setRole] = useState("festival");
+    // 선택된 역할을 저장하는 state ('festival', 'company', 'worker')
+    const [role, setRole] = useState(null);
     const [account, setAccount] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
 
-    //목업 계정
-    const mockUsers = {
-        festival: { id: "H_acc_0", password: "H_pwd_0", role: "축제 기획자"},
-        company: { id: "C_acc_0", password: "C_pwd_0", role: "업체"},
-        worker: { id: "L_acc_0", password: "L_pwd_0", role: "단기 근로자"},
-    };
-
-    const handleRoleChange = (rolekey) => {
-        setRole(rolekey);
-        setAccount(mockUsers[rolekey].id);
-        setPassword(mockUsers[rolekey].password);
-
-        // 권한 부여 (목업 기준)
-    const userInfo = mockUsers[rolekey];
-    login({ account: userInfo.id, role: userInfo.role });  // ✅ 바로 AuthContext 업데이트
-    // navigate("/"); // 누르면 홈이나 해당 역할 전용 페이지로 이동
-        setError(null); //역할 변경 시 에러 메시지 초기화
-    };
-
-    //목업 로그인 핸들러
-    // const handleLogin = (e) => {
-    //     e.preventDefault();
-
-    //     const userInfo = mockUsers[role];
-
-    //     if (account === userInfo.id && password === userInfo.password) {
-    //         login({ account, role: userInfo.role });
-    //         navigate("/");
-    //     } else {
-    //         setError("아이디 또는 비밀번호가 올바르지 않습니다.");
-    //     }
-    // };
-
+    // 역할 정보를 담은 배열
     const roles = [
         { key: "festival", name: "축제기획자", img: "/images/festival.png" },
         { key: "company", name: "업체", img: "/images/company.png" },
-        { key: "worker", name: "단기 근로자", img: "/images/worker.png" },
+        { key: "worker", name: "단기근로자", img: "/images/worker.png" },
     ];
 
-    //실제 API
-    
-   // 실제 API 로그인
-const handleLogin = async (e) => {
-    e.preventDefault();
+    // 역할 카드 클릭 시, 선택된 역할의 key를 state에 저장하는 핸들러
+    const handleRoleChange = (roleKey) => {
+        setRole(roleKey);
+        setError(null); // 역할을 변경하면 에러 메시지를 초기화합니다.
+    };
 
-    try {
-        const response = await fetch("http://43.201.6.192:8080/api/auth/login", {  // ✅ /api 추가
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                account,
-                password,
-            }),
-        });
+    // 실제 API를 이용한 로그인 핸들러
+    const handleLogin = async (e) => {
+        e.preventDefault();
 
-        const result = await response.json();
-
-        if (response.ok) {
-            // 토큰 저장 (쿠키 대신 localStorage 예시)
-            localStorage.setItem("accessToken", result.accessToken);
-            localStorage.setItem("refreshToken", result.refreshToken);
-            console.log(result);
-
-            // AuthContext 업데이트
-            login({ account, role: result.role });
-
-            // 이동
-            navigate(result.redirectUrl || "/");
-        } else {
-            setError(result.message || "로그인 실패");
+        // 역할이 선택되었는지 먼저 확인합니다.
+        if (!role) {
+            setError("먼저 역할을 선택해주세요.");
+            return;
         }
-    } catch (err) {
-        console.error(err);
-        setError("서버 오류가 발생했습니다.");
-    }
 
-};
+        try {
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    account,
+                    password,
+                }),
+            });
 
+            const result = await response.json();
 
+            if (response.ok) {
+                // API 인증 성공 시
+                // 1. 토큰을 localStorage에 저장
+                localStorage.setItem("accessToken", result.accessToken);
+                localStorage.setItem("refreshToken", result.refreshToken);
 
-    
+                // 2. 선택된 역할의 전체 이름(name)을 찾습니다.
+                const selectedRoleObject = roles.find(r => r.key === role);
+                const roleName = selectedRoleObject ? selectedRoleObject.name : '';
+
+                // 3. AuthContext에 계정 정보와 '선택했던 역할 이름'을 저장합니다.
+                login({ account, role: roleName });
+
+                // 4. API가 지정한 URL 또는 기본 URL로 이동합니다.
+                navigate(result.redirectUrl || "/");
+
+            } else {
+                // API 인증 실패 시
+                setError(result.message || "로그인에 실패했습니다.");
+            }
+        } catch (err) {
+            console.error("Login API error:", err);
+            setError("서버에 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        }
+    };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -143,19 +124,30 @@ const handleLogin = async (e) => {
                             value={account}
                             onChange={(e) => setAccount(e.target.value)}
                             className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
                         />
                     </div>
-                    <div>
+                    {/* 3. 비밀번호 입력 필드와 보기/숨기기 버튼을 함께 배치합니다. */}
+                    <div className="relative">
                         <input
-                            type="password"
+                            // 4. type을 state에 따라 동적으로 변경합니다.
+                            type={showPassword ? "text" : "password"}
                             placeholder="비밀번호"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
                         />
+                        {/* 5. 버튼 클릭 시 showPassword state를 토글(뒤집기)합니다. */}
+                        <button
+                            type="button" // form의 submit을 방지하기 위해 type="button"을 꼭 넣어주세요.
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute inset-y-0 right-0 px-3 flex items-center text-sm text-gray-600"
+                        >
+                            {showPassword ? "숨기기" : "보기"}
+                        </button>
                     </div>
 
-                    {/* 에러 메시지 표시 */}
                     {error && <p className="text-sm text-center text-red-500">{error}</p>}
 
                     <div>
@@ -169,7 +161,6 @@ const handleLogin = async (e) => {
                 </form>
             </div>
         </div>
-     
     );
 }
 
