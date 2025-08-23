@@ -94,4 +94,7 @@ const MenuButton = styled.button`
   background: #F4EDED;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   cursor: pointer;
+    &:hover{
+    background-color: #dcd7d7;
+  }
 `;

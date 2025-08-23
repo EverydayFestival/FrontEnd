@@ -51,6 +51,7 @@ const ModalContent = styled.div`
   padding-bottom: 5px;
   border-radius: 10px;
   text-align: center;
+  font-size: 15px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -67,7 +68,8 @@ const ModalButtonNo = styled.button`
   padding: 15px 0px;
   width: 50px;
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 300;
   border: none;
   border-radius: 0 0 0 10px;
   background-color: white;
@@ -88,7 +90,8 @@ const ModalButtonYes = styled.button`
   padding: 15px 0px;
   width: 50px;
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 300;
   border: none;
   border-radius: 0 0 10px 0;
   background-color: white;
@@ -110,7 +113,8 @@ const ModalButtonYess = styled.button`
   padding: 15px 0px;
   width: 50px;
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 300;
   border: none;
   border-radius: 0 0 10px 10px;
   background-color: white;

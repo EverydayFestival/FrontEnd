@@ -19,18 +19,6 @@ function Header() {
 
     return (
         <header className="header">
-            {/* <div className="top-row">
-                <div className="logo">
-                    <Link to="/">
-                    <img src={"/images/logo.png"} alt="Logo"/>
-                    </Link>
-                </div>
-                <div className="login">
-                    <button aria-label="알림 페이지"></button>
-                    <button aria-label="마이페이지"></button>
-                    <button aria-label="로그아웃" onClick={logout}></button>
-                </div>
-            </div> */}
             <div className="searchbar">
                 <input 
                 type="text" 
