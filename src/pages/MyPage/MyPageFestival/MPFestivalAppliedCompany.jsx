@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
-import fest_data from '../../../assets/fest/fest_data';
-import co_data from '../../../assets/company/co_data';
+// import fest_data from '../../../assets/fest/fest_data';
+// import co_data from '../../../assets/company/co_data';
 import more_button from '../../../assets/more_button.png'
 import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../../components/Box';
@@ -45,10 +45,6 @@ const MPFestivalAppliedCompany = () => {
     setShowModal(false);
     setPendingAction(null);
   }
-
-  // const handleAccept = () => {
-  //     setShowModal(true); // 등록 버튼 누르면 모달 열림
-  // };
 	
   //api
 	const viewAppliedCompanies = async() => {
@@ -57,7 +53,7 @@ const MPFestivalAppliedCompany = () => {
 	    setError("");
 	
 	    const response = await fetch(
-				`http://43.201.6.192:8080/festivals/${festivalId}/company-applications` ,
+				`https://festival-everyday.duckdns.org/festivals/${festivalId}/company-applications` ,
 				{
 				  method: "GET",
 				  headers: {
@@ -88,9 +84,13 @@ const MPFestivalAppliedCompany = () => {
 
   //축제이름 찾기 api 시작
 	const viewFestivalInfo = async () => {
-    try {
+  try {
+    const statuses = ["ONGOING", "ENDED"];
+    let foundFestival = null;
+
+    for (const status of statuses) {
       const response = await fetch(
-        `http://43.201.6.192:8080/users/me/festivals?holdStatus=ONGOING&page=0&size=50`,
+        `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=${status}&page=0&size=100`,
         {
           method: "GET",
           headers: {
@@ -102,20 +102,20 @@ const MPFestivalAppliedCompany = () => {
 
       const result = await response.json();
 
-      if (!response.ok || result.success !== true) {
-        throw new Error(result.message || "축제 정보 조회에 실패했습니다.");
+      if (response.ok && result.success === true) {
+        foundFestival = result.data.content.find(
+          (fest) => fest.id === Number(festivalId)
+        );
+        if (foundFestival) break; // 찾으면 바로 종료
       }
-
-      // 목록에서 festivalId에 해당하는 데이터 찾기
-      const foundFestival = result.data.content.find(
-        (fest) => fest.id === Number(festivalId)
-      );
-      setFestivalInfo(foundFestival || null);
-    } catch (error) {
-      console.error("Error fetching festival info:", error);
-      setError(error.message);
     }
-  };
+
+    setFestivalInfo(foundFestival || null);
+  } catch (error) {
+    console.error("Error fetching festival info:", error);
+    setError(error.message);
+  }
+};
 
 	// 두 API 호출하기
   useEffect(() => {
@@ -231,7 +231,7 @@ const MPFestivalAppliedCompany = () => {
           </CoCard>
         ))}
       </ApplyCompanyList> */}
-      			<ApplyCompanyList>
+  <ApplyCompanyList>
   {appliedCompanies.length === 0 ? (
     <p>해당 축제에 지원한 업체가 없습니다.</p>
   ) : (
@@ -243,8 +243,8 @@ const MPFestivalAppliedCompany = () => {
             <RealInfo>
               <CoName>{co.simpleCompany.name}</CoName>
               <AddressWrapper>
-              <p>{co.simpleCompany.address.city}</p>
-              <p>{co.simpleCompany.address.district}</p>
+              <p>{co.simpleCompany?.address?.city}</p>
+              <p>{co.simpleCompany?.address?.district}</p>
               </AddressWrapper>
               <p>{co.simpleCompany.category}</p>
             </RealInfo>
@@ -266,7 +266,7 @@ const MPFestivalAppliedCompany = () => {
               <ChoiceBtnY disabled>수락됨</ChoiceBtnY>
               <ReviewBtn
                 onClick={() =>
-                  navigate(`/mypage/festival/appliedcompany/${festivalId}/${co.companyId}/review`)
+                  navigate(`/mypage/festival/appliedcompany/${festivalId}/${co.simpleCompany.id}/review`)
                 }
               >
                 리뷰쓰기
@@ -288,8 +288,8 @@ const MPFestivalAppliedCompany = () => {
     >
       <p>
         {pendingAction?.status === "ACCEPTED"
-          ? "업체를 수락하시겠습니까?"
-          : "업체를 거절하시겠습니까?"}
+          ? "해당 업체를 수락하시겠습니까?"
+          : "해당 업체를 거절하시겠습니까?"}
       </p>
     </Modal>
 
@@ -327,7 +327,7 @@ const Name = styled.div`
   font-size: 18px;
   background-color: white;
   padding: 10px 100px;
-  z-index: 1000; 
+  z-index: 500; 
   border-bottom: 2px solid #eee; /* 깔끔한 구분선 optional */
 `;
 
@@ -469,6 +469,10 @@ const ApplicationBtn = styled.button`
     align-items: center;
     justify-content: center;
 
+    &:hover{
+      background-color: #dcd7d7;
+    }
+
 `;
 
 const MoreIcon = styled.img`
@@ -512,6 +516,7 @@ const ChoiceBtnYes = styled.button`
 
     &:hover{
       background-color: #91b37e;
+      border:none;
     }
 `;
 
@@ -527,7 +532,8 @@ const ChoiceBtnNo = styled.button`
     cursor: pointer;
 
     &:hover{
-      background-color: #B2AEAE;
+      background-color: #9E655A;
+      border: none;
     }
 `;
 
@@ -539,7 +545,8 @@ const ChoiceBtnY = styled.button`
     border-color: rgba(0, 0, 0, 0.25);
     background: #BAE4A4;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-        cursor: pointer;
+    cursor: pointer;
+    color: black;
 `;
 
 const ChoiceBtnN = styled.button`
@@ -548,8 +555,9 @@ const ChoiceBtnN = styled.button`
     border-radius: 20px;
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0.25);
-    background: #B2AEAE;
+    background: #CD7D6D;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    color: black;
 
 `;

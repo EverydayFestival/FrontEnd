@@ -15,7 +15,7 @@ const MPFestivalFavored = () => {
   const [viewAllOngoingFest, setViewAllOngoingFest] = useState(false);
   const [viewAllClosedFest, setViewAllClosedFest] = useState(false);
   const [activeTab, setActiveTab] = useState('festival'); // 'festival' or 'company'
-  const [favorStatus, setFavorStatus] = useState('FAVORED');
+  const [favorStatus, setFavorStatus] = useState("FAVORED");
 
   // const handleUndo = () => {
   //   setShowModal(true);
