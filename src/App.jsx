@@ -55,7 +55,7 @@ function UnauthorizedPage() {
 
 const App = ()=>{
 
-  const allRoles = ["축제 기획자", "업체", "단기 근로자"];
+  const allRoles = ["축제기획자", "업체", "단기근로자"];
 
   return (
     <FestivalProvider>
@@ -92,8 +92,8 @@ const App = ()=>{
           
 
         {/* '축제 기획자'만 접근 가능한 라우트 */}
-        <Route path="/festival-register" element={<PrivateRoute allowedRoles={["축제 기획자"]}><FestivalRegister/></PrivateRoute>} />
-        <Route path="/select-festival" element={<PrivateRoute allowedRoles={["축제 기획자"]}><SelectFestivalPage /></PrivateRoute>} />
+        <Route path="/festival-register" element={<PrivateRoute allowedRoles={["축제기획자"]}><FestivalRegister/></PrivateRoute>} />
+        <Route path="/select-festival" element={<PrivateRoute allowedRoles={["축제기획자"]}><SelectFestivalPage /></PrivateRoute>} />
         
         <Route path="/inquiry" element={<PrivateRoute allowedRoles={allRoles}><Inquiry/></PrivateRoute>} />
         <Route path="/festivals/:id" element={<PrivateRoute allowedRoles={allRoles}><FestivalDetail /></PrivateRoute>} />
