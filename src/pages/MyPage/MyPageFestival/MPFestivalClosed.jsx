@@ -9,7 +9,7 @@ const MPFestivalClosed = () => {
 
   const navigate = useNavigate();
 
-  const [festivals, setFestivals] = useState([]);
+    const [festivals, setFestivals] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
   
@@ -19,7 +19,7 @@ const MPFestivalClosed = () => {
         setError("");
   
         const response = await fetch(
-     "http://43.201.6.192:8080/users/me/festivals?holdStatus=ENDED&page=0&size=10",
+     "http://43.201.6.192:8080/users/me/festivals?holdStatus=ENDED&page=0&size=5",
     {
       method: "GET",
       headers: {
@@ -34,7 +34,7 @@ const MPFestivalClosed = () => {
         const result = await response.json();
   
         if(!response.ok || result.success !== true) {
-          throw new Error(result.message || "내 축제 조회에 실패했습니다.");
+          throw new Error(result?.message || "내 축제 조회에 실패했습니다.");
         }
         
         setFestivals(result.data.content ?? []);
@@ -88,7 +88,7 @@ const MPFestivalClosed = () => {
       </FestCardList> */}
       <FestCardList>
         {festivals.length === 0 ? (
-          <p>현재 진행 중이거나 예정된 행사가 없습니다.</p>
+          <p>종료된 행사가 없습니다.</p>
         ) : (
           festivals.map((fest) => (
             <FestCard key={fest.id}>
@@ -96,7 +96,7 @@ const MPFestivalClosed = () => {
               <FestInfo>
                 <FestName>{fest.name}</FestName>
                 <p>
-                  {fest.address?.city} {fest.address?.district} {fest.address?.detail}
+                  {fest.address?.city} {fest.address?.district}
                 </p>
                 <p>
                   {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}

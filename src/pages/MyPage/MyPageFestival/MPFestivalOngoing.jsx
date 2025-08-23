@@ -35,7 +35,7 @@ const MPFestivalOngoing = () => {
       const result = await response.json();
 
       if(!response.ok || result.success !== true) {
-        throw new Error(result.message || "내 축제 조회에 실패했습니다.");
+        throw new Error(result?.message || "내 축제 조회에 실패했습니다.");
       }
       
       setFestivals(result.data.content ?? []);
@@ -77,7 +77,7 @@ const MPFestivalOngoing = () => {
               <FestInfo>
                 <FestName>{fest.name}</FestName>
                 <p>
-                  {fest.address?.city} {fest.address?.district} {fest.address?.detail}
+                  {fest.address?.city} {fest.address?.district} 
                 </p>
                 <p>
                   {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
 import fest_data from '../../../assets/fest/fest_data';
@@ -6,33 +6,150 @@ import co_data from '../../../assets/company/co_data';
 import more_button from '../../../assets/more_button.png'
 import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../../components/Box';
+import Modal from '../../../components/Modal';
 
 const MPFestivalAppliedCompany = () => {
-  const [activeFilter, setActiveFilter] = useState('선착순');
+  const [activeFilter, setActiveFilter] = useState('지원순');
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const filters = ['선착순', '리뷰 많은 순', '선정 많이 된 순'];
+  const filters = ['지원순', '수락', '거절'];
+
+
+  // const festival = fest_data.find(f => f.festivalId === Number(festivalId));
+  // const [companyList, setCompanyList] = useState(co_data);
 
   const {festivalId} = useParams();
-  const festival = fest_data.find(f => f.festivalId === Number(festivalId));
-  const [companyList, setCompanyList] = useState(co_data);
-  const handleChoice = (companyId, choice) => {
-    setCompanyList(prev =>
+  const [festivalInfo, setFestivalInfo] = useState(null); // 축제 정보
+  
+  
+
+  const navigate = useNavigate();
+  
+  //업체 지원현황 api 
+	const [appliedCompanies, setAppliedCompanies] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState("");
+
+  //모달팝업
+  const [showModal, setShowModal] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null); //{id, status}
+  
+  const openModal = (companyId, statusType) => {
+    setPendingAction({id: companyId, status: statusType});
+    setShowModal(true);
+  }
+  const confirmModal = () => {
+    if(pendingAction) {
+      handleChoice(pendingAction.id, pendingAction.status);
+    }
+    setShowModal(false);
+    setPendingAction(null);
+  }
+
+  // const handleAccept = () => {
+  //     setShowModal(true); // 등록 버튼 누르면 모달 열림
+  // };
+	
+  //api
+	const viewAppliedCompanies = async() => {
+	  try{
+	    setLoading(true);
+	    setError("");
+	
+	    const response = await fetch(
+				`http://43.201.6.192:8080/festivals/${festivalId}/company-applications` ,
+				{
+				  method: "GET",
+				  headers: {
+				    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+				    Accept: "application/json",
+				    "Content-type": "application/json",
+				  },
+				}
+			);
+	
+	
+	
+			const result = await response.json();
+		
+	    if(!response.ok || result.success !== true) {
+	      throw new Error(result.message || "업체 지원현황 조회에 실패했습니다.");
+	    }
+	    
+	    setAppliedCompanies(result.data.content ?? []);
+	    console.log(result.data.content);
+	  }catch(error){
+	    console.error("Error fetching applied companies:", error);
+	    setError(error.message);
+		}finally{
+	    setLoading(false);
+	  }
+	};
+
+  //축제이름 찾기 api 시작
+	const viewFestivalInfo = async () => {
+    try {
+      const response = await fetch(
+        `http://43.201.6.192:8080/users/me/festivals?holdStatus=ONGOING&page=0&size=50`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || result.success !== true) {
+        throw new Error(result.message || "축제 정보 조회에 실패했습니다.");
+      }
+
+      // 목록에서 festivalId에 해당하는 데이터 찾기
+      const foundFestival = result.data.content.find(
+        (fest) => fest.id === Number(festivalId)
+      );
+      setFestivalInfo(foundFestival || null);
+    } catch (error) {
+      console.error("Error fetching festival info:", error);
+      setError(error.message);
+    }
+  };
+
+	// 두 API 호출하기
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([viewAppliedCompanies(), viewFestivalInfo()]).finally(() =>
+      setLoading(false)
+    );
+  }, [festivalId]);
+      // 드롭다운 외부 클릭 감지용 effect
+    useEffect(() => {
+      const handleClickOutside = (e) => {
+        if (dropdownOpen && !e.target.closest(".dropdown-container")) {
+          setDropdownOpen(false);
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [dropdownOpen]);
+  
+
+    const handleChoice = (companyId, newStatus) => {
+    setAppliedCompanies(prev =>
       prev.map(co =>
-        co.companyId === companyId ? { ...co, companySelected: choice } : co
+        co.id === companyId ? { ...co, selected: newStatus } : co
       )
     );
   };
-  const navigate = useNavigate();
   
-  // const [companyList, setCompanyList] = useState([]);
+	
+	if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+	if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
+  // api 관련 코드 끝
 
-  // useEffect(() => {
-  //   // API 호출 시 festId 사용
-  //   fetch(`/api/festival/${festivalId}/companies`)
-  //     .then(res => res.json())
-  //     .then(data => setCompanyList(data));
-  // }, [festivalId]);
 
   return (
     <Box>
@@ -45,7 +162,7 @@ const MPFestivalAppliedCompany = () => {
       </Fixed>
 
       <Name>
-        <p>{festival?.festivalName}</p>
+          <p>{festivalInfo?.name ?? "축제 이름 불러오는 중"}</p>
       <FilterSection>
         <Dropdown>
           <DropdownBtn onClick={() => setDropdownOpen(!dropdownOpen)}>
@@ -74,7 +191,7 @@ const MPFestivalAppliedCompany = () => {
       
    
 
-      <ApplyCompanyList>
+      {/* <ApplyCompanyList>
         {companyList.map((co, index) => (
           <CoCard key={index}>
             <CoImage src={co.image} alt="업체이미지" />
@@ -113,7 +230,70 @@ const MPFestivalAppliedCompany = () => {
             </CoChoice>
           </CoCard>
         ))}
-      </ApplyCompanyList>
+      </ApplyCompanyList> */}
+      			<ApplyCompanyList>
+  {appliedCompanies.length === 0 ? (
+    <p>해당 축제에 지원한 업체가 없습니다.</p>
+  ) : (
+    appliedCompanies.map((co) => (
+      <CoCard key={co.id}>
+        <CoImage src={co.imageUrl} alt="업체이미지" />
+        <Coleft>
+          <CoInfo>
+            <RealInfo>
+              <CoName>{co.simpleCompany.name}</CoName>
+              <AddressWrapper>
+              <p>{co.simpleCompany.address.city}</p>
+              <p>{co.simpleCompany.address.district}</p>
+              </AddressWrapper>
+              <p>{co.simpleCompany.category}</p>
+            </RealInfo>
+            <ApplicationBtn>지원서 보기</ApplicationBtn>
+          </CoInfo>
+          <MoreIcon src={more_button} alt="업체더보기" />
+        </Coleft>
+
+        <CoChoice>
+          {co.selected === "NEUTRAL" && (
+            <>
+              <ChoiceBtnYes onClick={()=>openModal(co.id, "ACCEPTED")}>수락하기</ChoiceBtnYes>
+              <ChoiceBtnNo onClick={()=>openModal(co.id, "DENIED")}>거절하기</ChoiceBtnNo>
+            </>
+          )}
+
+          {co.selected === "ACCEPTED" && (
+            <>
+              <ChoiceBtnY disabled>수락됨</ChoiceBtnY>
+              <ReviewBtn
+                onClick={() =>
+                  navigate(`/mypage/festival/appliedcompany/${festivalId}/${co.companyId}/review`)
+                }
+              >
+                리뷰쓰기
+              </ReviewBtn>
+            </>
+          )}
+
+          {co.selected === "DENIED" && <ChoiceBtnN disabled>거절됨</ChoiceBtnN>}
+        </CoChoice>
+      </CoCard>
+    ))
+  )}
+</ApplyCompanyList>
+    <Modal
+      show={showModal}
+      onClose={() => setShowModal(false)}
+      onConfirm={confirmModal}
+      type="cancel"
+    >
+      <p>
+        {pendingAction?.status === "ACCEPTED"
+          ? "업체를 수락하시겠습니까?"
+          : "업체를 거절하시겠습니까?"}
+      </p>
+    </Modal>
+
+
     </PageWrapper>
     </Box>
   );
@@ -167,9 +347,10 @@ const FilterSection = styled.div`
   margin: 20px 0; */
 `;
 
-const Dropdown = styled.div`
+const Dropdown = styled.div.attrs({ className: "dropdown-container" })`
   position: relative;
   display: inline-block;
+  
 `;
 
 const DropdownBtn = styled.button`
@@ -180,6 +361,11 @@ const DropdownBtn = styled.button`
   border: 1px solid #a4a3a3;
   background-color: white;
   cursor: pointer;
+
+  &:hover{
+    background-color: #e4e0e0;
+  }
+  
 `;
 
 const DropdownContent = styled.div`
@@ -249,6 +435,11 @@ const CoInfo = styled.div`
 
 `;
 
+const AddressWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+`
+
 const RealInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -294,7 +485,7 @@ const CoChoice = styled.div`
 
 `;
 
-const ChoiceBtn = styled.button`
+const ReviewBtn = styled.button`
     width: 200px;
     padding: 20px 0;
     border-radius: 20px;
