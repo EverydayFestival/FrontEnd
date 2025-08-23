@@ -10,49 +10,50 @@ const MPFestivalOngoing = () => {
 
   
 
-//   const [festivals, setFestivals] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState("");
+  const [festivals, setFestivals] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-//   const viewMyFest = async() => {
-//     try{
-//       setLoading(true);
-//       setError("");
+  const viewMyFest = async() => {
+    try{
+      setLoading(true);
+      setError("");
 
-//       const response = await fetch(
-//   `${import.meta.env.VITE_API_URL}/users/me/festivals?holdStatus=ONGOING&page=0&size=10`,
-//   {
-//     method: "GET",
-//     headers: {
-//       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-//       Accept: "application/json",
-//     },
-//   }
-// );
+      const response = await fetch(
+   "http://43.201.6.192:8080/users/me/festivals?holdStatus=ONGOING&page=0&size=5",
+  {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      Accept: "application/json",
+    },
+  }
+);
 
 
 
-//       const result = await response.json();
+      const result = await response.json();
 
-//       if(!response.ok || result.success !== true) {
-//         throw new Error(result.message || "내 축제 조회에 실패했습니다.");
-//       }
+      if(!response.ok || result.success !== true) {
+        throw new Error(result.message || "내 축제 조회에 실패했습니다.");
+      }
       
-//       setFestivals(result.data.festivalList ?? []);
-//     }catch(error){
-//       console.error("Error fetching festivals:", error);
-//       setError(error.message);
-//     }finally{
-//       setLoading(false);
-//     }
-//   };
+      setFestivals(result.data.content ?? []);
+      console.log(result.data.content);
+    }catch(error){
+      console.error("Error fetching festivals:", error);
+      setError(error.message);
+    }finally{
+      setLoading(false);
+    }
+  };
 
-//   useEffect(()=>{
-//     viewMyFest();
-//   },[]);
+  useEffect(()=>{
+    viewMyFest();
+  },[]);
 
-//   if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
-//   if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
+  if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+  if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
 
   return (
     <Box>
@@ -65,8 +66,8 @@ const MPFestivalOngoing = () => {
       </Fixed>
 
 
+      {/* <FestCardList> */}
       <FestCardList>
-      {/* <FestCardList>
         {festivals.length === 0 ? (
           <p>현재 진행 중이거나 예정된 행사가 없습니다.</p>
         ) : (
@@ -79,8 +80,8 @@ const MPFestivalOngoing = () => {
                   {fest.address?.city} {fest.address?.district} {fest.address?.detail}
                 </p>
                 <p>
-                  {new Date(fest.begin).toLocaleDateString("ko-KR")} ~{" "}
-                  {new Date(fest.end).toLocaleDateString("ko-KR")}
+                  {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
+                  {new Date(fest.period.end).toLocaleDateString("ko-KR")}
                 </p>
               </FestInfo>
 
@@ -95,9 +96,9 @@ const MPFestivalOngoing = () => {
             </FestCard>
           ))
         )}
-      </FestCardList> */}
+      </FestCardList>
         
-        {fest_data.map((fest, index) => ( 
+        {/* {fest_data.map((fest, index) => ( 
           <FestCard key={index}>
             <FestImage src={fest.image} alt="" />
             <FestInfo>
@@ -116,7 +117,7 @@ const MPFestivalOngoing = () => {
             </RecruitStatus>
           </FestCard>
         ))}
-      </FestCardList>
+      </FestCardList> */}
     </FestivalOngoing>
     </Box>
   );
