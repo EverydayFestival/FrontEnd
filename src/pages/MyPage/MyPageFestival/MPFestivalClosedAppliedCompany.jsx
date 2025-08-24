@@ -49,7 +49,6 @@ const MPFestivalClosedAppliedCompany = () => {
   //api
 	const viewAppliedCompanies = async() => {
 	  try{
-	    setLoading(true);
 	    setError("");
 	
 	    const response = await fetch(
@@ -77,9 +76,7 @@ const MPFestivalClosedAppliedCompany = () => {
 	  }catch(error){
 	    console.error("Error fetching applied companies:", error);
 	    setError(error.message);
-		}finally{
-	    setLoading(false);
-	  }
+		}
 	};
 
   //축제이름 찾기 api 시작
