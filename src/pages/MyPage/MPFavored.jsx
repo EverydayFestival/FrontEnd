@@ -16,7 +16,7 @@ const MPFestivalFavored = () => {
   const [viewAllOngoingFest, setViewAllOngoingFest] = useState(false);
   const [viewAllClosedFest, setViewAllClosedFest] = useState(false);
   const [activeTab, setActiveTab] = useState('festival'); // 'festival' or 'company'
-  const [favorStatus, setFavorStatus] = useState("FAVORED");
+  //const [favorStatus, setFavorStatus] = useState("FAVORED");
 
   // const handleUndo = () => {
   //   setShowModal(true);
@@ -186,7 +186,10 @@ const MPFestivalFavored = () => {
                 }}>이전 페이지로</Back>
                 <Type>진행 및 예정인 행사</Type>
                 <FestCardList>
-                  {festivals.map((fest) => (
+                  {festivals.length === 0? (
+                     <p>찜한 행사(진행/예정)가 없어요!</p>
+                  ) : (
+                    festivals.map((fest) => (
                     <FestCard key={fest.id}>
                       <FestImage src={fest.imageUrl} alt="" />
                       <FestInfo>
@@ -212,7 +215,9 @@ const MPFestivalFavored = () => {
                         />
                       </FestFavored>
                     </FestCard>
-                  ))}
+                  ))
+                  )}
+                  
                 </FestCardList>
               </OngoingFest>
             </>
@@ -226,7 +231,10 @@ const MPFestivalFavored = () => {
                 }}>이전 페이지로</Back>
                 <Type>종료된 행사</Type>
                 <FestCardList>
-                  {festivalsEnd.map((fest) => (
+                  {festivalsEnd.length === 0? (
+                    <p>찜한 행사(종료)가 없어요!</p>
+                  ):(
+                    festivalsEnd.map((fest) => (
                     <FestCard key={fest.id}>
                       <FestImage src={fest.imageUrl} alt="" />
                       <FestInfo>
@@ -252,7 +260,9 @@ const MPFestivalFavored = () => {
                         />
                       </FestFavored>
                     </FestCard>
-                  ))}
+                  ))
+                  )}
+              
                 </FestCardList>
               </ClosedFest>
             </>
@@ -261,7 +271,10 @@ const MPFestivalFavored = () => {
               <OngoingFest>
                 <Type>진행 및 예정인 행사</Type>
                 <FestCardList>
-                  {festivals.slice(0, 2).map((fest) => (
+                  {festivals.length === 0? (
+                    <p>찜한 행사(진행/예정)가 없어요!</p>
+                    ):(
+                      festivals.slice(0, 2).map((fest) => (
                     <FestCard key={fest.id}>
                       <FestImage src={fest.imageUrl} alt="" />
                       <FestInfo>
@@ -287,7 +300,9 @@ const MPFestivalFavored = () => {
                         />
                       </FestFavored>
                     </FestCard>
-                  ))}
+                  ))
+                    )}
+                  
                 </FestCardList>
                 <More
                   onClick={() => {
@@ -303,7 +318,10 @@ const MPFestivalFavored = () => {
               <ClosedFest>
                 <Type>종료된 행사</Type>
                 <FestCardList>
-                  {festivalsEnd.slice(0, 2).map((fest) => (
+                  {festivalsEnd.length === 0? (
+                    <p>찜한 행사(종료)가 없어요!</p>
+                  ):(
+                    festivalsEnd.slice(0, 2).map((fest) => (
                     <FestCard key={fest.id}>
                       <FestImage src={fest.imageUrl} alt="" />
                       <FestInfo>
@@ -329,7 +347,9 @@ const MPFestivalFavored = () => {
                         />
                       </FestFavored>
                     </FestCard>
-                  ))}
+                  ))
+                  )}
+                  
                 </FestCardList>
                 <More
                   onClick={() => {
@@ -346,7 +366,10 @@ const MPFestivalFavored = () => {
         ) : (
           <>
             <Company>
-              {companies.map((co) => (
+              {companies.length===0? (
+                <p>찜한 업체가 없어요!</p>
+              ):(
+                companies.map((co) => (
                 <CoCard key={co.id}>
                   <CoImage src={co.image} alt="업체이미지" />
                   <Coleft>
@@ -372,7 +395,9 @@ const MPFestivalFavored = () => {
                         />
                       </FestFavored>
                 </CoCard>
-              ))}
+              ))
+              )}
+              
             </Company>
           </>
         )}
@@ -522,6 +547,7 @@ const FestFavored = styled.div`
 const FavoredBtn = styled.img`
     width: 30px;
     cursor: pointer;
+    transition: all 0.3s ease;
 `;
 
 
@@ -614,6 +640,7 @@ const More = styled.span`
   font-weight: bold;
   color: #555;
   text-decoration: underline;
+  transition: all 0.2s ease;
 
   &:hover {
     color: #f97e6c;

@@ -36,7 +36,7 @@ const MPFestivalNotification = () => {
       }
 
       // 실제 데이터 배열이 어디에 있는지 확인 필요 (여기선 result.data로 가정)
-      setNotifications(result.data ?? []);
+      setNotifications(result.data?.content ?? []);
       console.log("기존 알림:", result.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -100,19 +100,22 @@ const MPFestivalNotification = () => {
     console.log("🔔 종 아이콘 카운트 +1");
   };
 
+  if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+  if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
+
 
   const renderMessage = (noti) => {
     switch (noti.noticeType) {
       case "FESTIVAL_DEAD":
         return `${noti.payload.festivalName} 모집이 마감되었습니다.`;
       case "COMPANY_APPLIED":
-        return `부스(ID: ${noti.payload.companyName}) 업체가 ${noti.payload.festivalName}에 지원했습니다.`;
+        return `${noti.payload.companyName}이(가) ${noti.payload.festivalName}에 지원했습니다.`;
       case "LABOR_APPLIED":
-        return `근로자(ID: ${noti.payload.laborName})님이 ${noti.payload.festivalName}에 지원했습니다.`;
+        return `${noti.payload.laborName}님이 ${noti.payload.festivalName}에 지원했습니다.`;
       case "FESTIVAL_DUE":
         return `${noti.payload.festivalName} 마감까지 ${noti.payload.daysLeft}일 남았습니다.`;
       case "FESTIVAL_INTEREST":
-        return `${noti.payload.festivalName}가 나에게 관심을 보냈습니다.`;
+        return `${noti.payload.festivalName}이(가) 나에게 관심을 보냈습니다.`;
       case "APPLY_ACCEPTED":
         return `${noti.payload.festivalName}에서 나의 지원서가 수락되었습니다.`;
       case "APPLY_DENIED":
@@ -138,7 +141,7 @@ const MPFestivalNotification = () => {
           {notifications.map((noti, idx) => (
             <NotificationItem key={idx}>
               <Message>{renderMessage(noti)}</Message>
-              <Time>{formatKoreanDate(noti.payload.createdAt)}</Time>
+              <Time>{formatKoreanDate(noti.createdAt)}</Time>
             </NotificationItem>
           ))}
         </NotificationList>

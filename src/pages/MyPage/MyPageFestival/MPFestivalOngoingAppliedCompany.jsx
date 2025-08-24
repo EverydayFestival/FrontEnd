@@ -38,13 +38,28 @@ const MPFestivalOngoingAppliedCompany = () => {
     setPendingAction({id: companyId, status: statusType});
     setShowModal(true);
   }
-  const confirmModal = () => {
-    if(pendingAction) {
-      handleChoice(pendingAction.id, pendingAction.status);
+  // 수락/거절 모달 확인 시 실행되는 함수
+  const confirmModal = async () => {
+    if (pendingAction) {
+      try {
+        if (pendingAction.status === "ACCEPTED") {
+          await handleAccept(pendingAction.id);   // 수락 API 호출
+        } else if (pendingAction.status === "DENIED") {
+          await handleDeny(pendingAction.id);     // 거절 API 호출
+        }
+
+        // 상태 UI도 업데이트
+        handleChoice(pendingAction.id, pendingAction.status);
+      } catch (err) {
+        console.error("확인 처리 중 에러:", err);
+        setError(err.message);
+      }
     }
+
     setShowModal(false);
     setPendingAction(null);
-  }
+  };
+
 	
   //api
 	const viewAppliedCompanies = async() => {
@@ -73,6 +88,7 @@ const MPFestivalOngoingAppliedCompany = () => {
 	    
 	    setAppliedCompanies(result.data.content ?? []);
 	    console.log(result.data.content);
+      console.log(result.data.content.imageUrl);
 	  }catch(error){
 	    console.error("Error fetching applied companies:", error);
 	    setError(error.message);
@@ -109,6 +125,73 @@ const MPFestivalOngoingAppliedCompany = () => {
         setError(error.message);
       }
     };
+
+    const handleAccept = async (applicationId) => {
+        try {
+          setError("");
+
+          const response = await fetch(
+            `https://festival-everyday.duckdns.org/applications/${applicationId}/accept`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Accept: "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`승인 요청 실패: ${response.status}`);
+          }
+
+          let result = null;
+          if (response.headers.get("content-length") !== "0") {
+            result = await response.json();
+          }
+
+          console.log("✅ 승인 성공", result);
+        } catch (error) {
+          console.error("Error accepting application:", error);
+          setError(error.message);
+        }
+      };
+
+      const handleDeny = async (applicationId) => {
+        try {
+          setError("");
+
+          const response = await fetch(
+            `https://festival-everyday.duckdns.org/applications/${applicationId}/deny`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Accept: "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`거절 요청 실패: ${response.status}`);
+          }
+
+          let result = null;
+          if (response.headers.get("content-length") !== "0") {
+            result = await response.json();
+          }
+
+          console.log("❌ 거절 성공", result);
+        } catch (error) {
+          console.error("Error denying application:", error);
+          setError(error.message);
+        }
+      };
+
+	
+	
+
+    
 
 	// 두 API 호출하기
   useEffect(() => {
@@ -430,7 +513,7 @@ const CoInfo = styled.div`
 
 const AddressWrapper = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 3px;
 `
 
 const RealInfo = styled.div`
@@ -461,6 +544,7 @@ const ApplicationBtn = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
 
     &:hover{
       background-color: #dcd7d7;
@@ -491,6 +575,7 @@ const ReviewBtn = styled.button`
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover{
       background-color: #dcd7d7;
@@ -506,6 +591,7 @@ const ChoiceBtnYes = styled.button`
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover{
       background-color: #BAE4A4;
@@ -523,6 +609,7 @@ const ChoiceBtnNo = styled.button`
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover{
       background-color: #CD7D6D;
