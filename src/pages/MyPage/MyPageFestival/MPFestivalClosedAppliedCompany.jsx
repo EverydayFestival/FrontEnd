@@ -138,7 +138,7 @@ const MPFestivalClosedAppliedCompany = () => {
       setLoading(false)
     );
   }, [festivalId]);
-      // 드롭다운 외부 클릭 감지용 effect
+    // 드롭다운 외부 클릭 감지용 effect
     useEffect(() => {
       const handleClickOutside = (e) => {
         if (dropdownOpen && !e.target.closest(".dropdown-container")) {

@@ -248,12 +248,13 @@ const Title = styled.div`
 `;
 
 const CompanyLeft = styled.div`
-    
+    margin-left: 130px;
 `
 const CompanyRight = styled.div`
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-top: 20px;
 `
 const CompanyName = styled.p`
     font-size: 18px;

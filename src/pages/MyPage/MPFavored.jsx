@@ -502,15 +502,13 @@ const Back = styled.span`
   font-weight: bold;
   color: #555;
   text-decoration: underline;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   margin:0 8%;
 
   &:hover {
     color: #f97e6c;
   }
-
-
 `
 const FestOrCo = styled.div`
   position: fixed;
