@@ -157,6 +157,18 @@ const MPCompanyApply = () => {
             setLoading(false)
         );
         },[]);
+
+        // 드롭다운 외부 클릭 감지용 effect
+        useEffect(() => {
+          const handleClickOutside = (e) => {
+            if (dropdownOpen && !e.target.closest(".dropdown-container")) {
+              setDropdownOpen(false);
+            }
+          };
+    
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => document.removeEventListener("mousedown", handleClickOutside);
+        }, [dropdownOpen]);
   
   
     if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
@@ -181,7 +193,7 @@ const MPCompanyApply = () => {
                 setViewAllOngoingFest(false);
                 scrollToTop();
                 }}>이전 페이지로</Back>
-                <Type>진행 및 예정인 행사</Type>
+                <Name><p>진행 및 예정인 행사</p></Name>
                 <FestCardList>
                   {festivals.length === 0? (
                     <p>지원한 행사(진행/예정)가 없어요!</p>
@@ -222,7 +234,8 @@ const MPCompanyApply = () => {
                 setViewAllOngoingFest(false);
                 scrollToTop();
                 }}>이전 페이지로</Back>
-                <Type>종료된 행사</Type>
+                <Name>
+                  <p>종료된 행사</p>
                 <FilterSection>
                   <Dropdown>
                     <DropdownBtn onClick={() => setDropdownOpen(!dropdownOpen)}>
@@ -245,9 +258,10 @@ const MPCompanyApply = () => {
                     )}
                   </Dropdown>
                 </FilterSection>
-                          <FestCardList>
+                </Name>
+                  <FestCardList>
                   {filteredFestivals.length===0? (
-                    <p>지원한 행사(종료)가 없어요!</p>
+                    <p>해당 조건에 맞는 행사가 없어요!</p>
                   ) : (
                      filteredFestivals.map((fest, index) => (
                     <FestCard key={index}>
@@ -389,6 +403,22 @@ const Fixed = styled.div`
   z-index: 1000; /* 다른 요소보다 위 */
 `;
 
+const Name = styled.div`
+  position: fixed;
+  top: 124px; /* Title 밑에 위치하도록 (Title 높이에 맞춰 조정) */
+  left: 200px; /* Box의 left Sidebox 폭만큼 오른쪽으로 밀기 */
+  right: 200px; /* Box의 right Sidebox 폭만큼 여백 */
+  
+  display: flex;
+  justify-content: space-between; /* 좌우로 나눔 */
+  align-items: center;
+  font-size: 18px;
+  background-color: white;
+  padding: 10px 100px;
+  z-index: 500; 
+  border-bottom: 2px solid #eee; /* 깔끔한 구분선 optional */
+`;
+
 const FilterSection = styled.div`
   display: flex;
   /* justify-content: right; */
@@ -460,11 +490,14 @@ const Title = styled.div`
 
 const Back = styled.span`
   cursor: pointer;
+  align-self: flex-start;
   font-weight: bold;
   color: #555;
   text-decoration: underline;
-  margin: 0 8%;
-  transition: all 0.2s ease;
+  font-size: 15px;
+  font-weight: bold;
+  margin:3% 8%;
+
   &:hover {
     color: #f97e6c;
   }

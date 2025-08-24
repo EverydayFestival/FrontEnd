@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Navbar from '../../../components/Navbar'
 import fest_data from '../../../assets/fest/fest_data'
@@ -9,19 +9,170 @@ import Box from '../../../components/Box'
 
 const MPLaborApply = () => {
 
+  const [activeFilter, setActiveFilter] = useState('지원순');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   const [viewAllOngoingFest, setViewAllOngoingFest] = useState(false);
   const [viewAllClosedFest, setViewAllClosedFest] = useState(false);
+  
+  const [festivals, setFestivals] = useState([]);
+  const [festivalsEnd, setFestivalsEnd] = useState([]);
 
-const [activeFilter, setActiveFilter] = useState('선착순');
-const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-const filters = ['선착순', '리뷰 많은 순', '선정 많이 된 순'];
+  const filters = ['지원순', '수락', '거절'];
+  const [filteredFestivals, setFilteredFestivals] = useState([]);
+
+      // appliedCompanies가 바뀌거나 activeFilter가 바뀔 때마다 필터링 실행
+    useEffect(() => {
+    switch (activeFilter) {
+      case "지원순":
+        setFilteredFestivals(festivalsEnd);
+        break;
+      case "수락":
+        setFilteredFestivals(festivalsEnd.filter((f) => f.selected === "ACCEPTED"));
+        break;
+      case "거절":
+        setFilteredFestivals(festivalsEnd.filter((f) => f.selected === "DENIED"));
+        break;
+      default:
+        setFilteredFestivals(festivalsEnd);
+    }
+  }, [activeFilter, festivalsEnd]);
+
+  // 유틸 함수
+  const getOngoingStatus = (status) => {
+    switch(status) {
+      case "NEUTRAL": return "심사 중";
+      case "ACCEPTED": return "수락";
+      case "DENIED": return "거절";
+      default: return "";
+    }
+  };
+
+  const getEndedStatus = (status) => {
+    switch(status) {
+      case "NEUTRAL": return "심사 종료";
+      case "ACCEPTED": return "수락";
+      case "DENIED": return "거절";
+      default: return "";
+    }
+  };
+
+  // 상태별 색상 매핑
+  const getStatusColor = (status, ended=false) => {
+    if (!ended) { // 진행/예정된 경우
+      switch(status) {
+        case "NEUTRAL": return "#6C53E8"; // 파란색
+        case "ACCEPTED": return "green";  // 초록색
+        case "DENIED": return "red";      // 빨강
+        default: return "black";
+      }
+    } else { // 종료된 경우
+      switch(status) {
+        case "NEUTRAL": return "gray";   // 회색
+        case "ACCEPTED": return "green";
+        case "DENIED": return "red";
+        default: return "black";
+      }
+    }
+  };
+
+
 
   const navigate = useNavigate();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  //진행 중 행사 api
+    const viewAppliedFestOngoing = async() => {
+      try{
+        setError("");
+  
+        const response = await fetch(
+          "https://festival-everyday.duckdns.org/my-applications?status=&progress=ONGOING&page=&size=",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              Accept: "application/json",
+            },
+          }
+        );
+  
+        const result = await response.json();
+  
+        if(!response.ok || result.success !== true) {
+          throw new Error(result?.message || "지원한 축제 조회1에 실패했습니다.");
+        }
+        
+        setFestivals(result.data.content ?? []);
+        console.log(result.data.content);
+          }catch(error){
+            console.error("Error fetching festivals:", error);
+            setError(error.message);
+          }
+        };
+  
+    //종료된 행사    
+    const viewAppliedFestEnded = async() => {
+          try{
+            setError("");
+  
+            const response = await fetch(
+              "https://festival-everyday.duckdns.org/my-applications?status=&progress=ENDED&page=&size=",
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                  Accept: "application/json",
+                },
+              }
+            );
+  
+  
+  
+            const result = await response.json();
+  
+            if(!response.ok || result.success !== true) {
+              throw new Error(result?.message || "지원한 축제 조회2에 실패했습니다.");
+            }
+            
+            setFestivalsEnd(result.data.content ?? []);
+            console.log(result.data.content);
+              }catch(error){
+                console.error("Error fetching festivals:", error);
+                setError(error.message);
+              }
+            };
+        
+        
+  
+        useEffect(()=>{
+          setLoading(true);
+          Promise.all([viewAppliedFestOngoing(), viewAppliedFestEnded()]).finally(() =>
+            setLoading(false)
+        );
+        },[]);
+
+        // 드롭다운 외부 클릭 감지용 effect
+        useEffect(() => {
+          const handleClickOutside = (e) => {
+            if (dropdownOpen && !e.target.closest(".dropdown-container")) {
+              setDropdownOpen(false);
+            }
+          };
+    
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => document.removeEventListener("mousedown", handleClickOutside);
+        }, [dropdownOpen]);
+  
+  
+    if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+    if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
 
   return (
     <Box>
@@ -33,7 +184,6 @@ const filters = ['선착순', '리뷰 많은 순', '선정 많이 된 순'];
         </Title>
       </Fixed>
 
-
       <Content>
         {(viewAllOngoingFest ? (
             <>
@@ -43,89 +193,102 @@ const filters = ['선착순', '리뷰 많은 순', '선정 많이 된 순'];
                 setViewAllOngoingFest(false);
                 scrollToTop();
                 }}>이전 페이지로</Back>
-                <Type>진행 및 예정인 행사</Type>
+                <Name><p>진행 및 예정인 행사</p></Name>
                 <FestCardList>
-                  {fest_data.map((fest, index) => (
+                  {festivals.length === 0? (
+                    <p>지원한 행사(진행/예정)가 없어요!</p>
+                  ) : (
+                    festivals.map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.image} alt="" />
+                      <FestImage src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.festivalName}</FestName>
-                            <p>{fest.location}</p>
-                            <p>{fest.period}</p>
+                            <FestName>{fest.name}</FestName>
+                            <p>{fest.holderName}</p>
+                           
                             </RealInfo>
                             <ApplicationBtn>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
                      
-                    <Status>
-                        <p>심사 중</p>
-                    </Status>
+        
+                        <Status color={getStatusColor(fest.selected, false)}>
+                          {getOngoingStatus(fest.selected)}
+                        </Status>
+                  
                     
                     </FestCard>
-                  ))}
+                  ))
+                  )}
+                  
                 </FestCardList>
               </OngoingFest>
             </>
           ) : viewAllClosedFest ? (
             <>
               <ClosedFest>
-                <Wrap>
                 <Back onClick={()=>{
                 setViewAllClosedFest(false);
                 setViewAllOngoingFest(false);
                 scrollToTop();
                 }}>이전 페이지로</Back>
-
+                <Name>
+                  <p>종료된 행사</p>
                 <FilterSection>
-                    <Dropdown>
+                  <Dropdown>
                     <DropdownBtn onClick={() => setDropdownOpen(!dropdownOpen)}>
-                        {activeFilter} ▾
+                      {activeFilter} ▾
                     </DropdownBtn>
                     {dropdownOpen && (
-                        <DropdownContent>
+                      <DropdownContent>
                         {filters.map((filter, idx) => (
-                            <DropdownItem
+                          <DropdownItem
                             key={idx}
                             onClick={() => {
-                                setActiveFilter(filter);
-                                setDropdownOpen(false);
+                              setActiveFilter(filter);
+                              setDropdownOpen(false);
                             }}
-                            >
+                          >
                             {filter}
-                            </DropdownItem>
+                          </DropdownItem>
                         ))}
-                        </DropdownContent>
+                      </DropdownContent>
                     )}
-                    </Dropdown>
+                  </Dropdown>
                 </FilterSection>
-                </Wrap>
-                
-                <Type>종료된 행사</Type>
-                <FestCardList>
-                  {fest_data.map((fest, index) => (
+                </Name>
+                  <FestCardList>
+                  {filteredFestivals.length===0? (
+                    <p>해당 조건에 맞는 행사가 없어요!</p>
+                  ) : (
+                     filteredFestivals.map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.image} alt="" />
+                      <FestImage src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.festivalName}</FestName>
-                            <p>{fest.location}</p>
-                            <p>{fest.period}</p>
+                            <FestName>{fest.name}</FestName>
+                            <p>{fest.holderName}</p>
                             </RealInfo>
                             <ApplicationBtn>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="더보기" /> */}
                      </FestLeft>
-                     <StatusClosed>
-                        <span>수락</span>
-                        <ReviewBtn onClick={()=>navigate(`/mypage/company/${fest.festivalId}/review`)}>리뷰쓰기</ReviewBtn>
-                    </StatusClosed>
+                     <StatusClosed color={getStatusColor(fest.selected, true)}>
+                        {getEndedStatus(fest.selected)}
+                        {fest.selected === "ACCEPTED" && (
+                          <ReviewBtn onClick={() => navigate(`/mypage/company/${fest.festivalId}/review`)}>
+                            리뷰쓰기
+                          </ReviewBtn>
+                        )}
+                      </StatusClosed>
                      
                     </FestCard>
-                  ))}
+                  ))
+                  )}
+                 
                 </FestCardList>
               </ClosedFest>
             </>
@@ -134,25 +297,29 @@ const filters = ['선착순', '리뷰 많은 순', '선정 많이 된 순'];
               <OngoingFest>
                 <Type>진행 및 예정인 행사</Type>
                 <FestCardList>
-                  {fest_data.slice(0, 2).map((fest, index) => (
+                  {festivals.length===0? (
+                    <p>지원한 행사(진행/예정)가 없어요!</p>
+                  ) : (
+                    festivals.slice(0, 2).map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.image} alt="" />
+                      <FestImage src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.festivalName}</FestName>
-                            <p>{fest.location}</p>
-                            <p>{fest.period}</p>
+                            <FestName>{fest.name}</FestName>
+                            <p>{fest.holderName}</p>
                             </RealInfo>
                             <ApplicationBtn>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
-                     <Status>
-                        <p>심사 중</p>
-                    </Status>
+                      <Status color={getStatusColor(fest.selected, false)}>
+                          {getOngoingStatus(fest.selected)}
+                      </Status>
                     </FestCard>
-                  ))}
+                  ))
+                  )}
+                  
                 </FestCardList>
                 <More
                   onClick={() => {
@@ -168,26 +335,34 @@ const filters = ['선착순', '리뷰 많은 순', '선정 많이 된 순'];
               <ClosedFest>
                 <Type>종료된 행사</Type>
                 <FestCardList>
-                  {fest_data.slice(2, 4).map((fest, index) => (
+                  {festivalsEnd.length===0? (
+                      <p>지원한 행사(종료)가 없어요!</p>
+                  ) : (
+                    festivalsEnd.slice(0, 2).map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.image} alt="" />
+                      <FestImage src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.festivalName}</FestName>
-                            <p>{fest.location}</p>
-                            <p>{fest.period}</p>
+                            <FestName>{fest.name}</FestName>
+                            <p>{fest.holderName}</p>
                             </RealInfo>
                             <ApplicationBtn>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
-                     <StatusClosed>
-                        <span>수락</span>
-                        <ReviewBtn onClick={()=>navigate(`/mypage/company/${fest.festivalId}/review`)}>리뷰쓰기</ReviewBtn>
-                    </StatusClosed>
+                     <StatusClosed color={getStatusColor(fest.selected, true)}>
+                        {getEndedStatus(fest.selected)}
+                        {fest.selected === "ACCEPTED" && (
+                          <ReviewBtn onClick={() => navigate(`/mypage/company/${fest.festivalId}/review`)}>
+                            리뷰쓰기
+                          </ReviewBtn>
+                        )}
+                      </StatusClosed>
                     </FestCard>
-                  ))}
+                  ))
+                  )}
+                  
                 </FestCardList>
                 <More
                   onClick={() => {
@@ -228,49 +403,33 @@ const Fixed = styled.div`
   z-index: 1000; /* 다른 요소보다 위 */
 `;
 
-const Type = styled.div`
+const Name = styled.div`
+  position: fixed;
+  top: 124px; /* Title 밑에 위치하도록 (Title 높이에 맞춰 조정) */
+  left: 200px; /* Box의 left Sidebox 폭만큼 오른쪽으로 밀기 */
+  right: 200px; /* Box의 right Sidebox 폭만큼 여백 */
+  
+  display: flex;
+  justify-content: space-between; /* 좌우로 나눔 */
+  align-items: center;
   font-size: 18px;
-  font-weight: 400;
-  margin: 0 8%;
-`
-
-
-
-const Title = styled.div`
-  background: #FEA898;
-  font-size: 20px;
-  font-weight: 800;
-  padding: 10px 0 10px 270px;
+  background-color: white;
+  padding: 10px 100px;
+  z-index: 500; 
+  border-bottom: 2px solid #eee; /* 깔끔한 구분선 optional */
 `;
-
-const Back = styled.span`
-  cursor: pointer;
-  font-weight: bold;
-  color: #555;
-  text-decoration: underline;
-  margin: 0 8%;
-  &:hover {
-    color: #f97e6c;
-  }
-`
-
-const Wrap = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`
 
 const FilterSection = styled.div`
   display: flex;
-  justify-content: right; 
-  margin-right: 100px;
+  /* justify-content: right; */
   /* padding-right: 110px;
   margin: 20px 0; */
 `;
 
-const Dropdown = styled.div`
+const Dropdown = styled.div.attrs({ className: "dropdown-container" })`
   position: relative;
   display: inline-block;
+  
 `;
 
 const DropdownBtn = styled.button`
@@ -281,6 +440,11 @@ const DropdownBtn = styled.button`
   border: 1px solid #a4a3a3;
   background-color: white;
   cursor: pointer;
+
+  &:hover{
+    background-color: #e4e0e0;
+  }
+  
 `;
 
 const DropdownContent = styled.div`
@@ -308,6 +472,36 @@ const DropdownItem = styled.div`
   }
 `;
 
+
+const Type = styled.div`
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0 8%;
+`
+
+
+
+const Title = styled.div`
+  background: #FEA898;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 10px 0 10px 270px;
+`;
+
+const Back = styled.span`
+  cursor: pointer;
+  align-self: flex-start;
+  font-weight: bold;
+  color: #555;
+  text-decoration: underline;
+  font-size: 15px;
+  font-weight: bold;
+  margin:3% 8%;
+
+  &:hover {
+    color: #f97e6c;
+  }
+`
 
 const OngoingFest = styled.div`
   display: flex;
@@ -351,22 +545,22 @@ const FestLeft = styled.div`
   margin-left: 20px;
 `
 const Status = styled.div`
-    color: #6C53E8;
+    color: ${(props) => props.color || "black"};
+    font-size: 18px;
+    
     
 `
 const StatusClosed = styled.div`
+    font-size: 18px;
     display: flex;
     flex-direction: column;
     gap: 30px;
     align-items: center;
-    
-    span{
-        color: #708A62;
-    }
+    color: ${(props) => props.color || "black"};
 `
 
 const ReviewBtn = styled.button`
-    width: 130px;
+    width: 150px;
     padding: 20px 0;
     border-radius: 20px;
     border-width: 1px;
@@ -374,6 +568,7 @@ const ReviewBtn = styled.button`
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover{
       background-color: #dcd7d7;
@@ -418,6 +613,11 @@ const ApplicationBtn = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+
+    &:hover{
+      background-color: #dcd7d7;
+    }
 
 `;
 
@@ -435,6 +635,18 @@ const Content = styled.div`
 //   cursor: pointer;
 // `;
 
+
+const ChoiceBtnY = styled.button`
+    width: 150px;
+    padding: 20px 0;
+    border-radius: 20px;
+    border:none;
+    background: #BAE4A4;
+    
+
+    color: black;
+`;
+
 const More = styled.span`
   margin-bottom: 80px;
   margin-right: 100px;
@@ -445,6 +657,7 @@ const More = styled.span`
   font-weight: bold;
   color: #555;
   text-decoration: underline;
+  transition: all 0.2s ease;
 
   &:hover {
     color: #f97e6c;
