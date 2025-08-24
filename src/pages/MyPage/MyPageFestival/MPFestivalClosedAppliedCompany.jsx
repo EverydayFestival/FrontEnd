@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../../components/Box';
 import Modal from '../../../components/Modal';
 
-const MPFestivalAppliedCompany = () => {
+const MPFestivalClosedAppliedCompany = () => {
   const [activeFilter, setActiveFilter] = useState('지원순');
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -84,39 +84,35 @@ const MPFestivalAppliedCompany = () => {
 
   //축제이름 찾기 api 시작
 	const viewFestivalInfo = async () => {
-  try {
-    const statuses = ["ONGOING", "ENDED"];
-    let foundFestival = null;
-
-    for (const status of statuses) {
-      const response = await fetch(
-        `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=${status}&page=0&size=100`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            Accept: "application/json",
-          },
+      try {
+        const response = await fetch(
+          `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ENDED&page=0&size=5`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              Accept: "application/json",
+            },
+          }
+        );
+  
+        const result = await response.json();
+  
+        if (!response.ok || result.success !== true) {
+          throw new Error(result.message || "축제 정보 조회에 실패했습니다.");
         }
-      );
-
-      const result = await response.json();
-
-      if (response.ok && result.success === true) {
-        foundFestival = result.data.content.find(
+  
+        // 목록에서 festivalId에 해당하는 데이터 찾기
+        const foundFestival = result.data.content.find(
           (fest) => fest.id === Number(festivalId)
         );
-        if (foundFestival) break; // 찾으면 바로 종료
+        setFestivalInfo(foundFestival || null);
+      } catch (error) {
+        console.error("Error fetching festival info:", error);
+        setError(error.message);
       }
-    }
-
-    setFestivalInfo(foundFestival || null);
-  } catch (error) {
-    console.error("Error fetching festival info:", error);
-    setError(error.message);
-  }
-};
-
+    };
+    
 	// 두 API 호출하기
   useEffect(() => {
     setLoading(true);
@@ -256,8 +252,8 @@ const MPFestivalAppliedCompany = () => {
         <CoChoice>
           {co.selected === "NEUTRAL" && (
             <>
-              <ChoiceBtnYes onClick={()=>openModal(co.id, "ACCEPTED")}>수락하기</ChoiceBtnYes>
-              <ChoiceBtnNo onClick={()=>openModal(co.id, "DENIED")}>거절하기</ChoiceBtnNo>
+              <ChoiceBtnYes disabled>수락하기</ChoiceBtnYes>
+              <ChoiceBtnNo disabled>거절하기</ChoiceBtnNo>
             </>
           )}
 
@@ -299,7 +295,7 @@ const MPFestivalAppliedCompany = () => {
   );
 };
 
-export default MPFestivalAppliedCompany;
+export default MPFestivalClosedAppliedCompany;
 
 /* styled-components */
 const PageWrapper = styled.div`
@@ -512,12 +508,6 @@ const ChoiceBtnYes = styled.button`
     border-color: rgba(0, 0, 0, 0.25);
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-
-    &:hover{
-      background-color: #91b37e;
-      border:none;
-    }
 `;
 
 
@@ -529,23 +519,17 @@ const ChoiceBtnNo = styled.button`
     border-color: rgba(0, 0, 0, 0.25);
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-
-    &:hover{
-      background-color: #9E655A;
-      border: none;
-    }
 `;
 
 const ChoiceBtnY = styled.button`
     width: 200px;
     padding: 20px 0;
     border-radius: 20px;
-    border-width: 1px;
+    border:none;
     border-color: rgba(0, 0, 0, 0.25);
     background: #BAE4A4;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-    cursor: pointer;
+    
+
     color: black;
 `;
 
@@ -553,11 +537,11 @@ const ChoiceBtnN = styled.button`
     width: 200px;
     padding: 20px 0;
     border-radius: 20px;
-    border-width: 1px;
+    border:none;
     border-color: rgba(0, 0, 0, 0.25);
     background: #CD7D6D;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-    cursor: pointer;
+
+
     color: black;
 
 `;
