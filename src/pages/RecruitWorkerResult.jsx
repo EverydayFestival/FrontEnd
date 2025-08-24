@@ -6,10 +6,12 @@ import Header from "../components/Header";
 export default function RecruitWorkerResult() {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [festivalData, setFestivalData] = useState(null);
   const [answers, setAnswers] = useState(null);
 
   useEffect(() => {
+    // 1. 축제 데이터 가져오기
     const foundFestival = getFestivalById(id);
     if (foundFestival && foundFestival.success) {
       setFestivalData(foundFestival.data);
@@ -18,20 +20,52 @@ export default function RecruitWorkerResult() {
       navigate("/");
     }
 
-    // [수정] RecruitWorker.jsx에서 저장한 key와 일치시킵니다.
-    const savedAnswers = localStorage.getItem(`worker_answers_${id}`);
-    if (savedAnswers) {
-      setAnswers(JSON.parse(savedAnswers));
-    } else {
-      // 지원서가 없는 경우를 대비한 처리
-      alert("제출된 지원서 정보를 찾을 수 없습니다.");
-      navigate(`/festivals/${id}`);
-    }
+    // 2. 지원서 API 호출
+    const fetchApplication = async () => {
+      try {
+        const token = localStorage.getItem("accessToken"); // 토큰 가져오기
+        const res = await fetch(`https://your-api.com/applications/${id}`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error("지원서 조회 실패");
+        }
+
+        const data = await res.json();
+
+        if (data.success) {
+          // 배열 형태의 answers, extraAnswers를 기존 JSX 구조에 맞는 객체로 변환
+          const mappedAnswers = {
+            workerName: data.data.answers[0] || "",
+            gender: data.data.answers[1] || "",
+            age: data.data.answers[2] || "",
+            workerPhone: data.data.answers[3] || "",
+            workerEmail: data.data.answers[4] || "",
+            availableTime: data.data.extraAnswers?.[1] || "",
+          };
+
+          setAnswers(mappedAnswers);
+        } else {
+          alert("지원서 조회에 실패했습니다.");
+          navigate(`/festivals/${id}`);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("지원서 조회 중 오류가 발생했습니다.");
+        navigate(`/festivals/${id}`);
+      }
+    };
+
+    fetchApplication();
   }, [id, navigate]);
 
   if (!festivalData || !answers) return <p className="text-center mt-8">Loading...</p>;
 
-  // [수정] 새로운 데이터 구조에 맞게 변수를 선언합니다.
   const festivalInfo = festivalData.festivalOnlyDto;
 
   return (
@@ -68,8 +102,6 @@ export default function RecruitWorkerResult() {
             <label className="block font-semibold text-gray-700">가능한 날짜와 시간</label>
             <p className="mt-1">{answers.availableTime}</p>
           </div>
-          
-          {/* [참고] 현재 API 데이터 구조에는 기획자 질문에 대한 답변을 표시하는 로직이 포함되지 않습니다. */}
         </div>
 
         <button

@@ -1,0 +1,73 @@
+/* src/styles/Home.css */
+
+/* 카드 컨테이너 스타일 */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* 중앙 정렬로 변경하여 더 보기 좋게 만듭니다. */
+    gap: 24px;
+    padding: 0 16px; /* 좌우 패딩을 추가하여 가장자리에 붙지 않도록 합니다. */
+}
+
+/* 카드 개별 스타일 (반응형으로 변경) */
+.card-container > div {
+    /* flex-grow, flex-shrink, flex-basis를 설정하여 유연하게 만듭니다. */
+    /* min-width: 280px (모바일에서도 충분한 크기), max-width: 360px (데스크탑에서 너무 크지 않게) */
+    flex: 1 1 280px;
+    max-width: 360px;
+}
+
+/* Pagination 버튼 스타일 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.pagination ul {
+  display: flex;
+  gap: 12px; /* 버튼 사이 간격 */
+  padding: 0;
+  list-style: none;
+  align-items: center;
+}
+
+.pagination li {
+}
+
+.pagination button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; /* 원형 */
+  border: none;
+  background-color: transparent;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #f1f5f9;
+}
+
+.pagination button.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* 비활성화 버튼 */
+.pagination button:disabled {
+  cursor: not-allowed;
+  color: #cbd5e1;
+}
+
+/* 이전/다음 버튼 */
+.pagination button:first-child,
+.pagination button:last-child {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+}
