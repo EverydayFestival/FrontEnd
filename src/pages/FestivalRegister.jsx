@@ -68,7 +68,7 @@ function FestivalRegister() {
         };
 
         try {
-            const festivalResponse = await fetch('/api/festivals', {
+            const festivalResponse = await fetch(`${import.meta.env.VITE_API_URL}/festivals`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ function FestivalRegister() {
                 };
 
                 try {
-                    const companyResponse = await fetch(`/api/festivals/${newFestivalId}/company-recruit`, {
+                    const companyResponse = await fetch(`${import.meta.env.VITE_API_URL}/festivals/${newFestivalId}/company-recruit`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
                         body: JSON.stringify(companyRecruitmentData),
@@ -131,7 +131,7 @@ function FestivalRegister() {
                 };
 
                 try {
-                    const laborResponse = await fetch(`/api/festivals/${newFestivalId}/labor-recruit`, {
+                    const laborResponse = await fetch(`${import.meta.env.VITE_API_URL}/festivals/${newFestivalId}/labor-recruit`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
                         body: JSON.stringify(laborRecruitmentData),

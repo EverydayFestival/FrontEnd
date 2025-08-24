@@ -4,14 +4,17 @@ import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
+  plugins: [react()],
+  /* 👇 이 부분을 잠시 주석 처리
   server: {
     proxy: {
       "/api": {
-        target: "http://43.201.6.192:8080",
+        target: "https://festival-everyday/duckdns.org",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
+  */
 });
 

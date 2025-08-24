@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { festivals } from "../data/recommendedFestivals";
 import CompanyReview from "../components/CompanyReview";
 import FestivalCard from "../components/FestivalCard";
-import { FaStar, FaRegStar } from "react-icons/fa";
 import Navbar from "../components/Navbar";
+import fullStar from '../assets/full_star.png';
+import emptyStar from '../assets/empty_star.png';
 
 export default function CompanyDetail() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ export default function CompanyDetail() {
       }
 
       try {
-        const response = await fetch(`/api/companies/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/companies/${id}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${accessToken}`,
@@ -63,11 +64,61 @@ export default function CompanyDetail() {
     fetchCompanyDetail();
   }, [id]); // id가 변경될 때마다 API를 다시 호출
 
-  // 찜하기 기능 (로컬 상태만 변경, 실제 API 연동 필요)
-  const toggleFavorite = () => {
-    // TODO: 여기에 찜하기 상태를 서버에 업데이트하는 API 호출 로직을 추가해야 합니다.
-    setFavored((prev) => !prev);
-  };
+// 찜하기 기능
+const toggleFavorite = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    // 1. API 요청 전에 UI를 먼저 업데이트하고, 원래 상태를 저장해둡니다.
+    const originalFavored = favored;
+    setFavored(!originalFavored);
+
+    const method = !originalFavored ? "PUT" : "DELETE";
+    const actionMessage = !originalFavored ? "찜" : "찜 취소";
+
+    // 2. API 명세에 맞게 request body의 키 이름을 수정합니다.
+    const requestBody = {
+        receiverId: parseInt(id),
+        receiverType: "COMPANY" // 업체 상세이므로 "COMPANY"
+    };
+
+    console.log(`${actionMessage} 요청 Body:`, JSON.stringify(requestBody, null, 2));
+
+    try {
+        // 개발 환경을 위해 '/api' 프록시 경로를 사용하도록 수정합니다.
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/favorites`, {
+            method: method,
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error(`${actionMessage}에 실패했습니다.`);
+        }
+
+        const result = await response.json();
+        if (!result.success) {
+            throw new Error(result.message || `${actionMessage}에 실패했습니다.`);
+        }
+        
+        // 성공 시, 서버가 보내주는 최종 상태로 한 번 더 동기화합니다.
+        if (result.data && typeof result.data.favored === 'boolean') {
+            setFavored(result.data.favored);
+        }
+
+    } catch (err) {
+        // 3. 에러가 발생하면, UI를 원래 상태로 되돌립니다.
+        setFavored(originalFavored); 
+        alert(err.message);
+        console.error("Favorite API error:", err);
+    }
+};
 
   // 로딩 및 에러 상태에 따른 UI 렌더링
   if (loading) return <p className="text-center mt-8">로딩 중...</p>;
@@ -89,11 +140,11 @@ export default function CompanyDetail() {
           <div className="flex items-center gap-2">
             <h1 className="text-3xl font-bold">{company.name}</h1>
             <button onClick={toggleFavorite}>
-              {favored ? (
-                <FaStar size={28} className="text-yellow-400" />
-              ) : (
-                <FaRegStar size={28} className="text-gray-400" />
-              )}
+              <img
+                src={favored ? fullStar : emptyStar}
+                alt={favored ? "찜하기 취소" : "찜하기"}
+                className="w-7 h-7"
+              />
             </button>
           </div>
           <p className="text-lg text-gray-600">{company.category}</p>
