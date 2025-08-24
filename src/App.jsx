@@ -1,20 +1,22 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
+import Home from './pages/Home.jsx'
 import MyPageFestival from './pages/MyPage/MyPageFestival.jsx'
 import MyPageCompany from './pages/MyPage/MyPageCompany.jsx'
 import MyPageLabor from './pages/MyPage/MyPageLabor.jsx'
-import MPFestivalOngoing from './pages/MyPage/MyPageFestival/MPFestivalOngoing'
-import MPFestivalClosed from './pages/MyPage/MyPageFestival/MPFestivalClosed'
-import MPFestivalAppliedCompany from './pages/MyPage/MyPageFestival/MPFestivalAppliedCompany'
-import MPFestivalAppliedLabor from './pages/MyPage/MyPageFestival/MPFestivalAppliedLabor'
-import MPFestivalReview2Company from './pages/MyPage/MyPageFestival/MPFestivalReview2Company'
-import MPFestivalNotification from './pages/MyPage/MyPageFestival/MPFestivalNotification'
-import MPFestivalFavored from './pages/MyPage/MPFavored'
-import MPCompanyApply from './pages/MyPage/MyPageCompany/MPCompanyApply'
-import MPCompanyReview2Festival from './pages/MyPage/MyPageCompany/MPCompanyReview2Festival'
-import MPLaborApply from './pages/MyPage/MyPageLabor/MPLaborApply'
-import MPLaborReview2Festival from './pages/MyPage/MyPageLabor/MPLaborReview2Festival'
+import MPFestivalOngoing from './pages/MyPage/MyPageFestival/MPFestivalOngoing.jsx'
+import MPFestivalClosed from './pages/MyPage/MyPageFestival/MPFestivalClosed.jsx'
+import MPFestivalOngoingAppliedCompany from './pages/MyPage/MyPageFestival/MPFestivalOngoingAppliedCompany.jsx'
+import MPFestivalClosedAppliedCompany from './pages/MyPage/MyPageFestival/MPFestivalClosedAppliedCompany.jsx'
+import MPFestivalOngoingAppliedLabor from './pages/MyPage/MyPageFestival/MPFestivalOngoingAppliedLabor.jsx'
+import MPFestivalClosedAppliedLabor from './pages/MyPage/MyPageFestival/MPFestivalClosedAppliedLabor.jsx'
+import MPFestivalReview2Company from './pages/MyPage/MyPageFestival/MPFestivalReview2Company.jsx'
+import MPFestivalNotification from './pages/MyPage/MyPageFestival/MPFestivalNotification.jsx'
+import MPFestivalFavored from './pages/MyPage/MPFavored.jsx'
+import MPCompanyApply from './pages/MyPage/MyPageCompany/MPCompanyApply.jsx'
+import MPCompanyReview2Festival from './pages/MyPage/MyPageCompany/MPCompanyReview2Festival.jsx'
+import MPLaborApply from './pages/MyPage/MyPageLabor/MPLaborApply.jsx'
+import MPLaborReview2Festival from './pages/MyPage/MyPageLabor/MPLaborReview2Festival.jsx'
 import SelectFestivalPage from './pages/SelectFestivalPage.jsx'
 
 //서정
@@ -25,8 +27,8 @@ import FestivalRegister from './pages/FestivalRegister';
 import Inquiry from './pages/Inquiry';
 import FestivalDetail from "./pages/FestivalDetail";
 import CompanyDetail from "./pages/CompanyDetail.jsx";
-import RecruitCompany from "./pages/RecruitCompany";
-import RecruitWorker from "./pages/RecruitWorker";
+import RecruitCompany from "./pages/RecruitCompany.jsx";
+import RecruitWorker from "./pages/RecruitWorker.jsx";
 import Login from './pages/Login.jsx';
 import RecruitCompanyResult from './pages/RecruitCompanyResult.jsx';
 import RecruitWorkerResult from './pages/RecruitWorkerResult.jsx';
@@ -69,8 +71,10 @@ const App = ()=>{
           <Route path='/mypage/labor' element={<MyPageLabor/>}/>
           <Route path='/mypage/festival/ongoing' element={<MPFestivalOngoing/>}/>
           <Route path='/mypage/festival/closed' element={<MPFestivalClosed/>}/>
-          <Route path='/mypage/festival/appliedcompany/:festivalId' element={<MPFestivalAppliedCompany/>}/>
-          <Route path='/mypage/festival/appliedlabor/:festivalId' element={<MPFestivalAppliedLabor/>}/>
+          <Route path='/mypage/festival/ongoing/appliedcompany/:festivalId' element={<MPFestivalOngoingAppliedCompany/>}/>
+          <Route path='/mypage/festival/closed/appliedcompany/:festivalId' element={<MPFestivalClosedAppliedCompany/>}/>
+          <Route path='/mypage/festival/ongoing/appliedlabor/:festivalId' element={<MPFestivalOngoingAppliedLabor/>}/>
+          <Route path='/mypage/festival/closed/appliedlabor/:festivalId' element={<MPFestivalClosedAppliedLabor/>}/>
           <Route path='/mypage/festival/appliedcompany/:festivalId/:companyId/review' element={<MPFestivalReview2Company/>}/>
           <Route path='/mypage/festival/notification' element={<MPFestivalNotification/>}/>
           <Route path='/mypage/favored' element={<MPFestivalFavored/>}/>

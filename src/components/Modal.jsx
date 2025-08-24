@@ -15,10 +15,13 @@ const Modal = ({ show, onClose, onConfirm, children, type = 'ok' }) => {
       <ModalContent>
         {children}
         <ButtonWrapper>
-          {type === 'cancel' && (
+          {type === 'cancel'?  (
+            <>
             <ModalButtonNo onClick={onClose}>취소</ModalButtonNo>
-          )}
-          <ModalButtonYes onClick={onConfirm || onClose}>확인</ModalButtonYes>
+            <ModalButtonYes onClick={onConfirm || onClose}>확인</ModalButtonYes>
+            </>
+          ): <ModalButtonYess onClick={onConfirm || onClose}>확인</ModalButtonYess>}
+
         </ButtonWrapper>
 
       </ModalContent>
@@ -48,6 +51,7 @@ const ModalContent = styled.div`
   padding-bottom: 5px;
   border-radius: 10px;
   text-align: center;
+  font-size: 15px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -64,7 +68,8 @@ const ModalButtonNo = styled.button`
   padding: 15px 0px;
   width: 50px;
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 300;
   border: none;
   border-radius: 0 0 0 10px;
   background-color: white;
@@ -85,9 +90,33 @@ const ModalButtonYes = styled.button`
   padding: 15px 0px;
   width: 50px;
   text-align: center;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 300;
   border: none;
   border-radius: 0 0 10px 0;
+  background-color: white;
+  cursor: pointer;
+
+  &:hover{
+    background-color: #e4e0e0;
+  }
+  
+  &:first-child{
+    /* border-right: 1px solid #ccc; */
+  }
+  
+`;
+
+
+const ModalButtonYess = styled.button`
+  flex:1;
+  padding: 15px 0px;
+  width: 50px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 300;
+  border: none;
+  border-radius: 0 0 10px 10px;
   background-color: white;
   cursor: pointer;
 
