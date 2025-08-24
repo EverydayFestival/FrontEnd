@@ -104,7 +104,7 @@ const App = ()=>{
         <Route path="/company/:id" element={<PrivateRoute allowedRoles={allRoles}><CompanyDetail/></PrivateRoute>} />
         <Route path="/recruit/company/:id" element={<PrivateRoute allowedRoles={allRoles}><RecruitCompany /></PrivateRoute>} />
         <Route path="/recruit/worker/:id" element={<PrivateRoute allowedRoles={allRoles}><RecruitWorker /></PrivateRoute>} /> 
-        <Route path="/application/result/:applicationId" element={<PrivateRoute allowedRoles={allRoles}><RecruitCompanyResult /></PrivateRoute>} />
+        <Route path="/recruit/company/:id/result" element={<PrivateRoute allowedRoles={allRoles}><RecruitCompanyResult /></PrivateRoute>} />
         <Route path="/recruit/worker/:id/result" element={<PrivateRoute allowedRoles={allRoles}><RecruitWorkerResult /></PrivateRoute>} />
         <Route path="/festivals/:id/reviews" element={<PrivateRoute allowedRoles={allRoles}><AllReviewsPage /></PrivateRoute>} />
         <Route path="/company/:id/reviews" element={<PrivateRoute allowedRoles={allRoles}><AllReviewPageCompany /></PrivateRoute>} />

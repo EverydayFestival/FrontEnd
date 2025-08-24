@@ -10,12 +10,12 @@ const renderTimeOptions = (limit, step = 1) => {
     return options;
 };
 
-function FestivalInfoForm({ formData, handleChange }) {
+function FestivalInfoForm({ formData, handleChange, handleFileChange }) {
     return (
         <fieldset className="space-y-4">
             <legend className="text-xl font-semibold border-b pb-2 mb-4 w-full">기본 정보</legend>
             <div><label className="block font-semibold">축제/행사명 *</label><input type="text" name="name" value={formData.name} onChange={handleChange} className="border p-2 w-full rounded" required /></div>
-            <div><label className="block font-semibold">이미지 넣기</label><input type="file" name="image" onChange={handleChange} className="border p-2 w-full rounded" /></div>
+            <div><label className="block font-semibold">이미지 넣기</label><input type="file" name="image" onChange={handleFileChange} className="border p-2 w-full rounded" /></div>
             <div>
                 <label className="block font-semibold">행사 기간 *</label>
                 <div className="flex flex-wrap items-center gap-2">

@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-// import { companies } from "../assets/company/companies"; // 더 이상 사용하지 않으므로 삭제 또는 주석 처리
-import { festivals } from "../data/recommendedFestivals";
 import CompanyReview from "../components/CompanyReview";
 import FestivalCard from "../components/FestivalCard";
 import Navbar from "../components/Navbar";
 import fullStar from '../assets/full_star.png';
 import emptyStar from '../assets/empty_star.png';
+import { AuthContext } from "../context/AuthContext";
+import axios from 'axios';
 
 export default function CompanyDetail() {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
   const [company, setCompany] = useState(null);
   const [favored, setFavored] = useState(false);
+  const [recommendedFestivals, setRecommendedFestivals] = useState([]);
   
   // 로딩과 에러 처리를 위한 상태 추가
   const [loading, setLoading] = useState(true);
@@ -32,26 +33,33 @@ export default function CompanyDetail() {
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/companies/${id}`, {
+        const companyResponse = await axios.get(`${import.meta.env.VITE_API_URL}/companies/${id}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${accessToken}`,
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP 에러! 상태: ${response.status}`);
+        const companyResult = companyResponse.data;
+        if (companyResult.success) {
+          setCompany(companyResult.data);
+          setFavored(companyResult.data.favorStatus === "FAVORED");
+        } else {
+          throw new Error(companyResult.message || "업체 데이터를 불러오는 데 실패했습니다.");
         }
 
-        const result = await response.json();
-        
-        if (result.success) {
-          // API 응답의 data 객체를 company 상태에 저장
-          setCompany(result.data);
-          // favorStatus 값에 따라 favored 상태 설정
-          setFavored(result.data.favorStatus === "FAVORED");
+        // 2. 추천 축제 목록 가져오기
+        const recommendedResponse = await axios.get(`${import.meta.env.VITE_API_URL}/companies/${id}/recommended-festivals`, {
+          headers: { 'Authorization': `Bearer ${accessToken}` },
+        });
+
+        const recommendedResult = recommendedResponse.data;
+        if (recommendedResult.success) {
+          setRecommendedFestivals(recommendedResult.data);
         } else {
-          throw new Error(result.message || "데이터를 불러오는 데 실패했습니다.");
+        // 추천 축제 데이터가 없어도 에러는 발생시키지 않습니다.
+          console.error("추천 축제 목록을 불러오는 데 실패했습니다:", recommendedResult.message);
+          setRecommendedFestivals([]);
         }
 
       } catch (err) {
@@ -62,7 +70,7 @@ export default function CompanyDetail() {
     };
 
     fetchCompanyDetail();
-  }, [id]); // id가 변경될 때마다 API를 다시 호출
+  }, [id]);
 
 // 찜하기 기능
 const toggleFavorite = async () => {
@@ -164,43 +172,52 @@ const toggleFavorite = async () => {
       {/* 리뷰와 추천 축제 섹션은 기존 코드 유지 */}
       <CompanyReview reviews={[]} companyId={id} />
 
-       <section className="mt-8">
+      <section className="mt-8">
         <h2 className="text-2xl font-semibold mb-4">
           이런 축제는 어떠세요?
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {festivals.slice(0, 3).map((fest) => (
-            <FestivalCard
-              key={fest.festivalId}
-              festival={{
-                // FestivalCard가 필요로 하는 속성 이름으로 데이터를 변환(매핑)합니다.
-                id: fest.festivalId,
-                name: fest.festivalName,
-                holderName: fest.festivalOrganization,
-                imageUrl: fest.imageUrl,
-                favorStatus: fest.favored, // 'FAVORED' 또는 'NOT_FAVORED'
-                period: {
-                  begin: fest.festivalHoldBegin // period 객체 안에 begin 속성을 만들어 전달
-                }
-              }}
-            />
-          ))}
-        </div>
+        {/* 추천 축제가 0개일 때 메시지를 표시하는 조건부 렌더링 */}
+        {recommendedFestivals.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {recommendedFestivals.map((fest) => (
+              <FestivalCard
+                key={fest.id}
+                festival={{
+                  // FestivalCard가 필요로 하는 속성 이름으로 데이터를 변환(매핑)합니다.
+                  id: fest.id,
+                  name: fest.name,
+                  holderName: `${fest.address.city} ${fest.address.district}`,
+                  imageUrl: fest.imageUrl,
+                  favorStatus: "NOT_FAVORED", // 추천 축제이므로 찜 상태는 기본으로 설정
+                  period: fest.period,
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-500 py-10">
+            등록된 추천 축제가 없습니다.
+          </p>
+        )}
       </section>
 
-      <section className="text-center">
-        <p>이 업체가 마음에 드셨나요?</p>
-        <Link
-          to="/select-festival"
-          state={{
-            companyId: id, 
-            companyName: company.name 
-          }}
-          className="inline-block bg-blue-600 text-white font-bold py-3 px-10 rounded-lg text-lg hover:bg-blue-700 transition-transform hover:scale-105"
-        >
-          관심 보내기
-        </Link>
-      </section>
+      {/* 조건부 렌더링: user 객체가 존재하고 역할이 'FESTIVAL_MANAGER'일 때만 버튼 표시 */}
+      {user && user.role === "FESTIVAL_MANAGER" && (
+        <section className="text-center">
+          <p>이 업체가 마음에 드셨나요?</p>
+          <Link
+            to="/select-festival"
+            state={{
+              companyId: id,
+              companyName: company.name,
+            }}
+            className="inline-block bg-blue-600 text-white font-bold py-3 px-10 rounded-lg text-lg hover:bg-blue-700 transition-transform hover:scale-105"
+          >
+            관심 보내기
+          </Link>
+        </section>
+      )}
     </div>
   );
 }
+
