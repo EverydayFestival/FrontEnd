@@ -1,14 +1,15 @@
-/* import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Tabs from '../components/Tabs';
 import FestivalCard from '../components/FestivalCard';
 import CompanyCard from '../components/CompanyCard';
 import Pagination from '../components/Pagination';
-// mainPageData 대신 새로운 검색 결과 더미 데이터를 import 합니다.
-import { searchResultData } from '../data/searchResultData';
-import '../styles/Home.css'
+import '../styles/Home.css';
+import Navbar from '../components/Navbar';
+import React from 'react';
 
+// URL의 쿼리 파라미터를 쉽게 가져오기 위한 커스텀 훅
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
@@ -18,106 +19,130 @@ function Search() {
     const searchTerm = query.get("query") || "";
 
     const [selectedTab, setSelectedTab] = useState('festival');
-    const [selectedSort, setSelectedSort] = useState('latest');
     
-    // API 응답 전체를 저장할 state
-    const [festivalResult, setFestivalResult] = useState({ data: { content: [], totalElements: 0 } });
-    const [companyResult, setCompanyResult] = useState({ data: { content: [], totalElements: 0 } });
+    // API 응답 데이터를 저장할 state
+    const [results, setResults] = useState([]);
+    const [totalItems, setTotalItems] = useState(0);
+
+    // 로딩 및 에러 상태 추가
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 6; // 한 페이지에 보여줄 아이템 수
+    const itemsPerPage = 6;
 
-    // searchTerm이나 정렬 순서가 바뀔 때마다 데이터를 "가져온다"고 가정합니다.
+    // 검색어, 탭, 정렬, 페이지가 변경될 때마다 API를 새로 호출합니다.
     useEffect(() => {
-        // 나중에는 이 부분에 실제 fetch API 호출이 들어갑니다.
-        // 예: fetch(`/api/search/festivals?query=${searchTerm}&sort=${selectedSort}&page=${currentPage}`)
-        
-        // 지금은 더미 데이터로 필터링 및 정렬을 시뮬레이션합니다.
-        const filteredFestivals = searchResultData.data.content.filter((item) =>
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        const fetchData = async () => {
+            setLoading(true);
+            setError(null);
 
-        const sortedFestivals = [...filteredFestivals].sort((a, b) => {
-            if (selectedSort === 'latest') {
-                return new Date(b.period.begin) - new Date(a.period.begin);
+            const accessToken = localStorage.getItem("accessToken");
+            if (!accessToken) {
+                setError("로그인이 필요합니다.");
+                setLoading(false);
+                return;
             }
-            if (selectedSort === 'popular') {
-                return (b.favorStatus === 'FAVORED' ? 1 : 0) - (a.favorStatus === 'FAVORED' ? 1 : 0);
-            }
-            return 0;
-        });
 
-        setFestivalResult({ data: { ...searchResultData.data, content: sortedFestivals, totalElements: sortedFestivals.length } });
+            // 탭에 따라 API 엔드포인트 결정
+            const endpoint = selectedTab === 'festival' ? '/festivals/search' : '/companies/search';
+            
+            // 서버에 보낼 검색 조건
+            const searchParams = {
+                keyword: searchTerm,
+                page: currentPage - 1,
+                size: itemsPerPage
+            };
 
-        // 업체 검색 로직 (동일한 방식으로)
-        const filteredcompanies = SearchResultData.data.content.filter(item => 
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setCompanyResult({ data: { ...companySearchResultData.data, content: filteredCompanies, totalElements: filteredcompanies.length } });
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(searchParams)
+                });
 
-    }, [searchTerm, selectedSort]);
-
-    // 현재 페이지에 보여줄 아이템들을 계산합니다.
-    const currentList = selectedTab === 'festival' ? festivalResult.data.content : companyResult.data.content;
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = currentList.slice(indexOfFirstItem, indexOfLastItem);
-
-    return (
-        <div>
-            <Header />
-            <Tabs 
-                selectedTab={selectedTab}
-                setSelectedTab={(tab) => {
-                    setSelectedTab(tab);
-                    setCurrentPage(1); // 탭 변경 시 1페이지로 초기화
-                }}
-                selectedSort={selectedSort}
-                setSelectedSort={setSelectedSort}
-            />
-
-            <div className="p-4">
-                <p className="text-lg">'{searchTerm}'에 대한 검색 결과입니다.</p>
-            </div>
-
-            <div className="card-container">
-                {selectedTab === 'festival' &&
-                    currentItems.map((festival) => (
-                        // FestivalCard가 새로운 데이터 구조를 받을 수 있도록 props를 수정합니다.
-                        <FestivalCard 
-                            key={festival.id}
-                            festival={{ // mainPageData 형식과 유사하게 맞춰 전달
-                                festivalId: festival.id,
-                                festivalName: festival.name,
-                                festivalOrganization: festival.holderName,
-                                festivalHoldBegin: festival.period.begin,
-                                favored: festival.favorStatus === 'FAVORED',
-                                imageUrl: festival.imageUrl
-                            }}
-                        />
-                    ))
+                if (!response.ok) {
+                    throw new Error(`HTTP 에러! 상태: ${response.status}`);
                 }
 
-                {selectedTab === 'company' &&
-                    currentItems.map((company) => (
+                const result = await response.json();
+                setResults(result.data.content);
+                setTotalItems(result.data.totalElements);
+
+            } catch (err) {
+                setError(err.message);
+                setResults([]); // 에러 발생 시 기존 결과 초기화
+                setTotalItems(0);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [searchTerm, selectedTab, currentPage]); // 의존성 배열
+
+    const renderContent = () => {
+        if (loading) {
+            return <div className="w-full text-center p-10">검색 중...</div>;
+        }
+        if (error) {
+            return <div className="w-full text-center p-10 text-red-500">에러: {error}</div>;
+        }
+        if (results.length === 0) {
+            return <div className="w-full text-center p-10">검색 결과가 없습니다.</div>;
+        }
+
+        return (
+            <div className="card-container">
+                {selectedTab === 'festival' ?
+                    results.map((festival) => (
+                        <FestivalCard key={festival.id} festival={festival} />
+                    ))
+                    :
+                    results.map((company) => (
                         <CompanyCard
                             key={company.id}
-                            company={{ // CompanyCard가 받을 데이터 형식
+                            company={{
                                 companyId: company.id,
                                 companyName: company.name,
                                 companyCategory: company.category,
-                                companyCity: company.address.city,
-                                favored: company.favored,
+                                companyCity: company.city,
+                                favored: company.favorStatus === 'FAVORED',
                                 imageUrl: company.imageUrl
                             }}
                         />
                     ))
                 }
             </div>
+        );
+    };
+
+    return (
+        <div>
+            <Navbar />
+            <Header />
+            <Tabs 
+                selectedTab={selectedTab}
+                setSelectedTab={(tab) => {
+                    setSelectedTab(tab);
+                    setCurrentPage(1);
+                }}
+            />
+
+            <div className="p-4">
+                <p className="text-lg">
+                    <span className="font-bold text-blue-600">'{searchTerm}'</span>에 대한 검색 결과입니다. ({totalItems}건)
+                </p>
+            </div>
+
+            {renderContent()}
 
             <Pagination
                 itemsPerPage={itemsPerPage}
-                totalItems={selectedTab === 'festival' ? festivalResult.data.totalElements : companyResult.data.totalElements}
+                totalItems={totalItems}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
             />
@@ -126,4 +151,3 @@ function Search() {
 }
 
 export default Search;
- */

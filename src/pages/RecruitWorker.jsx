@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getFestivalById } from "../assets/fest/festivals";
-import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 
 export default function RecruitWorker() {
@@ -10,13 +8,15 @@ export default function RecruitWorker() {
     
     // API 응답 전체를 저장할 state
     const [festivalData, setFestivalData] = useState(null);
-    // 사용자의 답변을 저장할 state
     const [answers, setAnswers] = useState({});
+    const [additionalQuestions, setAdditionalQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchRecruitmentData = async () => {
+            setLoading(true);
+            setError(null);
             const accessToken = localStorage.getItem("accessToken");
             if (!accessToken) {
                 setError("로그인이 필요합니다.");
@@ -25,29 +25,43 @@ export default function RecruitWorker() {
             }
 
             try {
-                // 1. 축제 상세 정보 API를 호출하여 모집 공고 데이터를 가져옵니다.
-                const response = await fetch(`/api/festivals/${id}`, {
+                // ✅ 2. API 호출 주소를 Vite 프록시를 사용하도록 '/api'로 수정합니다.
+                const festivalResponse = await fetch(`${import.meta.env.VITE_API_URL}/festivals/${id}`, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                if (!festivalResponse.ok) {
+                    throw new Error(`HTTP error! status: ${festivalResponse.status}`);
                 }
 
-                const result = await response.json();
+                const result = await festivalResponse.json();
                 if (result.success) {
-                    // 2. 근로자 모집 중이 아니면 경고창을 띄우고 이전 페이지로 돌려보냅니다.
-                    if (result.data.laborRecruitStatus !== "RECRUITING" || !result.data.laborRecruitDto) {
+                    const festival = result.data;
+                    if (festival.laborRecruitStatus !== "RECRUITING" || !festival.laborRecruitDto) {
                         alert("현재 단기 근로자를 모집하고 있지 않습니다.");
                         navigate(`/festivals/${id}`);
                         return;
                     }
-                    setFestivalData(result.data);
+                    setFestivalData(festival);
+
+                    // ✅ 3. 축제 정보에서 recruitId를 가져와 추가 질문 API를 호출합니다.
+                    const recruitId = festival.laborRecruitDto.id; // recruitId 추출 (가정)
+                    if (recruitId) {
+                        const questionsResponse = await fetch(`${import.meta.env.VITE_API_URL}/recruits/${recruitId}`, {
+                            headers: { 'Authorization': `Bearer ${accessToken}` }
+                        });
+                        if (!questionsResponse.ok) throw new Error("추가 질문을 불러오는 데 실패했습니다.");
+
+                        const questionsResult = await questionsResponse.json();
+                        setAdditionalQuestions(questionsResult.data.questions);
+                    }
                 } else {
                     throw new Error(result.message || "데이터를 불러오는 데 실패했습니다.");
                 }
             } catch (err) {
                 setError(err.message);
+                alert(err.message || "데이터 로딩 중 오류 발생");
+                navigate(-1);
             } finally {
                 setLoading(false);
             }
@@ -56,41 +70,82 @@ export default function RecruitWorker() {
         fetchRecruitmentData();
     }, [id, navigate]);
 
-    // 로딩 및 에러 상태 처리
     if (loading) return <p className="text-center mt-8">로딩 중...</p>;
     if (error) return <p className="text-center mt-8 text-red-500">에러: {error}</p>;
     if (!festivalData) return <p className="text-center mt-8">축제 정보를 찾을 수 없습니다.</p>;
 
-    // API 데이터 구조에 맞게 변수 할당
     const festivalInfo = festivalData.festivalOnlyDto;
     const laborRecruitInfo = festivalData.laborRecruitDto;
 
+    // ✅ 4. 모든 입력 필드를 하나의 핸들러로 처리합니다.
     const handleChange = (e) => {
         const { name, value } = e.target;
         setAnswers((prev) => ({ ...prev, [name]: value }));
     };
     
-    // 추가 질문에 대한 답변을 처리하는 핸들러
-    const handleExtraQuestionChange = (index, value) => {
-        setAnswers(prev => ({
-            ...prev,
-            extraAnswers: {
-                ...prev.extraAnswers,
-                [index]: value
-            }
-        }));
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const accessToken = localStorage.getItem("accessToken");
+    if (!accessToken) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    // 1. API가 요구하는 형식으로 답변 데이터를 재구성합니다.
+    
+    // 고정 질문 키 (서버가 요구하는 순서대로)
+    const fixedQuestionKeys = [
+        'workerName', 
+        'gender', 
+        'workerAge', 
+        'workerPhone', 
+        'workerEmail'
+    ];
+
+    const fixedAnswers = fixedQuestionKeys.map(key => answers[key] || "");
+
+    // 추가 질문 답변 (extraQuestion_으로 시작하는 키)
+    const extraAnswers = Object.keys(answers)
+        .filter(key => key.startsWith('extraQuestion_'))
+        .sort() // 질문 순서를 보장하기 위해 정렬
+        .map(key => answers[key]);
+
+    const requestBody = {
+        answers: fixedAnswers,
+        extraAnswers: extraAnswers
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        // 여기에 지원서 제출(POST) API 호출 로직을 추가하면 됩니다.
-        // 예시: const response = await fetch(`/api/recruits/${laborRecruitInfo.id}/apply`, { ... });
-        
-        console.log("제출할 답변:", answers);
-        alert("지원서가 성공적으로 제출되었습니다!");
-        navigate(`/festivals/${id}`);
-    };
+    // ✅ 요청이 제대로 전달되는지 확인하기 위한 콘솔 출력
+    console.log("API 요청 Body:", JSON.stringify(requestBody, null, 2));
+
+    try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/festivals/${id}/labor-applications`, {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            alert("지원서가 성공적으로 제출되었습니다!");
+            navigate(`/festivals/${id}`); // 제출 후 축제 상세 페이지로 이동
+        } else {
+            // 서버에서 보낸 에러 메시지를 보여줍니다.
+            alert(result.message || "제출에 실패했습니다.");
+        }
+
+    } catch (err) {
+        console.error("Submit API error:", err);
+        alert("서버에 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    }
+};
+
+
 
     return (
         <div>
@@ -121,18 +176,23 @@ export default function RecruitWorker() {
                     <div><label className="block font-semibold">이메일 *</label><input type="email" name="workerEmail" onChange={handleChange} className="border p-2 w-full rounded" required /></div>
                     
                     {/* API에서 받아온 추가 질문들을 동적으로 렌더링 */}
-                    {laborRecruitInfo.extraQuestions && laborRecruitInfo.extraQuestions.map((question, index) => (
-                        <div key={index}>
-                            <label className="block font-semibold">{question} *</label>
-                            <input
-                                type="text"
-                                name={`extraQuestion_${index}`}
-                                onChange={(e) => handleExtraQuestionChange(index, e.target.value)}
-                                className="border p-2 w-full rounded"
-                                required
-                            />
+                    {additionalQuestions.length > 0 && (
+                        <div className="border-t pt-6 mt-6">
+                           <h3 className="text-lg font-semibold mb-4">추가 질문</h3>
+                           {additionalQuestions.map((question, index) => (
+                               <div key={index}>
+                                   <label className="block font-semibold">{question} *</label>
+                                   <input
+                                       type="text"
+                                       name={`extraQuestion_${index}`} // 고유한 name 부여
+                                       onChange={handleChange} // 통일된 핸들러 사용
+                                       className="border p-2 w-full rounded"
+                                       required
+                                   />
+                               </div>
+                           ))}
                         </div>
-                    ))}
+                    )}
 
                     <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">제출하기</button>
                 </form>

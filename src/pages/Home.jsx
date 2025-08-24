@@ -42,7 +42,7 @@ useEffect(() => {
             };
 
             // 2. method를 'POST'로 변경하고, 검색 조건을 body에 담아 보냅니다.
-            const response = await fetch("/api/festivals/search", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/festivals/search`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
@@ -92,7 +92,7 @@ useEffect(() => {
         size: itemsPerPage
       };
 
-      const response = await fetch("/api/companies/search", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/companies/search`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
