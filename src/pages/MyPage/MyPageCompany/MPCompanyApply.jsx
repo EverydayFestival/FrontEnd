@@ -90,7 +90,7 @@ const MPCompanyApply = () => {
                       {/* <MoreIcon src={more_button} alt="더보기" /> */}
                      </FestLeft>
                      <StatusClosed>
-                        <span>수락</span>
+                        <ChoiceBtnY disabled>수락됨</ChoiceBtnY>
                         <ReviewBtn onClick={()=>navigate(`/mypage/company/${fest.festivalId}/review`)}>리뷰쓰기</ReviewBtn>
                     </StatusClosed>
                      
@@ -153,7 +153,7 @@ const MPCompanyApply = () => {
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
                      <StatusClosed>
-                        <span>수락</span>
+                        <ChoiceBtnY disabled>수락됨</ChoiceBtnY>
                         <ReviewBtn onClick={()=>navigate(`/mypage/company/${fest.festivalId}/review`)}>리뷰쓰기</ReviewBtn>
                     </StatusClosed>
                     </FestCard>
@@ -334,6 +334,10 @@ const ApplicationBtn = styled.button`
     align-items: center;
     justify-content: center;
 
+    &:hover{
+      background-color: #dcd7d7;
+    }
+
 `;
 
 
@@ -349,6 +353,18 @@ const Content = styled.div`
 //   height: 24px;
 //   cursor: pointer;
 // `;
+
+
+const ChoiceBtnY = styled.button`
+    width: 130px;
+    padding: 20px 0;
+    border-radius: 20px;
+    border:none;
+    background: #BAE4A4;
+    
+
+    color: black;
+`;
 
 const More = styled.span`
   margin-bottom: 80px;
