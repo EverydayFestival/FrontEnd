@@ -1,9 +1,10 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home.jsx'
-import MyPageFestival from './pages/MyPage/MyPageFestival.jsx'
-import MyPageCompany from './pages/MyPage/MyPageCompany.jsx'
-import MyPageLabor from './pages/MyPage/MyPageLabor.jsx'
+// import MyPageFestival from './pages/MyPage/MyPageFestival.jsx'
+// import MyPageCompany from './pages/MyPage/MyPageCompany.jsx'
+// import MyPageLabor from './pages/MyPage/MyPageLabor.jsx'
+import MyPage from './pages/MyPage/MyPage.jsx'
 import MPFestivalOngoing from './pages/MyPage/MyPageFestival/MPFestivalOngoing.jsx'
 import MPFestivalClosed from './pages/MyPage/MyPageFestival/MPFestivalClosed.jsx'
 import MPFestivalOngoingAppliedCompany from './pages/MyPage/MyPageFestival/MPFestivalOngoingAppliedCompany.jsx'
@@ -66,9 +67,9 @@ const App = ()=>{
         <Routes>
           
           <Route path='/mypage' element={<PrivateRoute allowedRoles={allRoles}><MyPageRouter/></PrivateRoute>}/>
-          <Route path='/mypage/festival' element={<MyPageFestival/>}/>
-          <Route path='/mypage/company' element={<MyPageCompany/>}/>
-          <Route path='/mypage/labor' element={<MyPageLabor/>}/>
+          <Route path='/mypage/festival' element={<MyPage/>}/>
+          <Route path='/mypage/company' element={<MyPage/>}/>
+          <Route path='/mypage/labor' element={<MyPage/>}/>
           <Route path='/mypage/festival/ongoing' element={<MPFestivalOngoing/>}/>
           <Route path='/mypage/festival/closed' element={<MPFestivalClosed/>}/>
           <Route path='/mypage/festival/ongoing/appliedcompany/:festivalId' element={<MPFestivalOngoingAppliedCompany/>}/>

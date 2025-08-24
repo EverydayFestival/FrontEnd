@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Navbar from '../../components/Navbar';
 import profile from '../../assets/profile.png';
@@ -7,6 +7,10 @@ import { useNavigate } from 'react-router-dom';
 const MyPage = () => {
   const [profileType, setProfileType] = useState('Festival'); //Festival, Company, Labor
   const navigate = useNavigate();
+
+  const [info, setInfo] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const buttonConfig = {
     Festival: [
@@ -17,6 +21,45 @@ const MyPage = () => {
   };
 
   const buttons = buttonConfig[profileType] || [];
+
+  const viewMyInfo = async() => {
+      try{
+        setLoading(true);
+        setError("");
+  
+        const response = await fetch(
+     "http://43.201.6.192:8080/users/me/profile",
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Accept: "application/json",
+      },
+    }
+  );
+  
+        const result = await response.json();
+  
+        if(!response.ok || result.success !== true) {
+          throw new Error(result.message || "내 프로필 조회에 실패했습니다.");
+        }
+        
+        setInfo(result.data ?? []);
+        console.log(result.data);
+      }catch(error){
+        console.error("Error fetching my information:", error);
+        setError(error.message);
+      }finally{
+        setLoading(false);
+      }
+    };
+  
+    useEffect(()=>{
+      viewMyInfo();
+    },[]);
+  
+    if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+    if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
 
   return (
     <MyPageWrapper>
