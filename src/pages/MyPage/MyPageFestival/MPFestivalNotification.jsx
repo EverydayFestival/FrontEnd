@@ -100,6 +100,9 @@ const MPFestivalNotification = () => {
     console.log("🔔 종 아이콘 카운트 +1");
   };
 
+  if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+  if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
+
 
   const renderMessage = (noti) => {
     switch (noti.noticeType) {

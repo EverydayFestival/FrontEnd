@@ -12,7 +12,31 @@ const MPFestivalClosedAppliedCompany = () => {
   const [activeFilter, setActiveFilter] = useState('지원순');
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  //업체 지원현황 api 
+	const [appliedCompanies, setAppliedCompanies] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState("");
+
   const filters = ['지원순', '수락', '거절'];
+  const [filteredCompanies, setFilteredCompanies] = useState([]);
+
+    // appliedCompanies가 바뀌거나 activeFilter가 바뀔 때마다 필터링 실행
+  useEffect(() => {
+  switch (activeFilter) {
+    case "지원순":
+      setFilteredCompanies(appliedCompanies);
+      break;
+    case "수락":
+      setFilteredCompanies(appliedCompanies.filter((co) => co.selected === "ACCEPTED"));
+      break;
+    case "거절":
+      setFilteredCompanies(appliedCompanies.filter((co) => co.selected === "DENIED"));
+      break;
+    default:
+      setFilteredCompanies(appliedCompanies);
+  }
+}, [activeFilter, appliedCompanies]);
+
 
 
   // const festival = fest_data.find(f => f.festivalId === Number(festivalId));
@@ -25,19 +49,16 @@ const MPFestivalClosedAppliedCompany = () => {
 
   const navigate = useNavigate();
   
-  //업체 지원현황 api 
-	const [appliedCompanies, setAppliedCompanies] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState("");
+  
 
   //모달팝업
   const [showModal, setShowModal] = useState(false);
   const [pendingAction, setPendingAction] = useState(null); //{id, status}
   
-  const openModal = (companyId, statusType) => {
-    setPendingAction({id: companyId, status: statusType});
-    setShowModal(true);
-  }
+  // const openModal = (companyId, statusType) => {
+  //   setPendingAction({id: companyId, status: statusType});
+  //   setShowModal(true);
+  // }
   const confirmModal = () => {
     if(pendingAction) {
       handleChoice(pendingAction.id, pendingAction.status);
@@ -225,19 +246,19 @@ const MPFestivalClosedAppliedCompany = () => {
         ))}
       </ApplyCompanyList> */}
   <ApplyCompanyList>
-  {appliedCompanies.length === 0 ? (
-    <p>해당 축제에 지원한 업체가 없습니다.</p>
+  {filteredCompanies.length === 0 ? (   
+    <p>해당 조건에 맞는 업체가 없어요!</p>
   ) : (
-    appliedCompanies.map((co) => (
-      <CoCard key={co.id}>
+    filteredCompanies.map((co) => (    
+      <CoCard key={co.simpleCompany.id}>
         <CoImage src={co.imageUrl} alt="업체이미지" />
         <Coleft>
           <CoInfo>
             <RealInfo>
               <CoName>{co.simpleCompany.name}</CoName>
               <AddressWrapper>
-              <p>{co.simpleCompany?.address?.city}</p>
-              <p>{co.simpleCompany?.address?.district}</p>
+                <p>{co.simpleCompany?.address?.city}</p>
+                <p>{co.simpleCompany?.address?.district}</p>
               </AddressWrapper>
               <p>{co.simpleCompany.category}</p>
             </RealInfo>
@@ -259,7 +280,7 @@ const MPFestivalClosedAppliedCompany = () => {
               <ChoiceBtnY disabled>수락됨</ChoiceBtnY>
               <ReviewBtn
                 onClick={() =>
-                  navigate(`/mypage/festival/appliedcompany/${festivalId}/${co.simpleCompany.id}/review`)
+                  navigate(`/mypage/festival/appliedcompany/${festivalId}/${co.simpleCompany?.id}/review`)
                 }
               >
                 리뷰쓰기
@@ -273,6 +294,7 @@ const MPFestivalClosedAppliedCompany = () => {
     ))
   )}
 </ApplyCompanyList>
+
     <Modal
       show={showModal}
       onClose={() => setShowModal(false)}
@@ -430,7 +452,7 @@ const CoInfo = styled.div`
 
 const AddressWrapper = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 3px;
 `
 
 const RealInfo = styled.div`
@@ -461,6 +483,7 @@ const ApplicationBtn = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
 
     &:hover{
       background-color: #dcd7d7;
@@ -491,6 +514,7 @@ const ReviewBtn = styled.button`
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover{
       background-color: #dcd7d7;

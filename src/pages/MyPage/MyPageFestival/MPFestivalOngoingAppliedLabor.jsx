@@ -332,6 +332,10 @@ const ApplicationBtn = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+    &:hover{
+      background-color: #dcd7d7;
+    }
 
 `;
 
@@ -352,6 +356,7 @@ const ChoiceBtnYes = styled.button`
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover{
       background-color: #BAE4A4;
@@ -368,6 +373,7 @@ const ChoiceBtnNo = styled.button`
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover{
       background-color: #CD7D6D;
