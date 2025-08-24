@@ -24,7 +24,7 @@ const Navbar = () => {
       <Center></Center>
       <NavbarRight>
         <Icon onClick={()=>navigate('/mypage/festival/notification')}src={bell} alt="notification" />
-        <Icon onClick={()=>navigate('/mypage/')}src={mypageicon} alt="mypage" />
+        <Icon onClick={()=>navigate('/mypage')}src={mypageicon} alt="mypage" />
         <Icon onClick={handleSubmit}src={logout_icon} alt="logout" />
         <Modal 
         show={showModal} 
