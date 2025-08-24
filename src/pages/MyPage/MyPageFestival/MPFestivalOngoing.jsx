@@ -86,10 +86,10 @@ const MPFestivalOngoing = () => {
               </FestInfo>
 
               <RecruitStatus>
-                <button onClick={() => navigate(`/mypage/festival/appliedcompany/${fest.id}`)}>
+                <button onClick={() => navigate(`/mypage/festival/ongoing/appliedcompany/${fest.id}`)}>
                   업체 지원현황
                 </button>
-                <button onClick={() => navigate(`/mypage/festival/appliedlabor/${fest.id}`)}>
+                <button onClick={() => navigate(`/mypage/festival/ongoing/appliedlabor/${fest.id}`)}>
                   단기근로자 지원현황
                 </button>
               </RecruitStatus>

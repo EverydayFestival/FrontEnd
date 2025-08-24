@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Navbar from '../../../components/Navbar'
 import { useNavigate, useParams } from 'react-router-dom'
-import fest_data from '../../../assets/fest/fest_data'
-import co_data from '../../../assets/company/co_data'
+// import fest_data from '../../../assets/fest/fest_data'
+// import co_data from '../../../assets/company/co_data'
 import Modal from '../../../components/Modal'
 import Box from '../../../components/Box'
 
@@ -348,6 +348,6 @@ const RegisterBtn = styled.button`
         background: ${(props) => (props.disabled ? "#8e8e8e" : "#ee9d8f")} ;
     }
 `
-//#8e8e8e
+
 
 

@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import Box from '../../../components/Box';
 import Modal from '../../../components/Modal';
 
-const MPFestivalAppliedLabor = () => {
+const MPFestivalClosedAppliedLabor = () => {
 
     const {festivalId} = useParams();
     const [festivalInfo, setFestivalInfo] = useState(null); // 축제 정보
@@ -76,7 +76,7 @@ const MPFestivalAppliedLabor = () => {
     const viewFestivalInfo = async () => {
       try {
         const response = await fetch(
-          `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ONGOING&page=0&size=5`,
+          `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ENDED&page=0&size=5`,
           {
             method: "GET",
             headers: {
@@ -193,8 +193,8 @@ const MPFestivalAppliedLabor = () => {
             <LaborChoice>
               {la.selected === "NEUTRAL" && (
                 <>
-                  <ChoiceBtnYes onClick={() => openModal(la.id, "ACCEPTED")}>수락하기</ChoiceBtnYes>
-                  <ChoiceBtnNo onClick={() => openModal(la.id, "DENIED")}>거절하기</ChoiceBtnNo>
+                  <ChoiceBtnYes disabled>수락하기</ChoiceBtnYes>
+                  <ChoiceBtnNo disabled>거절하기</ChoiceBtnNo>
                 </>
               )}
 
@@ -230,7 +230,7 @@ const MPFestivalAppliedLabor = () => {
   );
 };
 
-export default MPFestivalAppliedLabor;
+export default MPFestivalClosedAppliedLabor;
 
 /* styled-components */
 const PageWrapper = styled.div`
@@ -354,12 +354,7 @@ const ChoiceBtnYes = styled.button`
     border-color: rgba(0, 0, 0, 0.25);
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-    cursor: pointer;
 
-    &:hover{
-      background-color: #91b37e;
-      border: none;
-    }
 `;
 
 
@@ -371,23 +366,16 @@ const ChoiceBtnNo = styled.button`
     border-color: rgba(0, 0, 0, 0.25);
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-    cursor: pointer;
-
-    &:hover{
-      background-color: #9E655A;
-      border: none;
-    }
 `;
 
 const ChoiceBtnY = styled.button`
     width: 200px;
     padding: 20px 0;
     border-radius: 20px;
-    border-width: 1px;
+    border:none;
     border-color: rgba(0, 0, 0, 0.25);
     background: #BAE4A4;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-    cursor: pointer;
+
     color: black;
 `;
 
@@ -395,11 +383,11 @@ const ChoiceBtnN = styled.button`
     width: 200px;
     padding: 20px 0;
     border-radius: 20px;
-    border-width: 1px;
+    border:none;
     border-color: rgba(0, 0, 0, 0.25);
     background: #CD7D6D;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-    cursor: pointer;
+   
+
     color: black;
 
 `;
