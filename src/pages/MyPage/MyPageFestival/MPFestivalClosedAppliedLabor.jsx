@@ -370,7 +370,7 @@ const ChoiceBtnY = styled.button`
     padding: 20px 0;
     border-radius: 20px;
     border:none;
-    border-color: rgba(0, 0, 0, 0.25);
+
     background: #BAE4A4;
 
     color: black;
@@ -381,7 +381,7 @@ const ChoiceBtnN = styled.button`
     padding: 20px 0;
     border-radius: 20px;
     border:none;
-    border-color: rgba(0, 0, 0, 0.25);
+
     background: #CD7D6D;
    
 
