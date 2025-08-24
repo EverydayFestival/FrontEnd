@@ -107,7 +107,7 @@ const MPFestivalNotification = () => {
   const renderMessage = (noti) => {
     switch (noti.noticeType) {
       case "FESTIVAL_DEAD":
-        return `${noti.payload.festivalName} 모집이 마감되었습니다.`;
+        return `${noti.payload.festivalName} 모집이 마감되었어요.`;
       case "COMPANY_APPLIED":
         return `${noti.payload.companyName}이(가) ${noti.payload.festivalName}에 지원했습니다.`;
       case "LABOR_APPLIED":
@@ -135,7 +135,7 @@ const MPFestivalNotification = () => {
         </Title>
       </Fixed>
       {notifications.length === 0 ? (
-        <EmptyMessage>새 알림이 없습니다.</EmptyMessage>
+        <EmptyMessage>새 알림이 없어요!</EmptyMessage>
       ) : (
         <NotificationList>
           {notifications.map((noti, idx) => (

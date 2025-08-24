@@ -309,7 +309,7 @@ const MPFestivalOngoingAppliedCompany = () => {
       </ApplyCompanyList> */}
   <ApplyCompanyList>
   {appliedCompanies.length === 0 ? (
-    <p>해당 축제에 지원한 업체가 없습니다.</p>
+    <p>해당 축제에 지원한 업체가 없어요!</p>
   ) : (
     appliedCompanies.map((co) => (
       <CoCard key={co.id}>

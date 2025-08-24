@@ -111,11 +111,6 @@ const MPFestivalReview2Company = () => {
     };
 
     
-     //form 전용 onSubmit (event가 있을 때만 preventDefault)
-    const onSubmit = (e) => {
-    if (e) e.preventDefault();
-    handleRegister();
-    };
     
     useEffect(()=>{
         if(companyId){
@@ -317,7 +312,7 @@ const CharCount = styled.div`
     font-size: 14px;
     text-align: right;
     margin-top: 5px;
-    color: ${(props) => (props.exceed ? "red" : "#666")}
+    color: ${(props) => (props.exceed ? "red" : "#666")};
 `
 
 const RegisterBtn = styled.button` 

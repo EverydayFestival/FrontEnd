@@ -173,7 +173,7 @@ const MPFestivalOngoingAppliedLabor = () => {
 
      <ApplyLaborList>
       {appliedLabors.length === 0 ? (
-        <p>해당 축제에 지원한 단기 근로자가 없습니다.</p>
+        <p>해당 축제에 지원한 단기 근로자가 없어요!</p>
        ) : (
         appliedLabors.map((la) => (
           <LaborCard key={la.id}>

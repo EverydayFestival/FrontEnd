@@ -229,7 +229,7 @@ const MPFestivalClosedAppliedLabor = () => {
 
      <ApplyLaborList>
       { filteredLabors.length === 0 ? (
-        <p>해당 축제에 지원한 단기 근로자가 없습니다.</p>
+        <p>해당 조건에 맞는 단기 근로자가 없어요!</p>
        ) : (
         filteredLabors.map((la) => (
           <LaborCard key={la.id}>
