@@ -23,13 +23,7 @@ const MPFestivalReview2Company = () => {
     
     //등록하기 모달팝업
     const [showModal, setShowModal] = useState(false);
-    const confirmModal = () => {
-        onSubmit();
-    }
 
-    // const openModal = () => {
-    //     setShowModal(true);
-    // }
     
     const navigate = useNavigate();
     
@@ -216,7 +210,6 @@ const MPFestivalReview2Company = () => {
                             setShowModal(false);
                             navigate(`/mypage/festival/appliedcompany/${festivalId}`);
                         }}
-                        onConfirm={confirmModal}
                         type="cancel"
                         >
                         <p>등록이 완료되었습니다!</p>
@@ -231,8 +224,12 @@ const MPFestivalReview2Company = () => {
 export default MPFestivalReview2Company
 
 const PageWrapper = styled.div`
-padding: 180px;
+  padding: 180px 20px;  /* 위아래 180px, 좌우 20px */
+  max-width: 1200px;
+  margin: 0 auto;  /* 가운데 정렬 */
+  box-sizing: border-box; /* padding까지 포함 */
 `;
+
 
 const Fixed = styled.div`
   position: fixed;
@@ -272,6 +269,7 @@ const CompanyInfo = styled.div`
     img{
         width: 300px;
         height: 300px;
+        object-fit: cover; /* 크롭되더라도 비율 유지 */
     }
 `;
 
@@ -302,22 +300,18 @@ const ReviewPrompt = styled.div`
     font-size: 16px;
     font-weight: 300;
 `
-const InputBox = styled.input`
+const InputBox = styled.textarea`
     width: 750px;
     height: 200px;
-    border-width: 1px;
     border: 1px solid #979797;
     border-radius: 20px;
     padding: 10px;
     font-size: 14px;
     resize: none;
-    text-align: left;
-    vertical-align: top;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     line-height: 1.5;
-`
+    box-sizing: border-box;
+`;
+
 const CharCount = styled.div`
     font-size: 14px;
     text-align: right;
@@ -326,8 +320,9 @@ const CharCount = styled.div`
 `
 
 const RegisterBtn = styled.button` 
+    width: 100%;
     display: flex;
-    width: 220px;
+    max-width: 220px;
     height: 70px;
     padding: 20px 80px;
     justify-content: center;
@@ -341,7 +336,7 @@ const RegisterBtn = styled.button`
     border-radius: 20px;
     background: ${(props) => (props.disabled ? "#8e8e8e" : "#FEA898")};
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     cursor: pointer;
 
     &:hover{

@@ -69,7 +69,7 @@ const MPFestivalOngoing = () => {
       {/* <FestCardList> */}
       <FestCardList>
         {festivals.length === 0 ? (
-          <p>현재 진행 중이거나 예정된 행사가 없습니다.</p>
+          <p>현재 진행 중이거나 예정된 행사가 없어요!</p>
         ) : (
           festivals.map((fest) => (
             <FestCard key={fest.id}>
@@ -206,7 +206,8 @@ const RecruitStatus = styled.div`
     border-color: rgba(0, 0, 0, 0.25);
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
-        cursor: pointer;
+    cursor: pointer;
+    transition: all 0.2s ease;
       &:hover{
       background-color: #dcd7d7;
     }

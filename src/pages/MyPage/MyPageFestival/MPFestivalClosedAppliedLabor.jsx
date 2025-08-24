@@ -8,6 +8,8 @@ import Box from '../../../components/Box';
 import Modal from '../../../components/Modal';
 
 const MPFestivalClosedAppliedLabor = () => {
+    const [activeFilter, setActiveFilter] = useState('지원순');
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const {festivalId} = useParams();
     const [festivalInfo, setFestivalInfo] = useState(null); // 축제 정보
@@ -20,14 +22,33 @@ const MPFestivalClosedAppliedLabor = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
+    const filters = ['지원순', '수락', '거절'];
+    const [filteredLabors, setFilteredLabors] = useState([]);
+
+    useEffect(() => {
+      switch (activeFilter) {
+        case "지원순":
+          setFilteredLabors(appliedLabors);
+          break;
+        case "수락":
+          setFilteredLabors(appliedLabors.filter((la) => la.selected === "ACCEPTED"));
+          break;
+        case "거절":
+          setFilteredLabors(appliedLabors.filter((la) => la.selected === "DENIED"));
+          break;
+        default:
+          setFilteredLabors(appliedLabors);
+      }
+    }, [activeFilter, appliedLabors]);
+
     //모달팝업
     const [showModal, setShowModal] = useState(false);
     const [pendingAction, setPendingAction] = useState(null); //{id, status}
     
-    const openModal = (laborId, statusType) => {
-      setPendingAction({id: laborId, status: statusType});
-      setShowModal(true);
-    }
+    // const openModal = (laborId, statusType) => {
+    //   setPendingAction({id: laborId, status: statusType});
+    //   setShowModal(true);
+    // }
     const confirmModal = () => {
       if(pendingAction) {
         handleChoice(pendingAction.id, pendingAction.status);
@@ -108,6 +129,19 @@ const MPFestivalClosedAppliedLabor = () => {
       );
     }, [festivalId]);
 
+    // 드롭다운 외부 클릭 감지용 effect
+        useEffect(() => {
+          const handleClickOutside = (e) => {
+            if (dropdownOpen && !e.target.closest(".dropdown-container")) {
+              setDropdownOpen(false);
+            }
+          };
+    
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => document.removeEventListener("mousedown", handleClickOutside);
+        }, [dropdownOpen]);
+      
+
 
     const handleChoice = (laborId, newStatus) => {
     setAppliedLabors(prev =>
@@ -132,7 +166,29 @@ const MPFestivalClosedAppliedLabor = () => {
       </Fixed>
 
       <Name>
-             <p>{festivalInfo?.name ?? "축제 이름 불러오는 중"}</p>
+          <p>{festivalInfo?.name ?? "축제 이름 불러오는 중"}</p>
+      <FilterSection>
+        <Dropdown>
+          <DropdownBtn onClick={() => setDropdownOpen(!dropdownOpen)}>
+            {activeFilter} ▾
+          </DropdownBtn>
+          {dropdownOpen && (
+            <DropdownContent>
+              {filters.map((filter, idx) => (
+                <DropdownItem
+                  key={idx}
+                  onClick={() => {
+                    setActiveFilter(filter);
+                    setDropdownOpen(false);
+                  }}
+                >
+                  {filter}
+                </DropdownItem>
+              ))}
+            </DropdownContent>
+          )}
+        </Dropdown>
+      </FilterSection>
       </Name>
 
 
@@ -172,10 +228,10 @@ const MPFestivalClosedAppliedLabor = () => {
       </ApplyLaborList> */}
 
      <ApplyLaborList>
-      {appliedLabors.length === 0 ? (
+      { filteredLabors.length === 0 ? (
         <p>해당 축제에 지원한 단기 근로자가 없습니다.</p>
        ) : (
-        appliedLabors.map((la) => (
+        filteredLabors.map((la) => (
           <LaborCard key={la.id}>
             <LaborImage src={la.imageUrl} alt="단기근로자이미지" />
             <Laborleft>
@@ -206,7 +262,9 @@ const MPFestivalClosedAppliedLabor = () => {
               )}
           </LaborChoice>
           </LaborCard>
-        )))}
+        )))
+       }
+      
        
       </ApplyLaborList>
       <Modal
@@ -264,6 +322,59 @@ const Name = styled.div`
   padding: 16px 20px;
   z-index: 500; 
   border-bottom: 2px solid #eee; /* 깔끔한 구분선 optional */
+`;
+
+const FilterSection = styled.div`
+  display: flex;
+  /* justify-content: right; */
+  /* padding-right: 110px;
+  margin: 20px 0; */
+`;
+
+const Dropdown = styled.div.attrs({ className: "dropdown-container" })`
+  position: relative;
+  display: inline-block;
+  
+`;
+
+const DropdownBtn = styled.button`
+  padding: 10px 20px;
+  font-size: 16px;
+
+  border-radius: 15px;
+  border: 1px solid #a4a3a3;
+  background-color: white;
+  cursor: pointer;
+
+  &:hover{
+    background-color: #e4e0e0;
+  }
+  
+`;
+
+const DropdownContent = styled.div`
+  margin-top: 10px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 130px;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 10;
+
+  border-radius: 15px;
+  border: 1px #a4a3a3;
+
+  font-size: 14px;
+  text-align: center;
+`;
+
+const DropdownItem = styled.div`
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #eee;
+  }
 `;
 
 const ApplyLaborList = styled.div`
@@ -332,6 +443,10 @@ const ApplicationBtn = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s ease;
+    &:hover{
+      background-color: #dcd7d7;
+    }
 
 `;
 
