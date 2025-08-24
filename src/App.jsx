@@ -19,7 +19,7 @@ import SelectFestivalPage from './pages/SelectFestivalPage.jsx'
 
 //서정
 import { BrowserRouter as Router,Navigate, Link } from 'react-router-dom';
-// import Search from './pages/Search';
+import Search from './pages/Search';
 import ServiceIntro from './pages/ServiceIntro';
 import FestivalRegister from './pages/FestivalRegister';
 import Inquiry from './pages/Inquiry';
@@ -30,8 +30,8 @@ import RecruitWorker from "./pages/RecruitWorker";
 import Login from './pages/Login.jsx';
 import RecruitCompanyResult from './pages/RecruitCompanyResult.jsx';
 import RecruitWorkerResult from './pages/RecruitWorkerResult.jsx';
-import FestivalReview from './components/FestivalReview.jsx';
-import CompanyReview from './components/CompanyReview.jsx';
+import AllReviewsPage from './pages/AllReviewsPage.jsx';
+import AllReviewPageCompany from './pages/AllReviewPageCompany.jsx'
 
 import { FestivalProvider } from "./context/FestivalContext.jsx";
 import { AuthProvider } from './context/AuthContext.jsx';
@@ -88,7 +88,7 @@ const App = ()=>{
 
           {/* PrivateRoute로 보호되는 라우트들 */}
           <Route path="/" element={<PrivateRoute allowedRoles={allRoles}><Home/></PrivateRoute>} />
-          {/* <Route path="/search" element={<PrivateRoute allowedRoles={allRoles}><Search /></PrivateRoute>} /> */}
+          <Route path="/search" element={<PrivateRoute allowedRoles={allRoles}><Search /></PrivateRoute>} />
           
 
         {/* '축제 기획자'만 접근 가능한 라우트 */}
@@ -97,13 +97,13 @@ const App = ()=>{
         
         <Route path="/inquiry" element={<PrivateRoute allowedRoles={allRoles}><Inquiry/></PrivateRoute>} />
         <Route path="/festivals/:id" element={<PrivateRoute allowedRoles={allRoles}><FestivalDetail /></PrivateRoute>} />
-        <Route path="/festivals/:id/reviews" element={<PrivateRoute allowedRoles={allRoles}><FestivalReview /></PrivateRoute>} />
         <Route path="/company/:id" element={<PrivateRoute allowedRoles={allRoles}><CompanyDetail/></PrivateRoute>} />
-        <Route path="/company/:id/reviews" element={<PrivateRoute allowedRoles={allRoles}><CompanyReview /></PrivateRoute>} />
         <Route path="/recruit/company/:id" element={<PrivateRoute allowedRoles={allRoles}><RecruitCompany /></PrivateRoute>} />
         <Route path="/recruit/worker/:id" element={<PrivateRoute allowedRoles={allRoles}><RecruitWorker /></PrivateRoute>} /> 
-        <Route path="/recruit/company/:id/result" element={<PrivateRoute allowedRoles={allRoles}><RecruitCompanyResult /></PrivateRoute>} />
+        <Route path="/application/result/:applicationId" element={<PrivateRoute allowedRoles={allRoles}><RecruitCompanyResult /></PrivateRoute>} />
         <Route path="/recruit/worker/:id/result" element={<PrivateRoute allowedRoles={allRoles}><RecruitWorkerResult /></PrivateRoute>} />
+        <Route path="/festivals/:id/reviews" element={<PrivateRoute allowedRoles={allRoles}><AllReviewsPage /></PrivateRoute>} />
+        <Route path="/company/:id/reviews" element={<PrivateRoute allowedRoles={allRoles}><AllReviewPageCompany /></PrivateRoute>} />
 
         {/* 일치하는 라우트가 없을 경우 기본 페이지로 이동 */}
         <Route path="*" element={<Navigate to="/" />} />

@@ -2,18 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
-export default function AllReviewsPage() {
-    const { id: festivalId } = useParams();
+export default function AllReviewPageCompany() {
+    // 1. URL로부터 companyId를 가져옵니다.
+    const { id: companyId } = useParams();
     const location = useLocation();
-    const festivalName = location.state?.festivalName || "축제";
-    const [activeTab, setActiveTab] = useState('company'); 
+    
+    // 이전 페이지에서 업체 이름을 받아오거나 기본값을 사용합니다.
+    const companyName = location.state?.companyName || "업체";
+
+    // 2. 리뷰 데이터, 로딩, 에러 상태를 관리합니다.
     const [reviews, setReviews] = useState([]);
     const [totalElements, setTotalElements] = useState(0);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // 3. 컴포넌트가 마운트되거나 companyId가 변경될 때 API를 호출합니다.
     useEffect(() => {
-        const fetchAllReviews = async () => {
+        const fetchAllCompanyReviews = async () => {
             setLoading(true);
             setError(null);
 
@@ -24,18 +29,17 @@ export default function AllReviewsPage() {
                 return;
             }
 
-            const senderType = activeTab === 'company' ? 'COMPANY' : 'LABOR';
-
             try {
                 const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}/festivals/${festivalId}/reviews?senderType=${senderType}&page=0&size=20`,
+                    `${import.meta.env.VITE_API_URL}/companies/${companyId}/reviews?page=0&size=20`,
                     {
                         headers: { 'Authorization': `Bearer ${accessToken}` }
                     }
                 );
 
                 if (!response.ok) {
-                    throw new Error("리뷰를 불러오는 데 실패했습니다.");
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || "리뷰를 불러오는 데 실패했습니다.");
                 }
 
                 const result = await response.json();
@@ -54,9 +58,12 @@ export default function AllReviewsPage() {
             }
         };
 
-        fetchAllReviews();
-    }, [activeTab, festivalId]);
+        if (companyId) {
+            fetchAllCompanyReviews();
+        }
+    }, [companyId]); // companyId가 변경되면 다시 데이터를 불러옵니다.
 
+    // 4. 상태에 따라 내용을 렌더링하는 함수입니다.
     const renderContent = () => {
         if (loading) {
             return <p className="text-center text-gray-500 mt-8">리뷰를 불러오는 중...</p>;
@@ -69,8 +76,8 @@ export default function AllReviewsPage() {
         }
         return (
             <div className="space-y-4">
-                {/* ===== 수정된 부분: key={review.id} -> key={index} ===== */}
                 {reviews.map((review, index) => (
+                    // API 응답에 id가 없으므로 index를 key로 사용합니다.
                     <div key={index} className="bg-white p-4 rounded-lg border shadow-sm">
                         <p className="font-semibold text-lg">{review.senderName}</p>
                         <p className="text-gray-700 mt-1">"{review.content}"</p>
@@ -84,25 +91,11 @@ export default function AllReviewsPage() {
         <div className="p-4 max-w-2xl mx-auto">
             <Navbar />
             <div className="mb-6">
-                <Link to={`/festivals/${festivalId}`} className="text-blue-600 hover:underline">
-                    &larr; {festivalName} 상세 페이지로 돌아가기
+                {/* 업체 상세 페이지로 돌아가는 링크 */}
+                <Link to={`/company/${companyId}`} state={{ companyName }} className="text-blue-600 hover:underline">
+                    &larr; {companyName} 상세 페이지로 돌아가기
                 </Link>
-                <h1 className="text-3xl font-bold mt-2">전체 리뷰</h1>
-            </div>
-            
-            <div className="flex border-b">
-                <button 
-                    onClick={() => setActiveTab('company')}
-                    className={`py-2 px-4 font-semibold ${activeTab === 'company' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500'}`}
-                >
-                    업체
-                </button>
-                <button 
-                    onClick={() => setActiveTab('worker')}
-                    className={`py-2 px-4 font-semibold ${activeTab === 'worker' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500'}`}
-                >
-                    단기 근로자
-                </button>
+                <h1 className="text-3xl font-bold mt-2">{companyName} 전체 리뷰</h1>
             </div>
 
             <div className="mt-4">
