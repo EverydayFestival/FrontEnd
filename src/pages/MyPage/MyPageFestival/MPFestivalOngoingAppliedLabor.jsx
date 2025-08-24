@@ -39,7 +39,6 @@ const MPFestivalOngoingAppliedLabor = () => {
     //api
     const viewAppliedLabors = async() => {
       try{
-        setLoading(true);
         setError("");
     
         const response = await fetch(
@@ -67,8 +66,6 @@ const MPFestivalOngoingAppliedLabor = () => {
       }catch(error){
         console.error("Error fetching applied labors:", error);
         setError(error.message);
-      }finally{
-        setLoading(false);
       }
     };
   

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Navbar from '../../components/Navbar'
 import fest_data from '../../assets/fest/fest_data'
@@ -6,8 +6,9 @@ import co_data from '../../assets/company/co_data'
 import Modal from '../../components/Modal'
 import more_button from '../../assets/more_button.png'
 import Box from '../../components/Box'
-import empty_star from '../../assets/empty_star.png'
+// import empty_star from '../../assets/empty_star.png'
 import full_star from '../../assets/full_star.png'
+import empty_star_1 from '../../assets/empty_star_1.png'
 
 const MPFestivalFavored = () => {
 
@@ -25,6 +26,118 @@ const MPFestivalFavored = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  
+	const [festivals, setFestivals] = useState([]);
+  const [festivalsEnd, setFestivalsEnd] = useState([]);
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  //진행 중 행사 api
+  const viewFavoredFestOngoing = async() => {
+    try{
+      setError("");
+
+      const response = await fetch(
+        "https://festival-everyday.duckdns.org/users/me/favorite-festivals?holdStatus=ONGOING&page=0&size=10",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
+
+
+      const result = await response.json();
+
+      if(!response.ok || result.success !== true) {
+        throw new Error(result?.message || "찜한 축제 조회에 실패했습니다.");
+      }
+      
+      setFestivals(result.data.content ?? []);
+      console.log(result.data.content);
+        }catch(error){
+          console.error("Error fetching festivals:", error);
+          setError(error.message);
+        }
+      };
+
+      const viewFavoredFestEnded = async() => {
+        try{
+          setError("");
+
+          const response = await fetch(
+            "https://festival-everyday.duckdns.org/users/me/favorite-festivals?holdStatus=ENDED&page=0&size=10",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Accept: "application/json",
+              },
+            }
+          );
+
+
+
+          const result = await response.json();
+
+          if(!response.ok || result.success !== true) {
+            throw new Error(result?.message || "찜한 축제 조회에 실패했습니다.");
+          }
+          
+          setFestivalsEnd(result.data.content ?? []);
+          console.log(result.data.content);
+            }catch(error){
+              console.error("Error fetching festivals:", error);
+              setError(error.message);
+            }
+          };
+      
+      const viewFavoredCompany = async() => {
+        try{
+          setError("");
+
+          const response = await fetch(
+            "https://festival-everyday.duckdns.org/users/me/favorite-companies?page=0&size=10",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Accept: "application/json",
+              },
+            }
+          );
+
+
+
+          const result = await response.json();
+
+          if(!response.ok || result.success !== true) {
+            throw new Error(result?.message || "찜한 업체 조회에 실패했습니다.");
+          }
+          
+          setCompanies(result.data.content ?? []);
+          console.log(result.data.content);
+            }catch(error){
+              console.error("Error fetching companeis:", error);
+              setError(error.message);
+            }
+          };
+
+      useEffect(()=>{
+        setLoading(true);
+        Promise.all([viewFavoredFestOngoing(), viewFavoredFestEnded(), viewFavoredCompany()]).finally(() =>
+          setLoading(false)
+      );
+      },[]);
+
+
+  if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+  if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
+
 
   return (
     <Box>
@@ -38,21 +151,23 @@ const MPFestivalFavored = () => {
 
       <FestOrCo>
         <TabButton
-          active={activeTab === 'festival'}
+          $active={activeTab === 'festival'}
           onClick={() => {
             setActiveTab('festival');
             setViewAllOngoingFest(false);
             setViewAllClosedFest(false);
+            scrollToTop();
           }}
         >
           축제
         </TabButton>
         <TabButton
-          active={activeTab === 'company'}
+          $active={activeTab === 'company'}
           onClick={() => {
             setActiveTab('company');
             setViewAllOngoingFest(false);
             setViewAllClosedFest(false);
+            scrollToTop();
           }}
         >
           업체
@@ -64,31 +179,37 @@ const MPFestivalFavored = () => {
           viewAllOngoingFest ? (
             <>
               <OngoingFest>
-                {/* <Back onClick={()=>{
+                <Back onClick={()=>{
                 setViewAllClosedFest(false);
                 setViewAllOngoingFest(false);
                 scrollToTop();
-                }}>이전 페이지로</Back> */}
+                }}>이전 페이지로</Back>
                 <Type>진행 및 예정인 행사</Type>
                 <FestCardList>
-                  {fest_data.map((fest, index) => (
-                    <FestCard key={index}>
-                      <FestImage src={fest.image} alt="" />
+                  {festivals.map((fest) => (
+                    <FestCard key={fest.id}>
+                      <FestImage src={fest.imageUrl} alt="" />
                       <FestInfo>
-                        <FestName>{fest.festivalName}</FestName>
-                        <p>{fest.location}</p>
-                        <p>{fest.period}</p>
+                        <FestName>{fest.name}</FestName>
+                        <p>{fest.address?.city}  {fest.address?.district}</p>
+                        <p>
+                        {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
+                        {new Date(fest.period.end).toLocaleDateString("ko-KR")}
+                        </p>
                       </FestInfo>
                       <FestFavored>
-                        
-                        {favorStatus===false? (
-                          <>
-                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
-                          </>
-                        ):(
-                          <>
-                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
-                        </>)}
+                        <FavoredBtn
+                          src={fest.favorStatus === "FAVORED" ? full_star : empty_star_1}
+                          onClick={() => {
+                            setFestivals((prev) =>
+                              prev.map((f) =>
+                                f.id === fest.id
+                                  ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                  : f
+                              )
+                            );
+                          }}
+                        />
                       </FestFavored>
                     </FestCard>
                   ))}
@@ -98,31 +219,37 @@ const MPFestivalFavored = () => {
           ) : viewAllClosedFest ? (
             <>
               <ClosedFest>
-                {/* <Back onClick={()=>{
+                <Back onClick={()=>{
                 setViewAllClosedFest(false);
                 setViewAllOngoingFest(false);
                 scrollToTop();
-                }}>이전 페이지로</Back> */}
+                }}>이전 페이지로</Back>
                 <Type>종료된 행사</Type>
                 <FestCardList>
-                  {fest_data.map((fest, index) => (
-                    <FestCard key={index}>
-                      <FestImage src={fest.image} alt="" />
+                  {festivalsEnd.map((fest) => (
+                    <FestCard key={fest.id}>
+                      <FestImage src={fest.imageUrl} alt="" />
                       <FestInfo>
-                        <FestName>{fest.festivalName}</FestName>
-                        <p>{fest.location}</p>
-                        <p>{fest.period}</p>
+                        <FestName>{fest.name}</FestName>
+                        <p>{fest.address?.city} {fest.address?.district}</p>
+                        <p>
+                        {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
+                        {new Date(fest.period.end).toLocaleDateString("ko-KR")}
+                        </p>
                       </FestInfo>
                       <FestFavored>
-                        
-                        {favorStatus===false? (
-                          <>
-                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
-                          </>
-                        ):(
-                          <>
-                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
-                        </>)}
+                        <FavoredBtn
+                          src={fest.favorStatus === "FAVORED" ? full_star : empty_star_1}
+                          onClick={() => {
+                            setFestivals((prev) =>
+                              prev.map((f) =>
+                                f.id === fest.id
+                                  ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                  : f
+                              )
+                            );
+                          }}
+                        />
                       </FestFavored>
                     </FestCard>
                   ))}
@@ -134,24 +261,30 @@ const MPFestivalFavored = () => {
               <OngoingFest>
                 <Type>진행 및 예정인 행사</Type>
                 <FestCardList>
-                  {fest_data.slice(0, 2).map((fest, index) => (
-                    <FestCard key={index}>
-                      <FestImage src={fest.image} alt="" />
+                  {festivals.slice(0, 2).map((fest) => (
+                    <FestCard key={fest.id}>
+                      <FestImage src={fest.imageUrl} alt="" />
                       <FestInfo>
-                        <FestName>{fest.festivalName}</FestName>
-                        <p>{fest.location}</p>
-                        <p>{fest.period}</p>
+                        <FestName>{fest.name}</FestName>
+                        <p>{fest.address?.city} {fest.address?.district}</p>
+                        <p>
+                        {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
+                        {new Date(fest.period.end).toLocaleDateString("ko-KR")}
+                        </p>
                       </FestInfo>
                       <FestFavored>
-                        
-                        {favorStatus===false? (
-                          <>
-                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
-                          </>
-                        ):(
-                          <>
-                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
-                        </>)}
+                        <FavoredBtn
+                          src={fest.favorStatus === "FAVORED" ? full_star : empty_star_1}
+                          onClick={() => {
+                            setFestivals((prev) =>
+                              prev.map((f) =>
+                                f.id === fest.id
+                                  ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                  : f
+                              )
+                            );
+                          }}
+                        />
                       </FestFavored>
                     </FestCard>
                   ))}
@@ -170,24 +303,30 @@ const MPFestivalFavored = () => {
               <ClosedFest>
                 <Type>종료된 행사</Type>
                 <FestCardList>
-                  {fest_data.slice(2, 4).map((fest, index) => (
-                    <FestCard key={index}>
-                      <FestImage src={fest.image} alt="" />
+                  {festivalsEnd.slice(0, 2).map((fest) => (
+                    <FestCard key={fest.id}>
+                      <FestImage src={fest.imageUrl} alt="" />
                       <FestInfo>
-                        <FestName>{fest.festivalName}</FestName>
-                        <p>{fest.location}</p>
-                        <p>{fest.period}</p>
+                        <FestName>{fest.name}</FestName>
+                        <p>{fest.address?.city} {fest.address?.district}</p>
+                        <p>
+                        {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
+                        {new Date(fest.period.end).toLocaleDateString("ko-KR")}
+                        </p>
                       </FestInfo>
-                      <FestFavored>
-                        
-                        {favorStatus===false? (
-                          <>
-                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
-                          </>
-                        ):(
-                          <>
-                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
-                        </>)}
+                     <FestFavored>
+                        <FavoredBtn
+                          src={fest.favorStatus === "FAVORED" ? full_star : empty_star_1}
+                          onClick={() => {
+                            setFestivals((prev) =>
+                              prev.map((f) =>
+                                f.id === fest.id
+                                  ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                  : f
+                              )
+                            );
+                          }}
+                        />
                       </FestFavored>
                     </FestCard>
                   ))}
@@ -207,27 +346,30 @@ const MPFestivalFavored = () => {
         ) : (
           <>
             <Company>
-              {co_data.map((co, index) => (
-                <CoCard key={index}>
+              {companies.map((co) => (
+                <CoCard key={co.id}>
                   <CoImage src={co.image} alt="업체이미지" />
                   <Coleft>
                     <CoInfo>
-                      <CoName>{co.companyName}</CoName>
-                      <p>{co.address}</p>
-                      <p>{co.companyCategory}</p>
+                      <CoName>{co.name}</CoName>
+                      <p>{co.address?.city}  {co.address?.district}</p>
+                      <p>{co.category}</p>
                     </CoInfo>
                     <MoreIcon src={more_button} alt="업체더보기" />
                   </Coleft>
                   <FestFavored>
-                        
-                        {favorStatus===false? (
-                          <>
-                          <FavoredBtn src={empty_star} onClick={()=>setFavorStatus('FAVORED')}></FavoredBtn>
-                          </>
-                        ):(
-                          <>
-                          <FavoredBtn src={full_star} onClick={()=>setFavorStatus(false)}></FavoredBtn>
-                        </>)}
+                        <FavoredBtn
+                          src={co.favorStatus === "FAVORED" ? full_star : empty_star_1}
+                          onClick={() => {
+                            setCompanies((prev) =>
+                              prev.map((c) =>
+                                c.id === co.id
+                                  ? { ...c, favorStatus: c.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                  : c
+                              )
+                            );
+                          }}
+                        />
                       </FestFavored>
                 </CoCard>
               ))}
@@ -278,16 +420,22 @@ const Type = styled.div`
   margin: 0 8%;
 `
 
-// const Back = styled.span`
-//   cursor: pointer;
-//   font-weight: bold;
-//   color: #555;
-//   text-decoration: underline;
+const Back = styled.span`
+  cursor: pointer;
+  align-self: flex-start;
+  font-weight: bold;
+  color: #555;
+  text-decoration: underline;
+  font-size: 14px;
+  font-weight: bold;
+  margin:0 8%;
 
-//   &:hover {
-//     color: #f97e6c;
-//   }
-// `
+  &:hover {
+    color: #f97e6c;
+  }
+
+
+`
 const FestOrCo = styled.div`
   position: fixed;
   top: 124px;
@@ -381,14 +529,14 @@ const TabButton = styled.button`
   padding: 10px 35px;
   border: none;
   border-radius: 12px 12px 0 0;
-  background-color: ${({ active }) => (active ? '#f97e6c' : '#ffb3a7')};
+  background-color: ${({ $active }) => ($active ? '#f97e6c' : '#ffb3a7')};
   color: black;
   cursor: pointer;
   outline: none;
   transition: background-color 0.2s;
 
   &:hover {
-    background-color: ${({ active }) => (active ? '#f97e6c' : '#ff9b8a')};
+    background-color: ${({ $active }) => ($active ? '#f97e6c' : '#ff9b8a')};
   }
 `;
 
