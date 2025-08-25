@@ -49,7 +49,7 @@ export default function FestivalReview({ festivalId }) {
         fetchReviews();
     }, [festivalId, reviewType]);
 
-    const renderReviews = () => {
+    /* const renderReviews = () => {
         if (loading) {
             return <p className="text-center text-gray-500">리뷰를 불러오는 중...</p>;
         }
@@ -76,7 +76,7 @@ export default function FestivalReview({ festivalId }) {
             </div>
         ));
     };
-
+ */
     return (
         <section className="festival-review-section">
     <div className="flex justify-between items-center mb-4">

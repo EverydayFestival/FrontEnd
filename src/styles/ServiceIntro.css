@@ -1,0 +1,59 @@
+.logo {
+    padding : 20px;
+}
+
+.main-description {
+    padding : 30px 100px;
+}
+
+/* 2x2 그리드 컨테이너 설정 */
+.serviceintrocard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2개의 열을 동일한 비율로 만듭니다. */
+  gap: 20px; /* 카드 사이의 간격 */
+  max-width: 470px; /* 그리드의 최대 너비 (조절 가능) */
+  margin: 0 auto; /* 그리드를 페이지 중앙에 배치 */
+  padding-bottom: 200px;
+}
+
+/* 개별 카드 스타일 */
+.serviceintrocard {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  
+  /* 내용물(이미지, 텍스트)을 세로로 중앙 정렬 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  /* 정사각형 모양 유지 */
+  aspect-ratio: 1 / 1; 
+
+  /* 그림자 효과 (선택사항) */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* 카드에 마우스를 올렸을 때 살짝 뜨는 효과 (선택사항) */
+.serviceintrocard:hover {
+  transform: translateY(-5px);
+}
+
+/* 카드 내부 이미지 스타일 */
+.serviceintrocard img {
+  width: 50%; /* 카드의 50% 너비를 차지 */
+  height: auto;
+  margin-bottom: 15px; /* 이미지와 텍스트 사이 간격 */
+}
+
+/* 카드 내부 텍스트 스타일 */
+.serviceintrocard p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin: 0;
+}

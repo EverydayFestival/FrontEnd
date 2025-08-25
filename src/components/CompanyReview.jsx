@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"; // useNavigate 대신 Link 사용
+import "../styles/CompanyReview.css"
 
 export default function CompanyReview({ companyId }) {
-  const navigate = useNavigate();
-
-  // 1. 리뷰 데이터, 로딩, 에러, 전체 개수 상태를 관리합니다.
+  // 1. 상태 관리와 API 호출 로직은 기존과 동일합니다.
   const [reviews, setReviews] = useState([]);
   const [totalElements, setTotalElements] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // CompanyReview.jsx
+
+// ... (다른 상태값들은 그대로)
+
   // 2. companyId가 변경될 때마다 API를 호출합니다.
   useEffect(() => {
-    // API 호출 함수
+    if (!companyId) {
+      setLoading(false);
+      return;
+    }
+
     const fetchPreviewReviews = async () => {
       setLoading(true);
       setError(null);
@@ -25,7 +32,6 @@ export default function CompanyReview({ companyId }) {
       }
 
       try {
-        // API를 호출하여 3개만 미리보기로 가져옵니다.
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/companies/${companyId}/reviews?page=0&size=3`,
           {
@@ -40,7 +46,7 @@ export default function CompanyReview({ companyId }) {
         const result = await response.json();
         if (result.success) {
           setReviews(result.data.content);
-          setTotalElements(result.data.totalElements); // "더보기" 버튼 표시를 위해 전체 개수를 저장
+          setTotalElements(result.data.totalElements);
         } else {
           throw new Error(result.message);
         }
@@ -50,52 +56,66 @@ export default function CompanyReview({ companyId }) {
       } finally {
         setLoading(false);
       }
-    };
+    }; // fetchPreviewReviews 함수 끝
 
-    if (companyId) {
-      fetchPreviewReviews();
-    }
-  }, [companyId]); // companyId prop이 바뀔 때마다 다시 실행
+    fetchPreviewReviews(); // <-- if(companyId)는 불필요하여 제거
 
-  // 3. 로딩 및 에러 상태에 따른 UI를 렌더링합니다.
-  const renderReviewList = () => {
+  }, [companyId]); // <-- 여기에 }; 와 ) 를 정확히 추가하여 useEffect를 닫아줍니다.
+
+
+  // 2. 렌더링할 내용을 결정하는 함수 (가독성을 위해 분리)
+  const renderContent = () => {
     if (loading) {
-      return <p className="text-gray-500">리뷰를 불러오는 중...</p>;
+      return <p className="review-message">리뷰를 불러오는 중...</p>;
     }
 
     if (error) {
-      return <p className="text-red-500">{error}</p>;
+      return <p className="review-message error">{error}</p>;
     }
 
     if (reviews.length === 0) {
-      return <p>작성된 리뷰가 없습니다.</p>;
+      return <p className="review-message">작성된 리뷰가 없습니다.</p>;
     }
-
-    // API 응답에 맞춰 `senderName`과 `content`를 사용하고, id가 없으므로 `index`를 key로 사용합니다.
-    return reviews.map((review, index) => (
-      <div key={index} className="border p-3 rounded-md shadow-sm bg-gray-50">
-        <p className="font-semibold text-gray-800">{review.senderName}</p>
-        <p className="text-gray-600 mt-1">"{review.content}"</p>
+    // 성공 시 리뷰 목록과 더보기 버튼을 함께 렌더링
+    return (
+      <>
+        <div className="review-list-container">
+          {reviews.map((review) => (
+            <div key={review.id || review.senderName} className="review-card">
+              {/* 아바타 (프로필 아이콘) */}
+              <div className="review-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
       </div>
-    ));
+              {/* 말풍선 부분 */}
+              <div className="review-bubble">
+                <p className="review-sender">{review.senderName}</p>
+                <div className="review-content">
+                  <p className="review-text">{review.content}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* 전체 리뷰가 3개 초과일 때만 '더보기' 버튼 표시 */}
+        {totalElements > 3 && (
+          <div className="review-more">
+            <Link to={`/company/${companyId}/reviews`} className="more-button">
+              리뷰 더 보기 ({totalElements})
+            </Link>
+          </div>
+        )}
+      </>
+    );
   };
 
+  // 3. 최종 JSX 구조
   return (
-    <div className="mt-8 border-t pt-6">
-      <h2 className="text-xl font-semibold mb-4">업체 리뷰</h2>
-
-      {/* 리뷰 리스트 */}
-      <div className="space-y-3">{renderReviewList()}</div>
-
-      {/* 더보기 버튼: 전체 리뷰가 3개 초과일 때만 보입니다. */}
-      {totalElements > 3 && !loading && (
-        <button
-          className="mt-4 w-full px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
-          onClick={() => navigate(`/company/${companyId}/reviews`)}
-        >
-          리뷰 더보기
-        </button>
-      )}
+    <section className="company-review-section">
+      <div className="section-header">
     </div>
+      {renderContent()}
+    </section>
   );
 }

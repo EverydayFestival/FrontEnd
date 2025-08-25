@@ -126,13 +126,13 @@ export default function CompanyDetail() {
         />
         <div className="company-info-side">
           <div className="company-title">
-            <h1>{company.name}</h1>
             <button onClick={toggleFavorite}>
               <img
                 src={favored ? fullStar : emptyStar}
                 alt={favored ? "찜하기 취소" : "찜하기"}
               />
             </button>
+            <h1>{company.name}</h1>
           </div>
           {/* 추가적인 정보가 필요하다면 여기에 배치 */}
         </div>

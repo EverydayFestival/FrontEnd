@@ -1,24 +1,33 @@
+/* 배너를 담는 컨테이너 */
 .slider-container {
-  display: flex;        /* 이미지를 가로로 나열 */
-  overflow: hidden;     /* 슬라이드 외 이미지 숨김 */
   width: 100%;
-  height: auto;
+  max-width: 1728px;
+  margin: 0 auto;
+  overflow: hidden;
+  
+  /* --- 수정된 부분 --- */
+  position: relative; /* 이미지를 겹치기 위한 기준점 */
+  aspect-ratio: 1728 / 214; /* 이미지 비율(가로/세로) 유지 */
 }
 
-img.slider-img {
-  flex: 0 0 33.33%; /* 기본 3개 */
+/* 슬라이더 내부의 각 이미지 */
+.slider-img {
+  /* --- 수정된 부분 (이미지를 겹치도록 설정) --- */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
   object-fit: cover;
+  
+  /* 기본적으로 이미지를 투명하게 설정 */
+  opacity: 0;
+  
+  /* 부드러운 전환 효과 */
+  transition: opacity 0.7s ease-in-out;
 }
 
-@media (max-width: 768px) {
-  img.slider-img {
-    flex: 0 0 50%; /* 태블릿에서는 2개 */
-  }
-}
-
-@media (max-width: 480px) {
-  img.slider-img {
-    flex: 0 0 100%; /* 모바일에서는 1개 */
-  }
+/* 'active' 클래스가 있는 이미지만 보이도록 설정 */
+.slider-img.active {
+  opacity: 1;
 }

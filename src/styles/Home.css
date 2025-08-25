@@ -3,11 +3,22 @@
 /* 카드 개별 스타일 (반응형으로 변경) */
 /* Home.css 또는 App.css 등 상위 CSS 파일 */
 
+/* Home.css 또는 관련 페이지 CSS 파일 */
+
 .card-container {
+  /* 1. CSS Grid를 사용하여 레이아웃을 정의합니다. */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(344px, 1fr)); /* 화면 크기에 따라 카드 개수 자동 조절 */
-  gap: 24px; /* 카드 사이 간격 */
-  padding: 20px;
+  
+  /* 2. 항상 3개의 열(column)을 만들고, 각 열이 동일한 너비를 갖도록 합니다. */
+  grid-template-columns: repeat(3, 1fr); 
+  
+  /* 3. 카드 사이의 가로, 세로 간격을 설정합니다. */
+  gap: 24px; 
+  
+  /* --- 추가적인 스타일 (선택사항) --- */
+  padding: 24px; /* 컨테이너 안쪽 여백 */
+  max-width: 1200px; /* 전체 컨테이너의 최대 너비 */
+  margin: 0 auto; /* 페이지 중앙 정렬 */
 }
 
 /* Pagination 버튼 스타일 */
