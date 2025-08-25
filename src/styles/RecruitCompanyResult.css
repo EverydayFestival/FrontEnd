@@ -1,0 +1,85 @@
+/* 전체 페이지 배경 */
+.ViewPageBackground {
+  background-color: #F4EDED;
+  min-height: 100vh; /* 화면 전체 채우기 */
+  padding: 40px 0;
+}
+
+/* 페이지 전체 래퍼 */
+.ViewPageWrapper {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: "Noto Sans KR", sans-serif;
+  color: #333;
+}
+.BackButton {
+  color: rgb(75, 74, 74);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+  padding: 12px 0;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  border: none;
+  cursor: pointer;
+
+  width: 10%;           /* 버튼 넓이 줄이기 */
+  margin-left: 19%;  /* 위쪽 공백 + 가운데 정렬 */
+  display: block;
+}
+
+.BackButton:hover {
+   color: #ff6a55;
+}
+
+.BackButton:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 7px rgba(0,0,0,0.1);
+}
+
+
+/* 제목 */
+.ViewAppliTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* 지원서 본문 */
+.ApplicationWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 라벨 + 답변 */
+.ApplicationWrapper label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.ApplicationWrapper p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+/* 추가 질문 영역 */
+.Extras {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+

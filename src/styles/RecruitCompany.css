@@ -1,0 +1,148 @@
+/* RecruitCompany.css */
+
+.PageBackground{
+    background-color: #F4EDED;
+  min-height: 100vh; /* 화면 전체 채우기 */
+  padding: 40px 0;   
+}
+
+
+/* 페이지 전체 래퍼 */
+.PageWrapper {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: "Noto Sans KR", sans-serif;
+  color: #333;
+}
+
+/* 축제명 */
+.FestName {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* 모집 타이틀 */
+.RecruitTitle {
+  font-size: 1.3rem;
+  text-align: center;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+/* 안내 문구 */
+.Information {
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.Information strong {
+  font-weight: 600;
+}
+
+.Mandatory {
+  font-size: 0.85rem;
+  color: #d9534f;
+  margin-bottom: 15px;
+}
+
+/* 입력 폼 */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* 라벨 */
+form label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* 인풋 공통 */
+form input[type="text"],
+form input[type="tel"],
+form input[type="email"],
+form input[type="radio"] + span {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border 0.2s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="tel"]:focus,
+form input[type="email"]:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74,144,226,0.2);
+}
+
+/* 참여 분야 라디오 버튼 */
+.ChooseType {
+  margin-top: 8px;
+}
+
+.ChooseTypeBtn {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.ChooseTypeBtn label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.ChooseTypeBtn input[type="radio"] {
+  accent-color: #4a90e2;
+}
+
+/* 추가 질문 */
+.AddQ {
+display: flex;
+flex-direction: column;
+  margin-top: 24px;
+  gap: 30px;
+}
+
+.AddQTitle {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+/* 버튼 */
+button[type="submit"] {
+  background-color: #FEA898;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 0;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  border: none;
+  cursor: pointer;
+
+  /* 수정된 부분 */
+  width: 30%;        /* 버튼 넓이 줄이기 */
+  margin: 40px auto 0;  /* 위에 공백 주고 가운데 정렬 */
+  display: block;
+}
+
+button[type="submit"]:hover {
+  background-color: #ff6a55;
+}

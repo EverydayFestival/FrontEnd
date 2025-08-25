@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import '../styles/RecruitCompanyResult.css'
 
 export default function RecruitCompanyResult() {
     const { applicationId } = useParams(); // URL에서 applicationId를 가져옴
@@ -47,15 +48,21 @@ export default function RecruitCompanyResult() {
 
     // ✅ API에서 받은 데이터를 화면에 렌더링
     const { answers, extraQuestions, extraAnswers } = applicationData;
-    const fixedQuestionLabels = ["업체명", "업체 전화번호", "이메일", "가능한 날짜와 시간", "참여 분야"];
+    const fixedQuestionLabels = ["업체 전화번호", "이메일", "가능한 날짜와 시간", "참여 분야"];
 
     return (
         <div>
             <Navbar />
-            <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-                <h1 className="text-2xl font-bold mb-6">제출한 지원서 확인</h1>
+            <div className="PageBackground">
+                <button 
+                    onClick={() => navigate(-1)} // 이전 페이지(축제 상세)로 돌아가기
+                    className="BackButton"
+                >돌아가기</button>
+            <div className="ViewPageWrapper">
 
-                <div className="space-y-4 bg-gray-50 p-6 rounded-lg">
+                <h1 className="ViewAppliTitle">제출한 지원서 확인</h1>
+
+                <div className="ApplicationWrapper">
                     {/* 고정 질문과 답변 렌더링 */}
                     {answers.map((answer, index) => (
                         <div key={index}>
@@ -66,7 +73,7 @@ export default function RecruitCompanyResult() {
 
                     {/* 추가 질문과 답변 렌더링 */}
                     {extraQuestions && extraQuestions.length > 0 && (
-                        <div className="border-t pt-4 mt-4">
+                        <div className="Extras">
                             {extraQuestions.map((question, index) => (
                                 <div key={index} className="mt-4">
                                     <label className="block font-semibold text-gray-700">{question}</label>
@@ -77,13 +84,9 @@ export default function RecruitCompanyResult() {
                     )}
                 </div>
 
-                <button
-                    onClick={() => navigate(-1)} // 이전 페이지(축제 상세)로 돌아가기
-                    className="mt-6 w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition-colors"
-                >
-                    돌아가기
-                </button>
+
             </div>
+        </div>
         </div>
     );
 }
