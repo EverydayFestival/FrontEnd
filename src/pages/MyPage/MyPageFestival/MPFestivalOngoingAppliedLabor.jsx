@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
 import labor_data from '../../../assets/labor/labor_data';
 import fest_data from '../../../assets/fest/fest_data';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../../components/Box';
 import Modal from '../../../components/Modal';
 
 const MPFestivalOngoingAppliedLabor = () => {
+
+    const navigate = useNavigate();
 
     const {festivalId} = useParams();
     const [festivalInfo, setFestivalInfo] = useState(null); // 축제 정보
@@ -254,13 +256,13 @@ const MPFestivalOngoingAppliedLabor = () => {
       {appliedLabors.length === 0 ? (
         <p>해당 축제에 지원한 단기 근로자가 없어요!</p>
        ) : (
-        appliedLabors.map((la) => (
-          <LaborCard key={la.id}>
+        appliedLabors.map((la,index) => (
+          <LaborCard key={index}>
             <LaborImage src={la.imageUrl} alt="단기근로자이미지" />
             <Laborleft>
               <LaborInfo>
                 <LaborName>{la.name}</LaborName>
-                <ApplicationBtn>지원서 보기</ApplicationBtn>
+                <ApplicationBtn onClick={()=>navigate(`/recruit/worker/${la.id}/result`)}>지원서 보기</ApplicationBtn>
               </LaborInfo>
             </Laborleft>
 
