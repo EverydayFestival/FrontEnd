@@ -257,7 +257,7 @@ const CompanyName = styled.p`
 `
 const AddressWrapper = styled.div`
   display: flex;
-  gap: 7px;
+  gap: 3px;
 `
 const CompanyInfo = styled.div`
     display: flex;
