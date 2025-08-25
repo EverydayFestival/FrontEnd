@@ -174,11 +174,25 @@ const FestImage = styled.img`
   object-fit: cover;
   border-radius: 15px;
   cursor: pointer;
+  @media (max-width: 1100px){
+    width:150px;
+    height:200px;
+  }
+  @media (max-width: 800px){
+    width: 120px;
+    height:160px;
+  }
 `;
 
 const FestInfo = styled.div`
   p{
     font-size: 14px;
+    @media (max-width: 1100px){
+    font-size:11px;
+  }
+  @media (max-width: 900px){
+    font-size:9px;
+  }
   }
   display: flex;
   flex-direction: column;
@@ -191,6 +205,12 @@ const FestName = styled.span`
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
+  @media (max-width: 1100px){
+    font-size: 14px;
+  }
+  @media (max-width: 800px){
+    font-size: 10px;
+  }
 `;
 
 const RecruitStatus = styled.div`
@@ -211,5 +231,14 @@ const RecruitStatus = styled.div`
       &:hover{
       background-color: #dcd7d7;
     }
-      }
+    @media (max-width: 1100px){
+    width: 100px;
+    font-size:10px;
+  }
+  @media (max-width: 800px){
+    width: 80px;
+  }
+    
+  }
+      
 `;
