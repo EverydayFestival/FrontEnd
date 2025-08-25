@@ -33,7 +33,8 @@ function RecruitCard({ type, recruitInfo, festivalId, applyStatus, userRole }) {
     };
 
     return (
-        <div className="recruit-card">
+          <div className="recruit-card">
+            <div className="recruitcard-info">
             <div className="recruit-card-header">
                 <h3>{type === "company" ? "업체 모집" : "단기 근로자 모집"}</h3>
                 <span className={`status-badge ${isRecruiting ? 'status-ongoing' : 'status-ended'}`}>
@@ -56,12 +57,13 @@ function RecruitCard({ type, recruitInfo, festivalId, applyStatus, userRole }) {
                     <p><strong>특이사항:</strong> {recruitInfo.remark}</p>
                 </>
             )}
+            </div>
             <button 
                 className={`recruit-button ${isDisabled ? 'disabled' : 'active'}`} 
                 onClick={handleButtonClick} 
                 disabled={isDisabled}
             >
-                {hasApplied ? "이미 지원 완료" : !canApply ? "지원 불가" : !isRecruiting ? "모집 기간 종료" : "공고 확인 및 지원하기"}
+                {hasApplied ? "지원 완료" : !canApply ? "지원 불가" : !isRecruiting ? "모집 기간 종료" : "지원하기"}
             </button>
         </div>
     );
@@ -194,13 +196,6 @@ export default function FestivalDetail() {
           applyStatus={userRole === "업체" ? festivalData.festivalOnlyDto.applyStatus : "NOT_APPLIED"}
           userRole={userRole}
         />
-        <button
-          className="recruit-button-outer"
-          disabled={userRole === "축제기획자"}
-          onClick={() => { /* 지원 페이지 이동 */ }}
-        >
-          지원하기
-        </button>
       </div>
     )}
 
@@ -213,17 +208,13 @@ export default function FestivalDetail() {
           applyStatus={userRole === "단기근로자" ? festivalData.festivalOnlyDto.applyStatus : "NOT_APPLIED"}
           userRole={userRole}
         />
-        <button
-          className="recruit-button-outer"
-          disabled={userRole === "축제기획자"}
-          onClick={() => { /* 지원 페이지 이동 */ }}
-        >
-          지원하기
-        </button>
       </div>
     )}
   </div>
 </div>
+
+ {/* 후기 */}
+  {isEnded && <FestivalReview festivalId={id} />}
 
 
   {/* 추천 업체 카드 */}
@@ -247,8 +238,6 @@ export default function FestivalDetail() {
     </div>
   </section>
 
-  {/* 후기 */}
-  {isEnded && <FestivalReview festivalId={id} />}
 </div>
 
     );

@@ -153,7 +153,7 @@
   margin-bottom: 40px;
 }
 
-.recruit-button-outer {
+/* .recruit-button-outer {
   width: 176px;
   height: 120px;
   border-radius: 20px;
@@ -169,7 +169,7 @@
   background-color: #e5e7eb;
   color: #9ca3af;
   cursor: not-allowed;
-}
+} */
 
 
 /* 추천 업체 */
@@ -220,4 +220,49 @@
 
 .festival-title button:hover {
     background-color: transparent; /* 호버 시에도 배경 없음 */
+}
+
+/* 통합된 '지원하기' 버튼 스타일 */
+.recruit-card button {
+    display: flex;
+  background-color: #FEA898;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  width: 150px;
+  height: 60px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0; /* 크기가 줄어들지 않도록 설정 */
+  transition: all 0.2s ease-in-out;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.recruit-card button:hover {
+  border-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.recruit-card button:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+  box-shadow: none;
+  transform: none;
+}
+
+.recruit-card {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+}
+
+.recruit-card-header {
+    display: flex;
+    gap: 10px;
 }
