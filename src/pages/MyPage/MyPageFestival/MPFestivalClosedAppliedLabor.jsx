@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import Navbar from '../../../components/Navbar';
 import labor_data from '../../../assets/labor/labor_data';
 import fest_data from '../../../assets/fest/fest_data';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Box from '../../../components/Box';
 import Modal from '../../../components/Modal';
 
 const MPFestivalClosedAppliedLabor = () => {
+    const navigate = useNavigate();
     const [activeFilter, setActiveFilter] = useState('지원순');
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -63,7 +64,7 @@ const MPFestivalClosedAppliedLabor = () => {
         setError("");
     
         const response = await fetch(
-          `https://festival-everyday.duckdns.org/festivals/${festivalId}/labor-applications?page=0&size=` ,
+          `https://festival-everyday.duckdns.org/festivals/${festivalId}/labor-applications` ,
           {
             method: "GET",
             headers: {
@@ -94,7 +95,7 @@ const MPFestivalClosedAppliedLabor = () => {
     const viewFestivalInfo = async () => {
       try {
         const response = await fetch(
-          `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ENDED&page=0&size=`,
+          `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ENDED&page=0&size=5`,
           {
             method: "GET",
             headers: {
@@ -237,7 +238,7 @@ const MPFestivalClosedAppliedLabor = () => {
             <Laborleft>
               <LaborInfo>
                 <LaborName>{la.name}</LaborName>
-                <ApplicationBtn>지원서 보기</ApplicationBtn>
+                <ApplicationBtn onClick={()=>navigate(`/recruit/worker/${la.id}/result`)}>지원서 보기</ApplicationBtn>
               </LaborInfo>
             </Laborleft>
 

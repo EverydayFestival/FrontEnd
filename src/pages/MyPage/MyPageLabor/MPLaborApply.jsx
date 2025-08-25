@@ -208,7 +208,7 @@ const MPLaborApply = () => {
                             <p>{fest.holderName}</p>
                            
                             </RealInfo>
-                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/worker/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
@@ -272,7 +272,7 @@ const MPLaborApply = () => {
                             <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                             </RealInfo>
-                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/worker/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="더보기" /> */}
                      </FestLeft>
@@ -309,7 +309,7 @@ const MPLaborApply = () => {
                             <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                             </RealInfo>
-                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/worker/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
@@ -347,7 +347,7 @@ const MPLaborApply = () => {
                             <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                             </RealInfo>
-                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/worker/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
