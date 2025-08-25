@@ -165,19 +165,7 @@ useEffect(() => {
         <p className="Mandatory">*은 필수입력란입니다.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* 1. 기본 입력 항목 */}
-          <div>
-            <label className="CoName">업체명 *</label>
-            <input
-              type="text"
-              name="companyName"
-              onChange={handleChange}
-              className="border p-2 w-full rounded"
-              required
-            />
-          </div>
-
-          <div>
+            <div>
             <label className="CoTel">업체 전화번호 *</label>
             <input
               type="tel"
