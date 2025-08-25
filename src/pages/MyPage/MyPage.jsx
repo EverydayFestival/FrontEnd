@@ -156,6 +156,7 @@ const MyPageMenu = styled.div`
   align-items: center;
   margin-top: 30px;
   gap: 20px;
+
 `;
 
 const MenuButton = styled.button`
@@ -170,6 +171,12 @@ const MenuButton = styled.button`
   background: #F4EDED;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   cursor: pointer;
+  transition: all 0.2s ease;
+    &:hover{
+    background:#d5cece;
+
+  }
+
 
   @media (max-width: 800px){
     width: 40%;
