@@ -5,12 +5,11 @@ import Header from "../components/Header.jsx";
 import FestivalInfoForm from "../components/FestivalInfoForm.jsx";
 import CompanyRecruitForm from "../components/CompanyRecruitForm.jsx";
 import WorkerRecruitForm from "../components/WorkerRecruitForm.jsx";
-import "../styles/FestivalRegister.css";
+import "../styles/FestivalRegister.css"; // 현재의 CSS 파일 방식 유지
 
 function FestivalRegister() {
     const navigate = useNavigate();
 
-    // ... (useState, 핸들러 함수, handleSubmit 로직은 변경 없음) ...
     const [formData, setFormData] = useState({
         name: "", image: null, startDate: "", endDate: "", city: "", district: "",
         detail: "", fee: "", timeStartHour: "18", timeStartMinute: "00",
@@ -27,9 +26,9 @@ function FestivalRegister() {
         { label: "공연/예술", value: "ART" },
         { label: "오락", value: "ENTERTAINMENT" },
         { label: "체험", value: "EXPERIENCE" },
-        { label: "판매", value: "SALES" },
+        { label: "판매", value: "SALE" },
         { label: "푸드", value: "FOOD" },
-        { label: "홍보(캠페인)", value: "PROMOTION" },
+        { label: "홍보(캠페인)", value: "CAMPAIGN" },
     ];
 
     const handleChange = (e) => {
@@ -52,6 +51,7 @@ function FestivalRegister() {
         });
     };
 
+    // --- START: 과거 코드의 전체 기능이 복원된 handleSubmit ---
     const handleSubmit = async (e) => {
         e.preventDefault();
         const accessToken = localStorage.getItem("accessToken");
@@ -61,7 +61,7 @@ function FestivalRegister() {
         }
 
         let newFestivalId;
-        const successMessages = ["축제 등록에 성공하였습니다!"];
+        const successMessages = []; // 축제 등록 성공 메시지는 여기서 따로 추가
         const errorMessages = [];
 
         try {
@@ -89,13 +89,89 @@ function FestivalRegister() {
 
             const festivalResult = await festivalResponse.json();
             if (!festivalResult.success) throw new Error(festivalResult.message || "축제 등록 실패");
+            
             newFestivalId = festivalResult.data;
+            successMessages.push("축제 등록에 성공하였습니다!"); // 축제 등록 성공 시 메시지 추가
 
-            // ... (업체 모집, 근로자 모집, 이미지 업로드 로직은 그대로 유지) ...
+            // 2️⃣ 업체 모집 등록
+            if (formData.companyRecruit === "yes") {
+                const companyData = {
+                    begin: `${formData.companyRecruitBegin}T09:00:00`,
+                    end: `${formData.companyRecruitEnd}T18:00:00`,
+                    categories: formData.companyCategories,
+                    preferred: formData.companyPreferred,
+                    notice: formData.companyNotice,
+                    extraQuestions: [
+                        formData.companyQuestion1, formData.companyQuestion2, formData.companyQuestion3,
+                        formData.companyQuestion4, formData.companyQuestion5
+                    ].filter(q => q && q.trim() !== ""),
+                };
+                try {
+                    const companyRes = await fetch(`${import.meta.env.VITE_API_URL}/festivals/${newFestivalId}/company-recruit`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
+                        body: JSON.stringify(companyData),
+                    });
+                    const companyResult = await companyRes.json();
+                    if (companyResult.success) successMessages.push("업체 모집 등록 성공");
+                    else throw new Error(companyResult.message || "업체 모집 등록 실패");
+                } catch (err) { errorMessages.push(err.message); }
+            }
 
-            // 5️⃣ 결과 알림 + 페이지 이동
-            if (errorMessages.length > 0) alert(`일부 등록 실패:\n- ${errorMessages.join("\n- ")}`);
-            else alert(successMessages.join("\n"));
+            // 3️⃣ 근로자 모집 등록
+            if (formData.workerRecruit === "yes") {
+                const laborData = {
+                    begin: `${formData.workerRecruitBegin}T09:00:00`,
+                    end: `${formData.workerRecruitEnd}T18:00:00`,
+                    job: formData.job, wage: formData.wage, remark: formData.remark,
+                    notice: formData.workerNotice,
+                    extraQuestions: [
+                        formData.workerQuestion1, formData.workerQuestion2, formData.workerQuestion3,
+                        formData.workerQuestion4, formData.workerQuestion5
+                    ].filter(q => q && q.trim() !== ""),
+                };
+                try {
+                    const laborRes = await fetch(`${import.meta.env.VITE_API_URL}/festivals/${newFestivalId}/labor-recruit`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${accessToken}` },
+                        body: JSON.stringify(laborData),
+                    });
+                    const laborResult = await laborRes.json();
+                    if (laborResult.success) successMessages.push("근로자 모집 등록 성공");
+                    else throw new Error(laborResult.message || "근로자 모집 등록 실패");
+                } catch (err) { errorMessages.push(err.message); }
+            }
+
+            // 4️⃣ 이미지 업로드
+            if (formData.image) {
+                const imgForm = new FormData();
+                imgForm.append("ownerId", newFestivalId);
+                imgForm.append("ownerType", "FESTIVAL");
+                imgForm.append("image", formData.image);
+
+                try {
+                    const imgRes = await fetch(`${import.meta.env.VITE_API_URL}/images`, {
+                        method: "POST",
+                        headers: { Authorization: `Bearer ${accessToken}` },
+                        body: imgForm,
+                    });
+                    const imgResult = await imgRes.json();
+                    if (imgResult.success) {
+                        successMessages.push("이미지 업로드 성공");
+                    } else {
+                        throw new Error(imgResult.message || "이미지 업로드 실패");
+                    }
+                } catch (err) {
+                    errorMessages.push(`이미지 업로드 오류: ${err.message}`);
+                }
+            }
+
+            // 5️⃣ 최종 결과 알림 + 페이지 이동
+            if (errorMessages.length > 0) {
+                alert(`일부 등록 실패:\n- ${errorMessages.join("\n- ")}`);
+            } else {
+                alert(successMessages.join("\n"));
+            }
             navigate(`/festivals/${newFestivalId}`);
 
         } catch (error) {
@@ -103,7 +179,9 @@ function FestivalRegister() {
             alert(`오류 발생: ${error.message}`);
         }
     };
+    // --- END: handleSubmit 복원 완료 ---
 
+    // 현재 코드의 JSX 구조와 CSS 클래스 이름을 그대로 사용
     return (
         <div className="register-page-container">
             <Navbar />

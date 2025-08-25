@@ -22,6 +22,34 @@ function Login() {
         { key: "worker", name: "단기근로자", img: "/images/worker.png" },
     ];
 
+    // 역할별로 보여줄 안내 메시지
+    const roleLoginInfo = {
+        festival: (
+            <p>
+                ID: H_acc_#,
+                PW: H_pwd_#
+                <br/>(#: 0~9)
+                으로만 로그인하십시오.
+            </p>
+        ),
+        company: (
+            <p>
+                ID: C_acc_#,
+                PW: C_pwd_#
+                <br/>(#: 0~9)
+                으로만 로그인하십시오.
+            </p>
+        ),
+        worker: (
+            <p>
+                ID: L_acc_#,
+                PW: L_pwd_#
+                <br/>(#: 0~9)
+                으로만 로그인하십시오.
+            </p>
+        ),
+    };
+
     // 역할 카드 클릭 시, 선택된 역할의 key를 state에 저장하는 핸들러
     const handleRoleChange = (roleKey) => {
         setRole(roleKey);
@@ -102,6 +130,14 @@ function Login() {
                         </div>
                     ))}
                 </div>
+
+                {role && (
+                    <div className="login-info">
+                        {roleLoginInfo[role]}
+                    </div>
+                )}
+                {/* ===== END: ADDED CODE ===== */}
+
 
                 <form onSubmit={handleLogin} className="login-form space-y-6">
                     <div>

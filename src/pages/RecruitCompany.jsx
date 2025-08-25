@@ -165,9 +165,7 @@ useEffect(() => {
         <p className="Mandatory">*은 필수입력란입니다.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* 1. 기본 입력 항목 */}
-
-          <div>
+            <div>
             <label className="CoTel">업체 전화번호 *</label>
             <input
               type="tel"

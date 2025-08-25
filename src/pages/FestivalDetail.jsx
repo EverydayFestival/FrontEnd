@@ -10,6 +10,10 @@ import Box from "../components/Box.jsx";
 import "../styles/FestivalDetail.css";
 
 function RecruitCard({ type, recruitInfo, festivalId, applyStatus, userRole }) {
+
+  console.log(`[${type} 카드] 가 받은 applyStatus:`, applyStatus);
+
+  
     const navigate = useNavigate();
     if (!recruitInfo) return null;
 
