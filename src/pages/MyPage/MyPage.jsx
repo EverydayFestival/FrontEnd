@@ -65,11 +65,11 @@ const MyPage = () => {
       { label: "찜", path: '/mypage/favored?type=festival' }
     ],
     "COMPANY": [
-      { label: "지원현황", path: '/mypage/company/apply' },
+      { label: "지원현황", path: `/mypage/company/apply` },
       { label: "찜", path: '/mypage/favored?type=company' }
     ],
     "LABOR": [
-      { label: "지원현황" , path: '/mypage/labor/apply'},
+      { label: "지원현황" , path: `/mypage/labor/apply`},
       { label: "찜", path: '/mypage/favored?type=labor'}
     ]
   };

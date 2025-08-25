@@ -311,22 +311,22 @@ const MPFestivalOngoingAppliedCompany = () => {
   {appliedCompanies.length === 0 ? (
     <p>해당 축제에 지원한 업체가 없어요!</p>
   ) : (
-    appliedCompanies.map((co) => (
-      <CoCard key={co.id}>
-        <CoImage src={co.imageUrl} alt="업체이미지" />
+    appliedCompanies.map((co, index) => (
+      <CoCard key={index}>
+        <CoImage onClick={()=>navigate(`/company/${co.simpleCompany.id}`)}src={co.imageUrl} alt="업체이미지" />
         <Coleft>
           <CoInfo>
             <RealInfo>
-              <CoName>{co.simpleCompany.name}</CoName>
+              <CoName onClick={()=>navigate(`/company/${co.simpleCompany.id}`)}>{co.simpleCompany.name}</CoName>
               <AddressWrapper>
               <p>{co.simpleCompany?.address?.city}</p>
               <p>{co.simpleCompany?.address?.district}</p>
               </AddressWrapper>
               <p>{co.simpleCompany.category}</p>
             </RealInfo>
-            <ApplicationBtn>지원서 보기</ApplicationBtn>
+            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${co.id}/result`)}>지원서 보기</ApplicationBtn>
           </CoInfo>
-          <MoreIcon src={more_button} alt="업체더보기" />
+          <MoreIcon onClick={()=>navigate(`/company/${co.simpleCompany.id}`)}src={more_button} alt="업체더보기" />
         </Coleft>
 
         <CoChoice>
@@ -416,58 +416,58 @@ const Title = styled.div`
   padding: 10px 0 10px 270px;
 `;
 
-const FilterSection = styled.div`
-  display: flex;
-  /* justify-content: right; */
-  /* padding-right: 110px;
-  margin: 20px 0; */
-`;
+// const FilterSection = styled.div`
+//   display: flex;
+//   /* justify-content: right; */
+//   /* padding-right: 110px;
+//   margin: 20px 0; */
+// `;
 
-const Dropdown = styled.div.attrs({ className: "dropdown-container" })`
-  position: relative;
-  display: inline-block;
+// const Dropdown = styled.div.attrs({ className: "dropdown-container" })`
+//   position: relative;
+//   display: inline-block;
   
-`;
+// `;
 
-const DropdownBtn = styled.button`
-  padding: 10px 20px;
-  font-size: 16px;
+// const DropdownBtn = styled.button`
+//   padding: 10px 20px;
+//   font-size: 16px;
 
-  border-radius: 15px;
-  border: 1px solid #a4a3a3;
-  background-color: white;
-  cursor: pointer;
+//   border-radius: 15px;
+//   border: 1px solid #a4a3a3;
+//   background-color: white;
+//   cursor: pointer;
 
-  &:hover{
-    background-color: #e4e0e0;
-  }
+//   &:hover{
+//     background-color: #e4e0e0;
+//   }
   
-`;
+// `;
 
-const DropdownContent = styled.div`
-  margin-top: 10px;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 130px;
-  background-color: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  z-index: 10;
+// const DropdownContent = styled.div`
+//   margin-top: 10px;
+//   position: absolute;
+//   top: 100%;
+//   left: 0;
+//   min-width: 130px;
+//   background-color: white;
+//   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+//   z-index: 10;
 
-  border-radius: 15px;
-  border: 1px #a4a3a3;
+//   border-radius: 15px;
+//   border: 1px #a4a3a3;
 
-  font-size: 14px;
-  text-align: center;
-`;
+//   font-size: 14px;
+//   text-align: center;
+// `;
 
-const DropdownItem = styled.div`
-  padding: 10px;
-  cursor: pointer;
-  &:hover {
-    background-color: #eee;
-  }
-`;
+// const DropdownItem = styled.div`
+//   padding: 10px;
+//   cursor: pointer;
+//   &:hover {
+//     background-color: #eee;
+//   }
+// `;
 
 const ApplyCompanyList = styled.div`
   display: flex;

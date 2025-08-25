@@ -397,8 +397,8 @@ const LaborCard = styled.div`
 `;
 
 const LaborImage = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 10px;
   object-fit: cover;
 `;

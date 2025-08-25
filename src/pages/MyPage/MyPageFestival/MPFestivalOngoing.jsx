@@ -73,9 +73,9 @@ const MPFestivalOngoing = () => {
         ) : (
           festivals.map((fest) => (
             <FestCard key={fest.id}>
-              <FestImage src={fest.imageUrl ?? "/default.png"} alt={fest.name} />
+              <FestImage onClick={()=>navigate(`/festivals/${fest.id}`)}src={fest.imageUrl ?? "/default.png"} alt={fest.name} />
               <FestInfo>
-                <FestName>{fest.name}</FestName>
+                <FestName onClick={()=>navigate(`/festivals/${fest.id}`)}>{fest.name}</FestName>
                 <p>
                   {fest.address?.city} {fest.address?.district} 
                 </p>
@@ -172,7 +172,7 @@ const FestImage = styled.img`
   width: 210px;
   height: 280px;
   object-fit: cover;
-  /* border-radius: 20px; */
+  border-radius: 15px;
   cursor: pointer;
 `;
 

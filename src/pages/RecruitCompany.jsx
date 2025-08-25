@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import '../styles/RecruitCompany.css'
+import Box from "../components/Box";
 
 export default function RecruitCompany() {
   const { id } = useParams();
@@ -148,24 +150,25 @@ useEffect(() => {
   return (
     <div>
       <Navbar />
-      <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-        <h1 className="text-2xl font-bold mb-2">
+      <div className="PageBackground">
+      <div className="PageWrapper">
+        <h1 className="FestName">
           {festivalInfo.name}
         </h1>
-        <h2 className="text-xl font-semibold mb-6 text-gray-700">업체 참여자 모집</h2>
+        <h2 className="RecruitTitle">업체 참여자 모집</h2>
         
-        <div className="bg-gray-50 p-4 rounded-md mb-6">
-            <p className="text-sm">
+        <div className="Information">
+            <p className="Hello">
                 안녕하세요. <strong>{festivalInfo.holderName}</strong>에서 주최하는 <strong>{festivalInfo.name}</strong> 행사에 참여할 업체를 모집하고 있습니다.
             </p>
             {companyRecruitInfo.notice && <p className="mt-2 text-sm"><strong>안내사항:</strong> {companyRecruitInfo.notice}</p>}
         </div>
-        <p className="mb-4 text-sm text-red-500">*은 필수입력란입니다.</p>
+        <p className="Mandatory">*은 필수입력란입니다.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* 1. 기본 입력 항목 */}
           <div>
-            <label className="block font-semibold">업체명 *</label>
+            <label className="CoName">업체명 *</label>
             <input
               type="text"
               name="companyName"
@@ -176,7 +179,7 @@ useEffect(() => {
           </div>
 
           <div>
-            <label className="block font-semibold">업체 전화번호 *</label>
+            <label className="CoTel">업체 전화번호 *</label>
             <input
               type="tel"
               name="companyPhone"
@@ -187,7 +190,7 @@ useEffect(() => {
           </div>
 
           <div>
-            <label className="block font-semibold">이메일 *</label>
+            <label className="CoEmail">이메일 *</label>
             <input
               type="email"
               name="companyEmail"
@@ -198,7 +201,7 @@ useEffect(() => {
           </div>
 
           <div>
-            <label className="block font-semibold">가능한 날짜와 시간 *</label>
+            <label className="CoTimeDate">가능한 날짜와 시간 *</label>
             <input
               type="text"
               name="availableTime"
@@ -211,11 +214,11 @@ useEffect(() => {
 
           {/* [수정] companyRecruitDto의 categories를 사용합니다. */}
           {companyRecruitInfo?.categories?.length > 0 && (
-                        <div>
+                        <div className="ChooseType">
                             <label className="block font-semibold">
                                 참여 분야 선택 (하나만 선택) *
                             </label>
-                            <div className="flex flex-wrap gap-4 mt-2">
+                            <div className="ChooseTypeBtn">
                                 {companyRecruitInfo.categories.map((cat) => (
                                     <label key={cat} className="flex items-center gap-2">
                                         {/* ✅ 1. type을 "radio"로 변경 */}
@@ -236,8 +239,8 @@ useEffect(() => {
 
                     {/* ✅ 4. 추가 질문 섹션을 map 루프 바깥으로 이동 */}
                     {additionalQuestions.length > 0 && (
-                        <div className="border-t pt-6 mt-6">
-                            <h3 className="text-lg font-semibold mb-4">추가 질문</h3>
+                        <div className="AddQ">
+                            <h3 className="AddQTitle">추가 질문</h3>
                             {additionalQuestions.map((question, index) => (
                                 <div key={index} className="mb-4">
                                     <label className="block font-semibold">
@@ -256,10 +259,11 @@ useEffect(() => {
                     )}
 
                     <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        제출하기
+                        지원하기
                     </button>
                 </form>
             </div>
+        </div>
         </div>
     );
 }
