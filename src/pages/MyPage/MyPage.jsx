@@ -1,105 +1,159 @@
-// import React, { useState } from 'react';
-// import styled from 'styled-components';
-// import Navbar from '../../components/Navbar';
-// import profile from '../../assets/profile.png';
-// import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Navbar from '../../components/Navbar';
+import profile from '../../assets/profile.png';
+import { useNavigate } from 'react-router-dom';
 
-// const MyPage = () => {
-//   const [profileType, setProfileType] = useState('Labor'); //Festival, Company, Labor
-//   const navigate = useNavigate();
+const MyPage = () => {
+    // const [profileType, setProfileType] = useState('Labor'); //Festival, Company, Labor
+    const navigate = useNavigate();
 
-//   const buttonConfig = {
-//     Festival: [
-//       { label: "진행 및 예정 행사", path: '/mypage/festival/ongoing' },
-//       { label: "종료된 행사", path: '/mypage/festival/closed' },
-//       { label: "찜", path: '/mypage/favored?type=festival' }
-//     ],
-//     Company: [
-//       { label: "지원현황", path: '/mypage/company/apply' },
-//       { label: "찜", path: '/mypage/favored?type=company' }
-//     ],
-//     Labor: [
-//       { label: "지원현황" , path: '/mypage/labor/apply'},
-//       { label: "찜", path: '/mypage/favored?type=labor'}
-//     ]
-//   };
+    const [info, setInfo] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    
 
-//   const buttons = buttonConfig[profileType] || [];
+  const getUserDescription = (userType) => {
+    switch(userType) {
+        case "HOLDER" : return "축제 및 행사 주최자";
+        case "COMPANY" : return "업체 담당자";
+        case "LABOR" : return "단기 근로자";
+        default: return "";
+    }
+  };
 
-//   return (
-//     <MyPageWrapper>
-//       <Navbar />
-//       <Profile>
-//         <ProfileImg src={profile} alt="profile image" />
-//         <ProfileInfo>
-//           <h2>멋사센터</h2>
-//           <p>축제 및 행사 주최자</p>
-//         </ProfileInfo>
-//       </Profile>
+  const viewMyInfo = async() => {
+        try{
+          setLoading(true);
+          setError("");
+    
+          const response = await fetch(
+       "http://43.201.6.192:8080/users/me/profile",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    
+          const result = await response.json();
+    
+          if(!response.ok || result.success !== true) {
+            throw new Error(result.message || "내 프로필 조회에 실패했습니다.");
+          }
+          
+          setInfo(result.data ?? []);
+          console.log(result.data);
+        }catch(error){
+          console.error("Error fetching my information:", error);
+          setError(error.message);
+        }finally{
+          setLoading(false);
+        }
+      };
+    
+      useEffect(()=>{
+        viewMyInfo();
+      },[]);
 
-//       <MyPageMenu>
-//         {buttons.map((btn, index) => (
-//           <MenuButton
-//             key={index}
-//             onClick={() => btn.path && navigate(btn.path)}
-//           >
-//             {btn.label}
-//           </MenuButton>
-//         ))}
-//       </MyPageMenu>
-//     </MyPageWrapper>
-//   );
-// };
+      const buttonConfig = {
+    "HOLDER": [
+      { label: "진행 및 예정 행사", path: '/mypage/festival/ongoing' },
+      { label: "종료된 행사", path: '/mypage/festival/closed' },
+      { label: "찜", path: '/mypage/favored?type=festival' }
+    ],
+    "COMPANY": [
+      { label: "지원현황", path: '/mypage/company/apply' },
+      { label: "찜", path: '/mypage/favored?type=company' }
+    ],
+    "LABOR": [
+      { label: "지원현황" , path: '/mypage/labor/apply'},
+      { label: "찜", path: '/mypage/favored?type=labor'}
+    ]
+  };
 
-// export default MyPage;
+  const buttons = buttonConfig[info?.userType] || [];
+    
+      if (loading) return <p style={{ padding: "150px" }}>불러오는 중...</p>;
+      if (error) return <p style={{ padding: "150px", color: "red" }}>{error}</p>;
+  
 
-// /* styled-components */
-// const MyPageWrapper = styled.div``;
+  return (
+    <MyPageWrapper>
+      <Navbar />
+      <Profile>
+        <ProfileImg src={profile} alt="profile image" />
+        <ProfileInfo>
+          <h2>{info.name}</h2>
+          <p>{getUserDescription(info.userType)}</p>
+        </ProfileInfo>
+      </Profile>
 
-// const Profile = styled.div`
-//   padding: 20px 300px;
-//   display: flex;
-//   align-items: center;
-//   gap: 80px;
-// `;
+      <MyPageMenu>
+        {buttons.map((btn, index) => (
+          <MenuButton
+            key={index}
+            onClick={() => btn.path && navigate(btn.path)}
+          >
+            {btn.label}
+          </MenuButton>
+        ))}
+      </MyPageMenu>
+    </MyPageWrapper>
+  );
+};
 
-// const ProfileImg = styled.img`
-//   width: 100px;
-// `;
+export default MyPage;
 
-// const ProfileInfo = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 5px;
-//   h2 {
-//     font-size: 20px;
-//     margin: 0;
-//   }
-//   p {
-//     font-size: 14px;
-//     margin: 0;
-//     color: gray;
-//   }
-// `;
+/* styled-components */
+const MyPageWrapper = styled.div``;
 
-// const MyPageMenu = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   margin-top: 30px;
-//   gap: 20px;
-// `;
+const Profile = styled.div`
+  padding: 20px 300px;
+  display: flex;
+  align-items: center;
+  gap: 80px;
+`;
 
-// const MenuButton = styled.button`
-//   width: 700px;
-//   height: 70px;
-//   padding: 20px 20px;
-//   font-size: 16px;
-//   text-align: left;
-//   font-weight: 300;
-//   border: none;
-//   border-radius: 20px;
-//   background: #F4EDED;
-//   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-//   cursor: pointer;
-// `;
+const ProfileImg = styled.img`
+  width: 100px;
+`;
+
+const ProfileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  h2 {
+    font-size: 20px;
+    margin: 0;
+  }
+  p {
+    font-size: 14px;
+    margin: 0;
+    color: gray;
+  }
+`;
+
+const MyPageMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  gap: 20px;
+`;
+
+const MenuButton = styled.button`
+  width: 700px;
+  height: 70px;
+  padding: 20px 20px;
+  font-size: 16px;
+  text-align: left;
+  font-weight: 300;
+  border: none;
+  border-radius: 20px;
+  background: #F4EDED;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+`;

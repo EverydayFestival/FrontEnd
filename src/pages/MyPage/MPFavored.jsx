@@ -33,7 +33,7 @@ const MPFestivalFavored = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  //진행 중 행사 api
+  //진행 중 행사 
   const viewFavoredFestOngoing = async() => {
     try{
       setError("");
@@ -64,7 +64,7 @@ const MPFestivalFavored = () => {
           setError(error.message);
         }
       };
-
+      //종료된 행사
       const viewFavoredFestEnded = async() => {
         try{
           setError("");
@@ -95,7 +95,7 @@ const MPFestivalFavored = () => {
               setError(error.message);
             }
           };
-      
+      //업체
       const viewFavoredCompany = async() => {
         try{
           setError("");
@@ -126,6 +126,40 @@ const MPFestivalFavored = () => {
               setError(error.message);
             }
           };
+
+          // 찜 토글 함수
+          const changeFavorite = async (receiverId, receiverType, originalFavored) => {
+            try {
+              setError("");
+
+              const method = originalFavored === "FAVORED" ? "DELETE" : "PUT";
+              const requestBody = { receiverId, receiverType };
+
+              const response = await fetch(`https://festival-everyday.duckdns.org/favorites`, {
+                method,
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                  Accept: "application/json",
+                  "Content-type": "application/json",
+                },
+                body: JSON.stringify(requestBody),
+              });
+
+              const result = await response.json();
+
+              if (!response.ok || result.success !== true) {
+                throw new Error(result.message || "찜하기 요청에 실패했습니다.");
+              }
+
+              console.log("찜 요청 성공:", result);
+              return true; // 성공 여부 반환
+            } catch (error) {
+              console.error("Error updating favorite:", error);
+              setError(error.message);
+              return false;
+            }
+          };
+
 
       useEffect(()=>{
         setLoading(true);
@@ -203,16 +237,20 @@ const MPFestivalFavored = () => {
                       <FestFavored>
                         <FavoredBtn
                           src={fest.favorStatus === "FAVORED" ? full_star : empty_star_1}
-                          onClick={() => {
-                            setFestivals((prev) =>
-                              prev.map((f) =>
-                                f.id === fest.id
-                                  ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
-                                  : f
-                              )
-                            );
+                          onClick={async () => {
+                            const success = await changeFavorite(fest.id, "FESTIVAL", fest.favorStatus);
+                            if (success) {
+                              setFestivals((prev) =>
+                                prev.map((f) =>
+                                  f.id === fest.id
+                                    ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                    : f
+                                )
+                              );
+                            }
                           }}
                         />
+
                       </FestFavored>
                     </FestCard>
                   ))
@@ -248,14 +286,17 @@ const MPFestivalFavored = () => {
                       <FestFavored>
                         <FavoredBtn
                           src={fest.favorStatus === "FAVORED" ? full_star : empty_star_1}
-                          onClick={() => {
-                            setFestivals((prev) =>
-                              prev.map((f) =>
-                                f.id === fest.id
-                                  ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
-                                  : f
-                              )
-                            );
+                          onClick={async () => {
+                            const success = await changeFavorite(fest.id, "FESTIVAL", fest.favorStatus);
+                            if (success) {
+                              setFestivalsEnd((prev) =>
+                                prev.map((f) =>
+                                  f.id === fest.id
+                                    ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                    : f
+                                )
+                              );
+                            }
                           }}
                         />
                       </FestFavored>
@@ -288,14 +329,17 @@ const MPFestivalFavored = () => {
                       <FestFavored>
                         <FavoredBtn
                           src={fest.favorStatus === "FAVORED" ? full_star : empty_star_1}
-                          onClick={() => {
-                            setFestivals((prev) =>
-                              prev.map((f) =>
-                                f.id === fest.id
-                                  ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
-                                  : f
-                              )
-                            );
+                          onClick={async () => {
+                            const success = await changeFavorite(fest.id, "FESTIVAL", fest.favorStatus);
+                            if (success) {
+                              setFestivals((prev) =>
+                                prev.map((f) =>
+                                  f.id === fest.id
+                                    ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                    : f
+                                )
+                              );
+                            }
                           }}
                         />
                       </FestFavored>
@@ -335,14 +379,17 @@ const MPFestivalFavored = () => {
                      <FestFavored>
                         <FavoredBtn
                           src={fest.favorStatus === "FAVORED" ? full_star : empty_star_1}
-                          onClick={() => {
-                            setFestivals((prev) =>
-                              prev.map((f) =>
-                                f.id === fest.id
-                                  ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
-                                  : f
-                              )
-                            );
+                          onClick={async () => {
+                            const success = await changeFavorite(fest.id, "FESTIVAL", fest.favorStatus);
+                            if (success) {
+                              setFestivalsEnd((prev) =>
+                                prev.map((f) =>
+                                  f.id === fest.id
+                                    ? { ...f, favorStatus: f.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                    : f
+                                )
+                              );
+                            }
                           }}
                         />
                       </FestFavored>
@@ -371,7 +418,7 @@ const MPFestivalFavored = () => {
               ):(
                 companies.map((co) => (
                 <CoCard key={co.id}>
-                  <CoImage src={co.image} alt="업체이미지" />
+                  <CoImage src={co.imageUrl} alt="업체이미지" />
                   <Coleft>
                     <CoInfo>
                       <CoName>{co.name}</CoName>
@@ -383,16 +430,20 @@ const MPFestivalFavored = () => {
                   <FestFavored>
                         <FavoredBtn
                           src={co.favorStatus === "FAVORED" ? full_star : empty_star_1}
-                          onClick={() => {
-                            setCompanies((prev) =>
-                              prev.map((c) =>
-                                c.id === co.id
-                                  ? { ...c, favorStatus: c.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
-                                  : c
-                              )
-                            );
+                          onClick={async () => {
+                            const success = await changeFavorite(co.id, "COMPANY", co.favorStatus);
+                            if (success) {
+                              setCompanies((prev) =>
+                                prev.map((c) =>
+                                  c.id === co.id
+                                    ? { ...c, favorStatus: c.favorStatus === "FAVORED" ? "NOT_FAVORED" : "FAVORED" }
+                                    : c
+                                )
+                              );
+                            }
                           }}
                         />
+
                       </FestFavored>
                 </CoCard>
               ))
@@ -451,15 +502,13 @@ const Back = styled.span`
   font-weight: bold;
   color: #555;
   text-decoration: underline;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   margin:0 8%;
 
   &:hover {
     color: #f97e6c;
   }
-
-
 `
 const FestOrCo = styled.div`
   position: fixed;

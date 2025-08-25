@@ -9,10 +9,10 @@ import Box from '../../../components/Box';
 import Modal from '../../../components/Modal';
 
 const MPFestivalOngoingAppliedCompany = () => {
-  const [activeFilter, setActiveFilter] = useState('지원순');
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  // const [activeFilter, setActiveFilter] = useState('지원순');
+  // const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const filters = ['지원순', '수락', '거절'];
+  // const filters = ['지원순', '수락', '거절'];
 
 
   // const festival = fest_data.find(f => f.festivalId === Number(festivalId));
@@ -201,16 +201,16 @@ const MPFestivalOngoingAppliedCompany = () => {
     );
   }, [festivalId]);
       // 드롭다운 외부 클릭 감지용 effect
-    useEffect(() => {
-      const handleClickOutside = (e) => {
-        if (dropdownOpen && !e.target.closest(".dropdown-container")) {
-          setDropdownOpen(false);
-        }
-      };
+    // useEffect(() => {
+    //   const handleClickOutside = (e) => {
+    //     if (dropdownOpen && !e.target.closest(".dropdown-container")) {
+    //       setDropdownOpen(false);
+    //     }
+    //   };
 
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [dropdownOpen]);
+    //   document.addEventListener("mousedown", handleClickOutside);
+    //   return () => document.removeEventListener("mousedown", handleClickOutside);
+    // }, [dropdownOpen]);
   
 
     const handleChoice = (companyId, newStatus) => {
@@ -239,7 +239,7 @@ const MPFestivalOngoingAppliedCompany = () => {
 
       <Name>
           <p>{festivalInfo?.name ?? "축제 이름 불러오는 중"}</p>
-      <FilterSection>
+      {/* <FilterSection>
         <Dropdown>
           <DropdownBtn onClick={() => setDropdownOpen(!dropdownOpen)}>
             {activeFilter} ▾
@@ -260,7 +260,7 @@ const MPFestivalOngoingAppliedCompany = () => {
             </DropdownContent>
           )}
         </Dropdown>
-      </FilterSection>
+      </FilterSection> */}
       </Name>
 
 
@@ -309,7 +309,7 @@ const MPFestivalOngoingAppliedCompany = () => {
       </ApplyCompanyList> */}
   <ApplyCompanyList>
   {appliedCompanies.length === 0 ? (
-    <p>해당 축제에 지원한 업체가 없습니다.</p>
+    <p>해당 축제에 지원한 업체가 없어요!</p>
   ) : (
     appliedCompanies.map((co) => (
       <CoCard key={co.id}>

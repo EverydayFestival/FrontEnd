@@ -107,11 +107,7 @@ const MPCompanyReview2Festival = () => {
         };
 
         
-        //form 전용 onSubmit (event가 있을 때만 preventDefault)
-        const onSubmit = (e) => {
-        if (e) e.preventDefault();
-        handleRegister();
-        };
+
         
         useEffect(()=>{
             if(festivalId){
@@ -171,7 +167,7 @@ const MPCompanyReview2Festival = () => {
                 <Content>
                 <CompanyInfo>
                     <CompanyLeft>
-                    <img src={festivalInfo?.imageUrl ?? "/default.png"} alt="업체이미지" />
+                    <img src={festivalInfo?.imageUrl ?? "/default.png"} alt="축제이미지" />
                     </CompanyLeft>
                     <CompanyRight>
                     <CompanyName>{festivalInfo?.festivalName}</CompanyName>
@@ -253,12 +249,13 @@ const Title = styled.div`
 `;
 
 const CompanyLeft = styled.div`
-    
+    margin-left: 130px;
 `
 const CompanyRight = styled.div`
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-top: 20px;
 `
 const CompanyName = styled.p`
     font-size: 18px;
@@ -321,7 +318,7 @@ const CharCount = styled.div`
     font-size: 14px;
     text-align: right;
     margin-top: 5px;
-    color: ${(props) => (props.exceed ? "red" : "#666")}
+    color: ${(props) => (props.exceed ? "red" : "#666")};
 `
 
 const RegisterBtn = styled.button` 
