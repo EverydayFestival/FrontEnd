@@ -205,7 +205,7 @@ export default function CompanyDetail() {
       </section>
 
       {/* 관심 보내기 버튼 */}
-      {user && user.role === "FESTIVAL_MANAGER" && (
+      {user && user.role === "축제기획자" && (
         <section className="interest-section">
           <p>이 업체가 마음에 드셨나요?</p>
           <Link

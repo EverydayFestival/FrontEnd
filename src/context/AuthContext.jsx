@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
         };
 
         try {
-            const response = await fetch("/api/logout", { // '/api' 프록시 경로 추가
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/logout`, { // '/api' 프록시 경로 추가
                 method: "POST",
                 headers: {
                     // 토큰이 있을 경우에만 Authorization 헤더를 추가합니다.
