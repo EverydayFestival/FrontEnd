@@ -63,7 +63,7 @@ const MPFestivalClosedAppliedLabor = () => {
         setError("");
     
         const response = await fetch(
-          `https://festival-everyday.duckdns.org/festivals/${festivalId}/labor-applications?page=0&size=2` ,
+          `https://festival-everyday.duckdns.org/festivals/${festivalId}/labor-applications?page=0&size=` ,
           {
             method: "GET",
             headers: {
@@ -94,7 +94,7 @@ const MPFestivalClosedAppliedLabor = () => {
     const viewFestivalInfo = async () => {
       try {
         const response = await fetch(
-          `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ENDED&page=0&size=5`,
+          `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ENDED&page=0&size=`,
           {
             method: "GET",
             headers: {
@@ -487,7 +487,7 @@ const ChoiceBtnYes = styled.button`
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
 
-     @media (max-width: 768px) {
+     @media (max-width: 800px) {
     width: 100%; /* 모바일에서는 꽉 채우기 */
   }
 

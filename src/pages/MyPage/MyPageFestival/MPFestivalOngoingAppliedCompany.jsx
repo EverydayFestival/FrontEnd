@@ -150,7 +150,7 @@ const MPFestivalOngoingAppliedCompany = () => {
             result = await response.json();
           }
 
-          console.log("✅ 승인 성공", result);
+          console.log("승인 성공", result);
         } catch (error) {
           console.error("Error accepting application:", error);
           setError(error.message);
@@ -181,7 +181,7 @@ const MPFestivalOngoingAppliedCompany = () => {
             result = await response.json();
           }
 
-          console.log("❌ 거절 성공", result);
+          console.log("거절 성공", result);
         } catch (error) {
           console.error("Error denying application:", error);
           setError(error.message);
