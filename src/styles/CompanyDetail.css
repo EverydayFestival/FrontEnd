@@ -1,0 +1,174 @@
+/* CompanyDetail.css */
+
+/* 전체 wrapper */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+}
+
+/* 상단 이미지 + 정보 */
+.company-header {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+
+.company-image {
+    width: 208px;
+    height: 277px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.company-info-side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.company-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.company-title h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.company-title button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.company-title button img {
+    width: 28px;
+    height: 28px;
+}
+
+/* 업체 상세 정보 */
+.company-details-info {
+    background-color: #f9fafb;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-item {
+    display: grid;
+    grid-template-columns: 100px 1fr; /* label과 value 간격 조절 */
+    align-items: baseline;
+    font-size: 16px;
+}
+
+.info-label {
+    font-weight: 700;
+    color: #4b5563;
+}
+
+.info-value {
+    color: #1f2937;
+    line-height: 1.6;
+}
+
+.info-value a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.info-value a:hover {
+    text-decoration: underline;
+}
+
+/* 리뷰 보기 */
+.company-reviews {
+    margin-bottom: 40px;
+}
+
+.company-reviews h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 8px;
+}
+
+/* 추천 축제 */
+.recommended-festivals {
+    margin-bottom: 40px;
+}
+
+.recommended-festivals h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.recommended-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.no-recommendations {
+    text-align: center;
+    color: #6b7280;
+    padding: 40px 0;
+    background-color: #f9fafb;
+    border-radius: 12px;
+}
+
+/* 관심 보내기 버튼 */
+.interest-section {
+    text-align: center;
+    padding: 40px 0;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 40px;
+}
+
+.interest-section p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #374151;
+}
+
+.interest-button {
+    display: inline-block;
+    background-color: #FEA898; /* 요청하신 버튼 색상 */
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 14px 40px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease;
+}
+
+.interest-button:hover {
+    background-color: #fd9884;
+    transform: translateY(-2px);
+}
+
+
+/* 로딩 / 에러 메시지 */
+.center-text {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 16px;
+}
+
+.error-text {
+    color: #ef4444;
+}

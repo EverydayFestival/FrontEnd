@@ -12,12 +12,12 @@ function CompanyList({ companies }) {
 return (
     // card-container 스타일은 Home.jsx에서 이미 적용하고 있으므로
     // 여기서는 grid 레이아웃만 정의합니다.
-    <>
-      {companies.map((company) => (
-        // key와 company prop을 올바르게 전달합니다. (기존 코드의 compnay 오타 수정)
-        <CompanyCard key={company.companyId} company={company} />
-      ))}
-    </>
+    <div className="card-container">
+  {companies.map(company => (
+    <CompanyCard key={company.companyId} company={company} />
+  ))}
+</div>
+
   );
 }
 

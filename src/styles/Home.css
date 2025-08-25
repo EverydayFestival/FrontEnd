@@ -1,20 +1,13 @@
 /* src/styles/Home.css */
 
-/* 카드 컨테이너 스타일 */
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* 중앙 정렬로 변경하여 더 보기 좋게 만듭니다. */
-    gap: 24px;
-    padding: 0 16px; /* 좌우 패딩을 추가하여 가장자리에 붙지 않도록 합니다. */
-}
-
 /* 카드 개별 스타일 (반응형으로 변경) */
-.card-container > div {
-    /* flex-grow, flex-shrink, flex-basis를 설정하여 유연하게 만듭니다. */
-    /* min-width: 280px (모바일에서도 충분한 크기), max-width: 360px (데스크탑에서 너무 크지 않게) */
-    flex: 1 1 280px;
-    max-width: 360px;
+/* Home.css 또는 App.css 등 상위 CSS 파일 */
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(344px, 1fr)); /* 화면 크기에 따라 카드 개수 자동 조절 */
+  gap: 24px; /* 카드 사이 간격 */
+  padding: 20px;
 }
 
 /* Pagination 버튼 스타일 */
@@ -72,61 +65,6 @@
   font-weight: bold;
 }
 
-/* 전체 레이아웃 */
-.home-container {
-  position: relative;
-  width: 100%;
-  background-color: #fff;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-.home-container::before,
-.home-container::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  width: 245px;
-  height: 100vh;
-  background-color: #F4EDED;
-  z-index: 0; /* 최하단으로 */
-}
-
-/* 상단 헤더 */
-.home-header {
-  width: 100%;
-  height: 51px;
-  background-color: #FEA898;
-  position: relative;
-  z-index: 2;
-}
-
-/* 검색창 */
-.search-bar {
-  position: absolute;
-  top: 123px;
-  left: 430px;
-  width: 907px;
-  height: 63px;
-  border-radius: 50px;
-  border: 3px solid #ccc;
-  background-color: #fff;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  box-sizing: border-box;
-  font-size: 18px;
-}
-
-
-.home-header,
-.search-bar,
-.card-container,
-.banner-wrapper,
-.navbar-wrapper,
-.header-wrapper,
-.tabs-wrapper {
-  position: relative;
-  z-index: 2; /* 직사각형 위로 올라오도록 */
+.navbar-wrapper {
+  padding-top: 20px;
 }

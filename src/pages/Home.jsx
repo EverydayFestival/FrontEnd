@@ -8,6 +8,7 @@ import Pagination from '../components/Pagination';
 import '../styles/Home.css';
 import Navbar from '../components/Navbar.jsx';
 import axios from 'axios'; // 오타 수정
+import Box from '../components/Box.jsx';
 
 function Home() {
   const [festivals, setFestivals] = useState([]);
@@ -124,7 +125,7 @@ function Home() {
   };
 
   return (
-    <div className = "home-container">
+      <div className = "home-container">
       <div className = "navbar-wrapper">
       <Navbar/>
       </div>

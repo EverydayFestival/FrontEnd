@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import "../styles/AllReviewPageCompany.css";
 
 export default function AllReviewPageCompany() {
     // 1. URL로부터 companyId를 가져옵니다.
@@ -66,13 +67,13 @@ export default function AllReviewPageCompany() {
     // 4. 상태에 따라 내용을 렌더링하는 함수입니다.
     const renderContent = () => {
         if (loading) {
-            return <p className="text-center text-gray-500 mt-8">리뷰를 불러오는 중...</p>;
+            return <p>리뷰를 불러오는 중...</p>;
         }
         if (error) {
-            return <p className="text-center text-red-500 mt-8">{error}</p>;
+            return <p>{error}</p>;
         }
         if (reviews.length === 0) {
-            return <p className="text-center text-gray-500 mt-8">작성된 리뷰가 없습니다.</p>;
+            return <p>작성된 리뷰가 없습니다.</p>;
         }
         return (
             <div className="space-y-4">
@@ -88,20 +89,32 @@ export default function AllReviewPageCompany() {
     };
 
     return (
-        <div className="p-4 max-w-2xl mx-auto">
-            <Navbar />
-            <div className="mb-6">
-                {/* 업체 상세 페이지로 돌아가는 링크 */}
-                <Link to={`/company/${companyId}`} state={{ companyName }} className="text-blue-600 hover:underline">
-                    &larr; {companyName} 상세 페이지로 돌아가기
-                </Link>
-                <h1 className="text-3xl font-bold mt-2">{companyName} 전체 리뷰</h1>
-            </div>
+        <div className="all-review-page">
+    <Navbar />
+    <div className="all-review-page-header">
+        <Link to={`/company/${companyId}`} state={{ companyName }}>
+            &larr; {companyName} 상세 페이지로 돌아가기
+        </Link>
+        <h1>{companyName} 전체 리뷰</h1>
+    </div>
 
-            <div className="mt-4">
-                <p className="text-gray-600 mb-4">총 {totalElements}개의 리뷰가 있습니다.</p>
-                {renderContent()}
+    <p className="total-reviews">총 {totalElements}개의 리뷰가 있습니다.</p>
+
+    {loading && <p className="review-message">리뷰를 불러오는 중...</p>}
+    {error && <p className="review-message error">{error}</p>}
+    {reviews.length === 0 && !loading && <p className="review-message">작성된 리뷰가 없습니다.</p>}
+
+    <div className="review-list">
+        {reviews.map((review, index) => (
+            <div key={index} className="review-card">
+                <p className="review-sender">{review.senderName}</p>
+                <p className="review-content">{review.content}</p>
             </div>
-        </div>
+        ))}
+    </div>
+</div>
+
+
+
     );
 }

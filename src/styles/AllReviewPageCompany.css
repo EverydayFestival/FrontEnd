@@ -1,0 +1,79 @@
+/* 전체 페이지 wrapper */
+.all-review-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 24px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+}
+
+/* 헤더 */
+.all-review-page-header {
+    margin-bottom: 24px;
+}
+
+.all-review-page-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.all-review-page-header a {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.all-review-page-header a:hover {
+    text-decoration: underline;
+}
+
+/* 총 리뷰 수 표시 */
+.total-reviews {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 16px;
+}
+
+/* 각 리뷰 카드 */
+.review-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+/* 작성자 이름 */
+.review-card .review-sender {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+
+/* 리뷰 내용 */
+.review-card .review-content {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+/* 로딩 / 에러 / 비어있음 메시지 */
+.review-message {
+    text-align: center;
+    font-size: 14px;
+    padding: 16px 0;
+    color: #6b7280;
+}
+
+.review-message.error {
+    color: #ef4444;
+}
+
+/* 리뷰 리스트 간격 */
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

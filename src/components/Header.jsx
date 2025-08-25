@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import '../styles/Header.css';
+import { ImGift } from "react-icons/im";
 
 
 function Header() {
@@ -15,10 +16,11 @@ function Header() {
         }
     };
 
-    const { logout } = useContext(AuthContext);
+    //const { logout } = useContext(AuthContext);
 
     return (
         <header className="header">
+            <div class="searchbar-wrapper">
             <div className="searchbar">
                 <input 
                 type="text" 
@@ -26,7 +28,10 @@ function Header() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()} />
-                <button onClick={handleSearch}>🔍</button>
+                <button onClick={handleSearch}>
+                    <img src="./images/search.png" alt="search-btn" />
+                </button>
+            </div>
             </div>
         <div className="detail-tabs">
             <Link to ="/service-intro">
