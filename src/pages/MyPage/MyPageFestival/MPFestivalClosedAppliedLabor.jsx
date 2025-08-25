@@ -385,16 +385,16 @@ const ApplyLaborList = styled.div`
   margin-bottom: 40px;
 `;
 
-const LaborCard = styled.div`
-  display: flex;
-  align-items: center;
-  width: 80%;
-  max-width: 1000px;
-  gap: 20px;
-  padding: 15px 15px 15px 40px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-`;
+// const LaborCard = styled.div`
+//   display: flex;
+//   align-items: center;
+//   width: 80%;
+//   max-width: 1000px;
+//   gap: 20px;
+//   padding: 15px 15px 15px 40px;
+//   border: 1px solid #ddd;
+//   border-radius: 10px;
+// `;
 
 const LaborImage = styled.img`
   width: 150px;
@@ -403,23 +403,38 @@ const LaborImage = styled.img`
   object-fit: cover;
 `;
 
+const LaborInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* 100px → 줄여줌 */
+`;
+
 const Laborleft = styled.div`
   display: flex;
   flex: 1;
+  flex-direction: column; /* 세로 배치 */
+  justify-content: center;
   margin-left: 20px;
-  align-items: center;
 `;
-const LaborInfo = styled.div`
-  p{
-    font-size: 14px;
-  }
+
+const LaborCard = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 100px;
+  flex-wrap: wrap;
+  justify-content: space-between; /* 좌쪽 정보 / 우측 버튼 나눔 */
+  align-items: center;
+  width: 80%;
+  max-width: 1000px;
+  gap: 20px;
+  padding: 20px 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
 
-  
-
+  @media (max-width: 768px) {
+    flex-direction: column; /* 모바일/태블릿에서는 세로로 정렬 */
+    align-items: flex-start; /* 좌측 정렬 */
+  }
 `;
+
 
 
 const LaborName = styled.span`
@@ -453,10 +468,15 @@ const ApplicationBtn = styled.button`
 const LaborChoice = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
+  align-items: flex-end; /* 카드 오른쪽 끝에 정렬 */
 
-
+   @media (max-width: 768px) {
+    align-items: stretch; /* 모바일에서 꽉 차게 */
+    width: 100%; 
+  }
 `;
+
 
 const ChoiceBtnYes = styled.button`
     width: 200px;
@@ -466,6 +486,10 @@ const ChoiceBtnYes = styled.button`
     border-color: rgba(0, 0, 0, 0.25);
     background: #F4EDED;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.25);
+
+     @media (max-width: 768px) {
+    width: 100%; /* 모바일에서는 꽉 채우기 */
+  }
 
 `;
 
