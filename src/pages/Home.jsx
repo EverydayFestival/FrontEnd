@@ -8,6 +8,7 @@ import Pagination from '../components/Pagination';
 import '../styles/Home.css';
 import Navbar from '../components/Navbar.jsx';
 import axios from 'axios'; // 오타 수정
+import Box from '../components/Box.jsx';
 
 function Home() {
   const [festivals, setFestivals] = useState([]);
@@ -124,10 +125,17 @@ function Home() {
   };
 
   return (
-    <div>
+      <div className = "home-container">
+      <div className = "navbar-wrapper">
       <Navbar/>
+      </div>
+      <div className = "header-wrapper">
       <Header />
+      </div>
+      <div className = "banner-wrapper">
       <Banner />
+      </div>
+      <div className = "tabs-wrapper">
       <Tabs 
         selectedTab={selectedTab} 
         setSelectedTab={(tab) => {
@@ -135,6 +143,7 @@ function Home() {
             setCurrentPage(1); // 탭 변경 시 페이지를 1로 초기화
         }}
       />
+      </div>
       {renderContent()}
     
       {/* totalItems가 0보다 클 때만 페이지네이션을 렌더링합니다. */}

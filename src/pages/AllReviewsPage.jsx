@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import "../styles/AllReviewsPage.css"
 
 export default function AllReviewsPage() {
     const { id: festivalId } = useParams();
@@ -83,31 +84,42 @@ export default function AllReviewsPage() {
     return (
         <div className="p-4 max-w-2xl mx-auto">
             <Navbar />
-            <div className="mb-6">
-                <Link to={`/festivals/${festivalId}`} className="text-blue-600 hover:underline">
+
+            <div className="all-reviews-header">
+                <Link to={`/festivals/${festivalId}`} className="back-link">
                     &larr; {festivalName} 상세 페이지로 돌아가기
                 </Link>
-                <h1 className="text-3xl font-bold mt-2">전체 리뷰</h1>
+                <h1>전체 리뷰</h1>
             </div>
-            
-            <div className="flex border-b">
+
+            <div className="reviews-tab">
                 <button 
+                    className={activeTab === 'company' ? 'active' : ''}
                     onClick={() => setActiveTab('company')}
-                    className={`py-2 px-4 font-semibold ${activeTab === 'company' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500'}`}
                 >
                     업체
                 </button>
                 <button 
+                    className={activeTab === 'worker' ? 'active' : ''}
                     onClick={() => setActiveTab('worker')}
-                    className={`py-2 px-4 font-semibold ${activeTab === 'worker' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-500'}`}
                 >
                     단기 근로자
                 </button>
             </div>
 
-            <div className="mt-4">
-                <p className="text-gray-600 mb-4">총 {totalElements}개의 리뷰가 있습니다.</p>
-                {renderContent()}
+            <p className="total-reviews">총 {totalElements}개의 리뷰가 있습니다.</p>
+
+            {loading && <p className="review-message">리뷰를 불러오는 중...</p>}
+            {error && <p className="review-message error">{error}</p>}
+            {reviews.length === 0 && !loading && <p className="review-message">작성된 리뷰가 없습니다.</p>}
+
+            <div className="review-list">
+                {reviews.map((review, index) => (
+                    <div key={index} className="review-card">
+                        <p className="review-sender">{review.senderName}</p>
+                        <p className="review-content">{review.content}</p>
+                    </div>
+                ))}
             </div>
         </div>
     );
