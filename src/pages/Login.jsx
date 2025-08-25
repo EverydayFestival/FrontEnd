@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import '../styles/Login.css';
 
 function Login() {
     const navigate = useNavigate();
@@ -75,86 +76,64 @@ function Login() {
         }
     };
 
-    return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-                <div className="text-center">
-                    <h2 className="text-3xl font-bold text-gray-800">환영합니다!</h2>
-                    <p className="mt-2 text-gray-600">현재 본인의 상태를 선택해주세요</p>
+     return (
+        <div className="login-container">
+            <div className="login-card">
+                <div className="login-title">
+                    <h2>환영합니다!</h2>
+                    <p>현재 본인의 상태를 선택해주세요</p>
                 </div>
 
-                {/* 역할 선택 UI */}
-                <div className="flex justify-around items-start text-center">
+                <div className="roles-container">
                     {roles.map((roleItem) => (
                         <div
                             key={roleItem.key}
-                            className={`flex flex-col items-center p-4 rounded-lg cursor-pointer transition-all duration-300 ${
-                                role === roleItem.key
-                                    ? "bg-blue-100 scale-105 shadow-lg"
-                                    : "hover:bg-gray-50"
+                            className={`role-card role-${roleItem.key} ${
+                                role === roleItem.key ? "role-selected" : ""
                             }`}
                             onClick={() => handleRoleChange(roleItem.key)}
                         >
                             <img
                                 src={roleItem.img}
                                 alt={roleItem.name}
-                                className="w-20 h-20 object-cover rounded-full mb-3"
-                                // 이미지 로드 실패 시 대체 이미지를 보여줍니다.
                                 onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/80x80/e2e8f0/4a5568?text=?'; }}
                             />
-                            <p
-                                className={`font-semibold ${
-                                    role === roleItem.key
-                                        ? "text-blue-600"
-                                        : "text-gray-700"
-                                }`}
-                            >
-                                {roleItem.name}
-                            </p>
+                            <p>{roleItem.name}</p>
                         </div>
                     ))}
                 </div>
 
-                {/* 로그인 폼 */}
-                <form onSubmit={handleLogin} className="space-y-6">
+                <form onSubmit={handleLogin} className="login-form space-y-6">
                     <div>
                         <input
                             type="text"
                             placeholder="아이디"
                             value={account}
                             onChange={(e) => setAccount(e.target.value)}
-                            className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
-                    {/* 3. 비밀번호 입력 필드와 보기/숨기기 버튼을 함께 배치합니다. */}
-                    <div className="relative">
+                    <div className="password-wrapper">
                         <input
-                            // 4. type을 state에 따라 동적으로 변경합니다.
                             type={showPassword ? "text" : "password"}
                             placeholder="비밀번호"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
-                        {/* 5. 버튼 클릭 시 showPassword state를 토글(뒤집기)합니다. */}
                         <button
-                            type="button" // form의 submit을 방지하기 위해 type="button"을 꼭 넣어주세요.
+                            type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute inset-y-0 right-0 px-3 flex items-center text-sm text-gray-600"
+                            className="toggle-password"
                         >
                             {showPassword ? "숨기기" : "보기"}
                         </button>
                     </div>
 
-                    {error && <p className="text-sm text-center text-red-500">{error}</p>}
+                    {error && <p className="login-error">{error}</p>}
 
                     <div>
-                        <button
-                            type="submit"
-                            className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
-                        >
+                        <button type="submit" className="login-button">
                             로그인
                         </button>
                     </div>

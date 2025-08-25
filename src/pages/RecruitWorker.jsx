@@ -133,6 +133,7 @@ export default function RecruitWorker() {
 
         if (response.ok && result.success) {
             alert("지원서가 성공적으로 제출되었습니다!");
+            console.log("✅ 지원서 제출 성공! 서버 응답 데이터:", result.data);
             navigate(`/festivals/${id}`); // 제출 후 축제 상세 페이지로 이동
         } else {
             // 서버에서 보낸 에러 메시지를 보여줍니다.
