@@ -28,7 +28,7 @@ const MyPage = () => {
           setError("");
     
           const response = await fetch(
-       "http://43.201.6.192:8080/users/me/profile",
+       "https://festival-everyday.duckdns.org/users/me/profile",
       {
         method: "GET",
         headers: {
