@@ -251,20 +251,20 @@ const MPFestivalClosedAppliedCompany = () => {
   ) : (
     filteredCompanies.map((co) => (    
       <CoCard key={co.simpleCompany.id}>
-        <CoImage src={co.imageUrl} alt="업체이미지" />
+        <CoImage onClick={()=>navigate(`/company/${co.simpleCompany.id}`)}src={co.imageUrl} alt="업체이미지" />
         <Coleft>
           <CoInfo>
             <RealInfo>
-              <CoName>{co.simpleCompany.name}</CoName>
+              <CoName onClick={()=>navigate(`/company/${co.simpleCompany.id}`)}>{co.simpleCompany.name}</CoName>
               <AddressWrapper>
                 <p>{co.simpleCompany?.address?.city}</p>
                 <p>{co.simpleCompany?.address?.district}</p>
               </AddressWrapper>
               <p>{co.simpleCompany.category}</p>
             </RealInfo>
-            <ApplicationBtn>지원서 보기</ApplicationBtn>
+            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${co.id}/result`)}>지원서 보기</ApplicationBtn>
           </CoInfo>
-          <MoreIcon src={more_button} alt="업체더보기" />
+          <MoreIcon onClick={()=>navigate(`/company/${co.simpleCompany.id}`)}src={more_button} alt="업체더보기" />
         </Coleft>
 
         <CoChoice>

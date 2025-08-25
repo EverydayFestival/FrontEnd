@@ -210,7 +210,7 @@ const MPCompanyReview2Festival = () => {
                         show={showModal}
                         onClose={() => {
                             setShowModal(false);
-                            navigate(`/mypage/festival/appliedcompany/${festivalId}`);
+                            navigate(`/mypage/labor/apply`);
                         }}
                         type="cancel"
                         >
@@ -263,14 +263,15 @@ const CompanyName = styled.p`
 `
 const AddressWrapper = styled.div`
   display: flex;
-  gap: 7px;
+  gap: 3px;
 `
 const CompanyInfo = styled.div`
     display: flex;
     gap: 50px;
     img{
-        width: 300px;
-        height: 300px;
+        width: 210px;
+        height: 280px;
+        border-radius: 15px;
         object-fit: cover; /* 크롭되더라도 비율 유지 */
     }
 `;

@@ -4,13 +4,14 @@ import Navbar from '../../../components/Navbar'
 import fest_data from '../../../assets/fest/fest_data'
 import Modal from '../../../components/Modal'
 import more_button from '../../../assets/more_button.png'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import Box from '../../../components/Box'
 
 const MPCompanyApply = () => {
 
   const [activeFilter, setActiveFilter] = useState('지원순');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
 
   const [viewAllOngoingFest, setViewAllOngoingFest] = useState(false);
   const [viewAllClosedFest, setViewAllClosedFest] = useState(false);
@@ -200,15 +201,15 @@ const MPCompanyApply = () => {
                   ) : (
                     festivals.map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.festivalId}`)}src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.name}</FestName>
+                            <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                            
                             </RealInfo>
-                            <ApplicationBtn>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
@@ -265,14 +266,14 @@ const MPCompanyApply = () => {
                   ) : (
                      filteredFestivals.map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.festivalId}`)} src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.name}</FestName>
+                            <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                             </RealInfo>
-                            <ApplicationBtn>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="더보기" /> */}
                      </FestLeft>
@@ -302,14 +303,14 @@ const MPCompanyApply = () => {
                   ) : (
                     festivals.slice(0, 2).map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.festivalId}`)} src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.name}</FestName>
+                            <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                             </RealInfo>
-                            <ApplicationBtn>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
@@ -340,14 +341,14 @@ const MPCompanyApply = () => {
                   ) : (
                     festivalsEnd.slice(0, 2).map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.festivalId}`)} src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.name}</FestName>
+                            <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                             </RealInfo>
-                            <ApplicationBtn>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
@@ -535,7 +536,7 @@ const FestImage = styled.img`
   width: 210px;
   height: 280px;
   object-fit: cover;
-  /* border-radius: 20px; */
+  border-radius: 15px;
   cursor: pointer;
 `;
 

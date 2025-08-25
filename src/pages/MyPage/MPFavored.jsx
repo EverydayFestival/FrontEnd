@@ -9,9 +9,11 @@ import Box from '../../components/Box'
 // import empty_star from '../../assets/empty_star.png'
 import full_star from '../../assets/full_star.png'
 import empty_star_1 from '../../assets/empty_star_1.png'
+import { useNavigate } from 'react-router-dom'
 
 const MPFestivalFavored = () => {
 
+  const navigate = useNavigate();
   // const [showModal, setShowModal] = useState(false);
   const [viewAllOngoingFest, setViewAllOngoingFest] = useState(false);
   const [viewAllClosedFest, setViewAllClosedFest] = useState(false);
@@ -225,9 +227,9 @@ const MPFestivalFavored = () => {
                   ) : (
                     festivals.map((fest) => (
                     <FestCard key={fest.id}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.id}`)} src={fest.imageUrl} alt="" />
                       <FestInfo>
-                        <FestName>{fest.name}</FestName>
+                        <FestName onClick={()=>navigate(`/festivals/${fest.id}`)}>{fest.name}</FestName>
                         <p>{fest.address?.city}  {fest.address?.district}</p>
                         <p>
                         {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
@@ -274,9 +276,9 @@ const MPFestivalFavored = () => {
                   ):(
                     festivalsEnd.map((fest) => (
                     <FestCard key={fest.id}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.id}`)}src={fest.imageUrl} alt="" />
                       <FestInfo>
-                        <FestName>{fest.name}</FestName>
+                        <FestName onClick={()=>navigate(`/festivals/${fest.id}`)}>{fest.name}</FestName>
                         <p>{fest.address?.city} {fest.address?.district}</p>
                         <p>
                         {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
@@ -317,9 +319,9 @@ const MPFestivalFavored = () => {
                     ):(
                       festivals.slice(0, 2).map((fest) => (
                     <FestCard key={fest.id}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.id}`)}src={fest.imageUrl} alt="" />
                       <FestInfo>
-                        <FestName>{fest.name}</FestName>
+                        <FestName onClick={()=>navigate(`/festivals/${fest.id}`)}>{fest.name}</FestName>
                         <p>{fest.address?.city} {fest.address?.district}</p>
                         <p>
                         {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
@@ -367,9 +369,9 @@ const MPFestivalFavored = () => {
                   ):(
                     festivalsEnd.slice(0, 2).map((fest) => (
                     <FestCard key={fest.id}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.id}`)}src={fest.imageUrl} alt="" />
                       <FestInfo>
-                        <FestName>{fest.name}</FestName>
+                        <FestName onClick={()=>navigate(`/festivals/${fest.id}`)}>{fest.name}</FestName>
                         <p>{fest.address?.city} {fest.address?.district}</p>
                         <p>
                         {new Date(fest.period.begin).toLocaleDateString("ko-KR")} ~{" "}
@@ -418,14 +420,14 @@ const MPFestivalFavored = () => {
               ):(
                 companies.map((co) => (
                 <CoCard key={co.id}>
-                  <CoImage src={co.imageUrl} alt="업체이미지" />
+                  <CoImage onClick={()=>navigate(`/company/${co.id}`)}src={co.imageUrl} alt="업체이미지" />
                   <Coleft>
                     <CoInfo>
-                      <CoName>{co.name}</CoName>
+                      <CoName onClick={()=>navigate(`/company/${co.id}`)}>{co.name}</CoName>
                       <p>{co.address?.city}  {co.address?.district}</p>
                       <p>{co.category}</p>
                     </CoInfo>
-                    <MoreIcon src={more_button} alt="업체더보기" />
+                    <MoreIcon onClick={()=>navigate(`/company/${co.id}`)}src={more_button} alt="업체더보기" />
                   </Coleft>
                   <FestFavored>
                         <FavoredBtn
@@ -564,7 +566,7 @@ const FestImage = styled.img`
   width: 210px;
   height: 280px;
   object-fit: cover;
-  /* border-radius: 20px; */
+  border-radius: 15px;
   cursor: pointer;
 `;
 
@@ -644,7 +646,7 @@ const CoCard = styled.div`
 const CoImage = styled.img`
   width: 210px;
   height: 210px;
-  /* border-radius: 10px; */
+  border-radius: 10px;
   object-fit: cover;
 `;
 

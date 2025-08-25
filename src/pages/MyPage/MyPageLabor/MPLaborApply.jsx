@@ -200,15 +200,15 @@ const MPLaborApply = () => {
                   ) : (
                     festivals.map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.festivalId}`)} src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.name}</FestName>
+                            <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                            
                             </RealInfo>
-                            <ApplicationBtn>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
@@ -265,21 +265,21 @@ const MPLaborApply = () => {
                   ) : (
                      filteredFestivals.map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.festivalId}`)} src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.name}</FestName>
+                            <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                             </RealInfo>
-                            <ApplicationBtn>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="더보기" /> */}
                      </FestLeft>
                      <StatusClosed color={getStatusColor(fest.selected, true)}>
                         {getEndedStatus(fest.selected)}
                         {fest.selected === "ACCEPTED" && (
-                          <ReviewBtn onClick={() => navigate(`/mypage/company/${fest.festivalId}/review`)}>
+                          <ReviewBtn onClick={() => navigate(`/mypage/labor/${fest.festivalId}/review`)}>
                             리뷰쓰기
                           </ReviewBtn>
                         )}
@@ -302,14 +302,14 @@ const MPLaborApply = () => {
                   ) : (
                     festivals.slice(0, 2).map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.festivalId}`)} src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.name}</FestName>
+                            <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                             </RealInfo>
-                            <ApplicationBtn>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
@@ -340,21 +340,21 @@ const MPLaborApply = () => {
                   ) : (
                     festivalsEnd.slice(0, 2).map((fest, index) => (
                     <FestCard key={index}>
-                      <FestImage src={fest.imageUrl} alt="" />
+                      <FestImage onClick={()=>navigate(`/festivals/${fest.festivalId}`)} src={fest.imageUrl} alt="" />
                      <FestLeft>
                         <FestInfo>
                             <RealInfo>
-                            <FestName>{fest.name}</FestName>
+                            <FestName onClick={()=>navigate(`/festivals/${fest.festivalId}`)}>{fest.name}</FestName>
                             <p>{fest.holderName}</p>
                             </RealInfo>
-                            <ApplicationBtn>지원서 보기</ApplicationBtn>
+                            <ApplicationBtn onClick={()=>navigate(`/recruit/company/${fest.id}/result`)}>지원서 보기</ApplicationBtn>
                         </FestInfo>
                       {/* <MoreIcon src={more_button} alt="업체더보기" /> */}
                      </FestLeft>
                      <StatusClosed color={getStatusColor(fest.selected, true)}>
                         {getEndedStatus(fest.selected)}
                         {fest.selected === "ACCEPTED" && (
-                          <ReviewBtn onClick={() => navigate(`/mypage/company/${fest.festivalId}/review`)}>
+                          <ReviewBtn onClick={() => navigate(`/mypage/labor/${fest.festivalId}/review`)}>
                             리뷰쓰기
                           </ReviewBtn>
                         )}
@@ -535,7 +535,7 @@ const FestImage = styled.img`
   width: 210px;
   height: 280px;
   object-fit: cover;
-  /* border-radius: 20px; */
+  border-radius: 15px;
   cursor: pointer;
 `;
 

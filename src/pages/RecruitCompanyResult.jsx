@@ -27,6 +27,7 @@ export default function RecruitCompanyResult() {
                 const result = await response.json();
                 if (result.success) {
                     setApplicationData(result.data);
+                    console.log(result.data);
                 } else {
                     throw new Error(result.message);
                 }
