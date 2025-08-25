@@ -1,0 +1,196 @@
+/* FestivalRegister.css */
+
+/* --- 전체 폼 컨테이너 --- */
+/* JSX의 Tailwind 클래스(max-w-4xl mx-auto 등)가 기본 레이아웃을 잡고,
+   이 CSS는 세부 디자인을 담당합니다. */
+.form-container {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.form-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  padding-left: 20px;
+  color: #1f2937;
+  text-align: center;
+}
+
+/* --- 각 폼 섹션 (기본정보, 업체모집, 근로자모집) --- */
+.form-section {
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* --- 질문 + 입력칸 그룹 --- */
+/* "질문 밑에 입력칸" 구조를 만듭니다. */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 질문과 입력칸 사이의 간격 */
+  margin-bottom: 24px; /* 각 질문 그룹 사이의 간격 */
+  width: 100%;
+  max-width: 664px; /* 요청하신 너비 적용 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-group label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* --- 기본 입력 필드 스타일 (input, textarea, select) --- */
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #fb7185; /* rose-400 */
+  box-shadow: 0 0 0 2px rgba(251, 113, 133, 0.4);
+}
+
+.form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* --- 날짜/시간 같이 여러개 입력칸이 있는 그룹 --- */
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+
+/* --- 모집 공고 섹션 헤더 --- */
+/* "업체/근로자 모집을 위한 지원서 제작" 박스 */
+.recruit-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 443px; /* 요청하신 너비 */
+  height: 80px; /* 요청하신 높이 */
+  margin: 0 auto 2.5rem auto; /* 위아래, 좌우 중앙 정렬 */
+  background-color: #FEA898; /* rose-100 */
+  border-radius: 12px;
+  color: #000; /* rose-700 */
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+
+/* --- 체크박스 그룹 스타일 (모집 분야) --- */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 16px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #f43f5e; /* rose-500 */
+}
+
+/* --- 라디오 버튼 그룹 스타일 --- */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.radio-item input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #f43f5e; /* rose-500 */
+}
+
+
+/* --- 최종 등록하기 버튼 --- */
+.submit-button {
+  width: 100%;
+  max-width: 664px;
+  display: block;
+  margin: 2.5rem auto 0 auto;
+  background-color: #fecdd3; /* rose-200, 좀 더 부드러운 색 */
+  color: #881337; /* rose-900 */
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-button:hover {
+  background-color: #fda4af; /* rose-300 */
+  transform: translateY(-2px);
+}
+
+/* FestivalRegister.css 파일 하단에 이 부분을 추가하세요 */
+
+/* --- 상세 모집 폼 (들여쓰기 효과) --- */
+.recruitment-details {
+  padding-left: 2rem;
+  border-left: 3px solid #fecdd3; /* rose-200 */
+  margin-left: 1rem;
+}
+
+/* --- 비활성화된 입력 필드 스타일 --- */
+.disabled-input {
+  background-color: #f3f4f6; /* gray-100 */
+  color: #6b7280; /* gray-500 */
+  cursor: not-allowed;
+}
+
+/* --- 추가 질문 입력 필드 래퍼 --- */
+.questions-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-section-legend {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 600; /* font-semibold */
+    width: 100%;
+    padding-bottom: 0.5rem; /* pb-2 */
+    margin-bottom: 1rem; /* mb-4 */
+    border-bottom: 1px solid #e5e7eb;
+}

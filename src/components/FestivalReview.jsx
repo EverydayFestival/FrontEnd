@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import "../styles/FestivalReview.css"
 
 export default function FestivalReview({ festivalId }) {
     const [reviews, setReviews] = useState([]);
@@ -77,31 +78,41 @@ export default function FestivalReview({ festivalId }) {
     };
 
     return (
-        <section>
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold">리뷰</h2>
-                <select 
-                    value={reviewType}
-                    onChange={(e) => setReviewType(e.target.value)}
-                    className="border rounded-md p-2"
-                >
-                    <option value="COMPANY">업체 리뷰</option>
-                    {/* ===== 수정된 부분 ===== */}
-                    <option value="LABOR">근로자 리뷰</option>
-                </select>
-            </div>
-            
-            <div className="space-y-4">
-                {renderReviews()}
-            </div>
+        <section className="festival-review-section">
+    <div className="flex justify-between items-center mb-4">
+        <h2>리뷰</h2>
+        <select value={reviewType} onChange={(e) => setReviewType(e.target.value)}>
+            <option value="COMPANY">업체 리뷰</option>
+            <option value="LABOR">근로자 리뷰</option>
+        </select>
+    </div>
 
-            {reviews.length > 0 && (
-                <div className="text-center mt-6">
-                    <Link to={`/festivals/${festivalId}/reviews`} className="text-gray-600 hover:underline">
-                        리뷰 더 보기
-                    </Link>
+    {loading && <p className="review-message">리뷰를 불러오는 중...</p>}
+    {error && <p className="review-message error">{error}</p>}
+    {reviews.length === 0 && !loading && <p className="review-message">작성된 리뷰가 없습니다.</p>}
+
+    {reviews.map(review => (
+        <div key={review.id} className="review-card">
+            <div className="review-card-header">
+                <div className="review-avatar">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
                 </div>
-            )}
-        </section>
+                <span className="review-sender">{review.senderName}</span>
+            </div>
+            <div className="review-content">
+                <p className="review-text">{review.content}</p>
+            </div>
+        </div>
+    ))}
+
+    {reviews.length > 0 && (
+        <div className="review-more">
+            <Link to={`/festivals/${festivalId}/reviews`}>리뷰 더 보기</Link>
+        </div>
+    )}
+</section>
+
     );
 }

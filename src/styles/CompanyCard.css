@@ -1,45 +1,41 @@
 /* 이 코드를 CompanyCard.css와 FestivalCard.css 두 파일에 모두 붙여넣으세요.
   클래스 이름은 각 파일에 맞게 .company-card 또는 .festival-card로 수정해주세요.
 */
-.festival-wrapper {
+
+.company-card { /* 또는 .company-card */
   display: flex;
-  align-items: center;
   flex-direction: column;
-
-}
-
-.festival-card { /* 또는 .company-card */
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 12px;
-  padding: 0 16px;
+  padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   text-align: center;
   width: 344px; /* 너비 고정 */
-  position: relative;
-  min-height: 300px; /* 별 아이콘 위치 기준을 위해 추가 */
+  position: relative; /* 별 아이콘 위치 기준을 위해 추가 */
+  min-height: 350px;
 }
 
-.festival-card:hover {
+.company-card:hover {
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-.festival-card img {
+.company-card img {
   width: 100%;
-  height: 300px;
+  height: 180px;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 4px;
-  margin-top: 15px;
+  margin-top: 40px;
+  margin-bottom: 1px;
 }
 
-.festival-card h3 {
+.company-card h3 {
   font-size: 1.2rem;
   margin: 8px 0;
   color: #111827;
 }
 
-.festival-card p {
+.company-card p {
   font-size: 0.9rem;
   color: #555;
   margin: 0;
@@ -47,7 +43,7 @@
 }
 
 /* 별 아이콘 버튼 스타일 추가 */
-.festival-card .favorite-btn {
+.company-card .favorite-btn {
   position: absolute;
   top: 24px; /* padding 값을 고려하여 조정 */
   right: 24px; /* padding 값을 고려하여 조정 */
@@ -57,7 +53,7 @@
   z-index: 10;
 }
 
-.festival-card .favorite-btn svg {
+.company-card .favorite-btn svg {
   width: 24px;
   height: 24px;
 }
