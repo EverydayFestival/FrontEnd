@@ -166,7 +166,7 @@ useEffect(() => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* 1. 기본 입력 항목 */}
-          {/* <div>
+          <div>
             <label className="CoName">업체명 *</label>
             <input
               type="text"
@@ -175,7 +175,7 @@ useEffect(() => {
               className="border p-2 w-full rounded"
               required
             />
-          </div> */}
+          </div>
 
           <div>
             <label className="CoTel">업체 전화번호 *</label>

@@ -108,10 +108,12 @@ const MyPage = () => {
 export default MyPage;
 
 /* styled-components */
-const MyPageWrapper = styled.div``;
+const MyPageWrapper = styled.div`
+  
+`;
 
 const Profile = styled.div`
-  padding: 20px 300px;
+  padding: 20px 27%;
   display: flex;
   align-items: center;
   gap: 80px;
@@ -128,11 +130,23 @@ const ProfileInfo = styled.div`
   h2 {
     font-size: 20px;
     margin: 0;
+    @media (max-width: 800px){
+    font-size: 16px;
+  }
+  @media (max-width: 700px){
+    font-size: 12px;
+  }
   }
   p {
     font-size: 14px;
     margin: 0;
     color: gray;
+    @media (max-width: 800px){
+    font-size: 12px;
+  }
+  @media (max-width: 700px){
+    font-size: 10px;
+  }
   }
 `;
 
@@ -145,7 +159,7 @@ const MyPageMenu = styled.div`
 `;
 
 const MenuButton = styled.button`
-  width: 700px;
+  width: 50%;
   height: 70px;
   padding: 20px 20px;
   font-size: 16px;
@@ -156,4 +170,15 @@ const MenuButton = styled.button`
   background: #F4EDED;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   cursor: pointer;
+
+  @media (max-width: 800px){
+    width: 40%;
+    font-size: 14px;
+  }
+  @media (max-width: 500px){
+    width: 30%;
+    font-size: 12px;
+  }
 `;
+
+
