@@ -28,13 +28,28 @@ const MPFestivalOngoingAppliedLabor = () => {
       setPendingAction({id: laborId, status: statusType});
       setShowModal(true);
     }
-    const confirmModal = () => {
-      if(pendingAction) {
+    // 수락/거절 모달 확인 시 실행되는 함수
+  const confirmModal = async () => {
+    if (pendingAction) {
+      try {
+        if (pendingAction.status === "ACCEPTED") {
+          await handleAccept(pendingAction.id);   // 수락 API 호출
+        } else if (pendingAction.status === "DENIED") {
+          await handleDeny(pendingAction.id);     // 거절 API 호출
+        }
+
+        // 상태 UI도 업데이트
         handleChoice(pendingAction.id, pendingAction.status);
+      } catch (err) {
+        console.error("확인 처리 중 에러:", err);
+        setError(err.message);
       }
-      setShowModal(false);
-      setPendingAction(null);
     }
+
+    setShowModal(false);
+    setPendingAction(null);
+  };
+
 
     //api
     const viewAppliedLabors = async() => {
@@ -42,7 +57,7 @@ const MPFestivalOngoingAppliedLabor = () => {
         setError("");
     
         const response = await fetch(
-          `https://festival-everyday.duckdns.org/festivals/${festivalId}/labor-applications?page=0&size=2` ,
+          `https://festival-everyday.duckdns.org/festivals/${festivalId}/labor-applications?page=0&size=` ,
           {
             method: "GET",
             headers: {
@@ -73,7 +88,7 @@ const MPFestivalOngoingAppliedLabor = () => {
     const viewFestivalInfo = async () => {
       try {
         const response = await fetch(
-          `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ONGOING&page=0&size=5`,
+          `https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ONGOING&page=0&size=`,
           {
             method: "GET",
             headers: {
@@ -100,6 +115,70 @@ const MPFestivalOngoingAppliedLabor = () => {
       }
     };
   
+    const handleAccept = async (applicationId) => {
+        try {
+          setError("");
+
+          const response = await fetch(
+            `https://festival-everyday.duckdns.org/applications/${applicationId}/accept`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Accept: "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`승인 요청 실패: ${response.status}`);
+          }
+
+          let result = null;
+          if (response.headers.get("content-length") !== "0") {
+            result = await response.json();
+          }
+
+          console.log("승인 성공", result);
+        } catch (error) {
+          console.error("Error accepting application:", error);
+          setError(error.message);
+        }
+      };
+
+      const handleDeny = async (applicationId) => {
+        try {
+          setError("");
+
+          const response = await fetch(
+            `https://festival-everyday.duckdns.org/applications/${applicationId}/deny`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Accept: "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`거절 요청 실패: ${response.status}`);
+          }
+
+          let result = null;
+          if (response.headers.get("content-length") !== "0") {
+            result = await response.json();
+          }
+
+          console.log(" 거절 성공", result);
+        } catch (error) {
+          console.error("Error denying application:", error);
+          setError(error.message);
+        }
+      };
+
+	
+	
     // 두 API 호출하기
     useEffect(() => {
       setLoading(true);

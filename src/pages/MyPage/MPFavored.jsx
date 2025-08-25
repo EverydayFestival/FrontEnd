@@ -41,7 +41,7 @@ const MPFestivalFavored = () => {
       setError("");
 
       const response = await fetch(
-        "https://festival-everyday.duckdns.org/users/me/favorite-festivals?holdStatus=ONGOING&page=0&size=10",
+        "https://festival-everyday.duckdns.org/users/me/favorite-festivals?holdStatus=ONGOING&page=0&size=",
         {
           method: "GET",
           headers: {
@@ -72,7 +72,7 @@ const MPFestivalFavored = () => {
           setError("");
 
           const response = await fetch(
-            "https://festival-everyday.duckdns.org/users/me/favorite-festivals?holdStatus=ENDED&page=0&size=10",
+            "https://festival-everyday.duckdns.org/users/me/favorite-festivals?holdStatus=ENDED&page=0&size=",
             {
               method: "GET",
               headers: {
@@ -103,7 +103,7 @@ const MPFestivalFavored = () => {
           setError("");
 
           const response = await fetch(
-            "https://festival-everyday.duckdns.org/users/me/favorite-companies?page=0&size=10",
+            "https://festival-everyday.duckdns.org/users/me/favorite-companies?page=0&size=",
             {
               method: "GET",
               headers: {

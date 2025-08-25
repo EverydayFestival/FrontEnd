@@ -1,102 +1,102 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Navbar from '../../components/Navbar';
-import profile from '../../assets/profile.png';
-import { useNavigate } from 'react-router-dom';
+// import React, { useState } from 'react';
+// import styled from 'styled-components';
+// import Navbar from '../../components/Navbar';
+// import profile from '../../assets/profile.png';
+// import { useNavigate } from 'react-router-dom';
 
-const MyPage = () => {
-  const [profileType, setProfileType] = useState('Labor'); //Festival, Company, Labor
-  const navigate = useNavigate();
+// const MyPage = () => {
+//   const [profileType, setProfileType] = useState('Labor'); //Festival, Company, Labor
+//   const navigate = useNavigate();
 
-  const buttonConfig = {
+//   const buttonConfig = {
 
-    Labor: [
-      { label: "지원현황" , path: '/mypage/labor/apply'},
-      { label: "찜", path: '/mypage/favored?type=labor'}
-    ]
-  };
+//     Labor: [
+//       { label: "지원현황" , path: '/mypage/labor/apply'},
+//       { label: "찜", path: '/mypage/favored?type=labor'}
+//     ]
+//   };
 
-  const buttons = buttonConfig[profileType] || [];
+//   const buttons = buttonConfig[profileType] || [];
 
-  return (
-    <MyPageWrapper>
-      <Navbar />
-      <Profile>
-        <ProfileImg src={profile} alt="profile image" />
-        <ProfileInfo>
-          <h2>홍길동</h2>
-          <p>단기 근로자</p>
-        </ProfileInfo>
-      </Profile>
+//   return (
+//     <MyPageWrapper>
+//       <Navbar />
+//       <Profile>
+//         <ProfileImg src={profile} alt="profile image" />
+//         <ProfileInfo>
+//           <h2>홍길동</h2>
+//           <p>단기 근로자</p>
+//         </ProfileInfo>
+//       </Profile>
 
-      <MyPageMenu>
-        {buttons.map((btn, index) => (
-          <MenuButton
-            key={index}
-            onClick={() => btn.path && navigate(btn.path)}
-          >
-            {btn.label}
-          </MenuButton>
-        ))}
-      </MyPageMenu>
-    </MyPageWrapper>
-  );
-};
+//       <MyPageMenu>
+//         {buttons.map((btn, index) => (
+//           <MenuButton
+//             key={index}
+//             onClick={() => btn.path && navigate(btn.path)}
+//           >
+//             {btn.label}
+//           </MenuButton>
+//         ))}
+//       </MyPageMenu>
+//     </MyPageWrapper>
+//   );
+// };
 
-export default MyPage;
+// export default MyPage;
 
-/* styled-components */
-const MyPageWrapper = styled.div``;
+// /* styled-components */
+// const MyPageWrapper = styled.div``;
 
-const Profile = styled.div`
-  padding: 20px 300px;
-  display: flex;
-  align-items: center;
-  gap: 80px;
-`;
+// const Profile = styled.div`
+//   padding: 20px 300px;
+//   display: flex;
+//   align-items: center;
+//   gap: 80px;
+// `;
 
-const ProfileImg = styled.img`
-  width: 100px;
-`;
+// const ProfileImg = styled.img`
+//   width: 100px;
+// `;
 
-const ProfileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  h2 {
-    font-size: 20px;
-    margin: 0;
-  }
-  p {
-    font-size: 14px;
-    margin: 0;
-    color: gray;
-  }
-`;
+// const ProfileInfo = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 5px;
+//   h2 {
+//     font-size: 20px;
+//     margin: 0;
+//   }
+//   p {
+//     font-size: 14px;
+//     margin: 0;
+//     color: gray;
+//   }
+// `;
 
-const MyPageMenu = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-  gap: 20px;
-`;
+// const MyPageMenu = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   margin-top: 30px;
+//   gap: 20px;
+// `;
 
-const MenuButton = styled.button`
-  width: 700px;
-  height: 70px;
-  padding: 20px 20px;
-  font-size: 16px;
-  text-align: left;
-  font-weight: 300;
-  border: none;
-  border-radius: 20px;
-  background: #F4EDED;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-  transition: all 0.2s ease;
+// const MenuButton = styled.button`
+//   width: 700px;
+//   height: 70px;
+//   padding: 20px 20px;
+//   font-size: 16px;
+//   text-align: left;
+//   font-weight: 300;
+//   border: none;
+//   border-radius: 20px;
+//   background: #F4EDED;
+//   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+//   cursor: pointer;
+//   transition: all 0.2s ease;
 
-    &:hover{
-    background-color: #dcd7d7;
-  }
-`;
+//     &:hover{
+//     background-color: #dcd7d7;
+//   }
+// `;

@@ -19,7 +19,7 @@ const MPFestivalClosed = () => {
         setError("");
   
         const response = await fetch(
-     "https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ENDED&page=0&size=5",
+     "https://festival-everyday.duckdns.org/users/me/festivals?holdStatus=ENDED&page=0&size=",
     {
       method: "GET",
       headers: {
